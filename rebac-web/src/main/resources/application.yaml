@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+wht:
+  back:
+    domain: www.wanghongtao.xyz
+    qq: 1946066280
+    endpoint: 114.116.9.68
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:19460@${wht.back.endpoint}:27017/SimpleRebac?authSource=admin&authMechanism=SCRAM-SHA-256
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${wht.back.endpoint}:3306/SimpleRebac?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 19460
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 5
+      max-lifetime: 30000
+      connection-init-sql: SELECT 1
+
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
