@@ -6,20 +6,14 @@ import org.springframework.stereotype.Service;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.dataObject.KeyDo;
-import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
-import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
-import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.AddStoreForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 import xyz.wanghongtao.rebac.repository.KeyMapper;
-import xyz.wanghongtao.rebac.repository.ModelMapper;
-import xyz.wanghongtao.rebac.repository.PolicyRepository;
 import xyz.wanghongtao.rebac.repository.StoreMapper;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author wanghongtao
@@ -32,10 +26,6 @@ public class StoreServiceImpl implements StoreService {
     KeyMapper keyMapper;
 
     StoreMapper storeMapper;
-
-    ModelMapper modelMapper;
-
-    PolicyRepository policyRepository;
 
     @Override
     public void storeKey(GenerateKey key) {
@@ -61,12 +51,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public AddStore addStore(AddStoreForm addStoreForm) {
-        StoreDo storeDo = new StoreDo();
-        storeDo.setName(addStoreForm.getName());
-        storeDo.setDescription(addStoreForm.getDescription());
-        storeDo.setAppKey(addStoreForm.getAppKey());
-
+    public AddStore addStore(StoreDo storeDo) {
         int insert = storeMapper.insert(storeDo);
         if (insert != 1) throw new CustomException(ErrorCode.Add_Store_Error);
 
@@ -85,36 +70,6 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDo getStoreById(Long id) {
         return storeMapper.selectById(id);
-    }
-
-    @Override
-    public void addModel(AddModelForm addModelForm) {
-        PolicyDo policyDo = PolicyDo.builder()
-                .description(addModelForm.getPolicy().getDescription())
-                .definitions(addModelForm.getPolicy().getDefinitions())
-                .build();
-        policyRepository.insert(policyDo);
-
-        ModelDo modelDo = ModelDo.builder()
-                .storeId(addModelForm.getStoreId())
-                .name(addModelForm.getName())
-                .description(addModelForm.getDescription())
-                .policyId(policyDo.getId())
-                .build();
-        modelMapper.insert(modelDo);
-    }
-
-    @Override
-    public List<ModelDo> getAllModelByStoreId(String storeId) {
-        LambdaQueryWrapper<ModelDo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ModelDo::getStoreId, storeId);
-        return modelMapper.selectList(queryWrapper);
-    }
-
-    @Override
-    public PolicyDo getPolicyById(String id) {
-        Optional<PolicyDo> optionalPolicyDo = policyRepository.findById(id);
-        return optionalPolicyDo.orElse(null);
     }
 
 

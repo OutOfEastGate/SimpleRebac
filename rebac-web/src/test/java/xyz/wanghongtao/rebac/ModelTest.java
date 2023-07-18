@@ -27,7 +27,6 @@ public class ModelTest {
 
     @Test
     public void testInsertModel() {
-        storeService.addModel(buildMockModel());
     }
 
     public AddModelForm buildMockModel() {

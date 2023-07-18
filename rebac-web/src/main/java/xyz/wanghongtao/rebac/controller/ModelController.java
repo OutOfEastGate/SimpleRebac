@@ -7,7 +7,7 @@ import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
-import xyz.wanghongtao.rebac.service.StoreService;
+import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 
 import java.util.List;
 
@@ -20,21 +20,21 @@ import java.util.List;
 @RestController
 public class ModelController {
 
-    StoreService storeService;
+    DatabaseGateway databaseGateway;
     @PostMapping("/add")
     public Result<?> addModel(@Valid @RequestBody AddModelForm addModelForm, @RequestHeader("appKey") String appKey) {
         addModelForm.setAppKey(appKey);
-        storeService.addModel(addModelForm);
+        databaseGateway.addModel(addModelForm);
         return Result.success();
     }
 
     @GetMapping("/getAllByStoreId")
     public Result<List<ModelDo>> getAllByStoreId(String storeId) {
-        return Result.success(storeService.getAllModelByStoreId(storeId));
+        return Result.success(databaseGateway.getAllModelByStoreId(storeId));
     }
 
     @GetMapping("/getPolicyById")
     public Result<PolicyDo> getPolicyById(String id) {
-        return Result.success(storeService.getPolicyById(id));
+        return Result.success(databaseGateway.getPolicyById(id));
     }
 }
