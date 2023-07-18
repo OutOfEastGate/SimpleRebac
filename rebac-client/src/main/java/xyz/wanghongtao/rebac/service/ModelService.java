@@ -17,4 +17,6 @@ public interface ModelService {
     List<ModelDo> getAllModelByStoreId(String storeId);
 
     PolicyDo getPolicyById(String id);
+
+    ModelDo getModelById(Long id);
 }

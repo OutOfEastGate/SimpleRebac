@@ -41,4 +41,9 @@ public class ModelServiceImpl implements ModelService {
         Optional<PolicyDo> optionalPolicyDo = policyRepository.findById(id);
         return optionalPolicyDo.orElse(null);
     }
+
+    @Override
+    public ModelDo getModelById(Long id) {
+        return modelMapper.selectById(id);
+    }
 }

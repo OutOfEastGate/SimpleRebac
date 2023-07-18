@@ -2,6 +2,8 @@ package xyz.wanghongtao.rebac.gateway;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import xyz.wanghongtao.rebac.exception.CustomException;
+import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.dataObject.KeyDo;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
@@ -35,6 +37,11 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
 
     @Override
     public void addModel(AddModelForm addModelForm) {
+        //检查store是否存在
+        StoreDo storeById = storeService.getStoreById(addModelForm.getStoreId());
+        if (storeById == null) {
+            throw new CustomException(ErrorCode.Store_NOT_EXIST);
+        }
         PolicyDo policyDo = PolicyDo.builder()
                 .description(addModelForm.getPolicy().getDescription())
                 .definitions(addModelForm.getPolicy().getDefinitions())
@@ -93,9 +100,29 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
 
     @Override
     public RelationDo addRelation(AddRelationForm addRelationForm) {
+        //检查model是否存在
+        ModelDo modelById = modelService.getModelById(addRelationForm.getModelId());
+        if (modelById == null) {
+            throw new CustomException(ErrorCode.Model_NOT_EXIST);
+        }
         //解析三元组
-        RelationDo relationDo = new RelationDo();
+        String[] parts = addRelationForm.getTriple().split("#|@|:");
 
+        String objectType = parts[0];
+        String object = parts[1];
+        String relation = parts[2];
+        String subject = parts[3];
+        String subjectType = parts[4];
+
+        RelationDo relationDo = RelationDo.builder()
+                .modelId(addRelationForm.getModelId())
+                .objectType(objectType)
+                .object(object)
+                .relation(relation)
+                .subjectType(subjectType)
+                .subject(subject)
+                .triple(addRelationForm.getTriple())
+                .build();
         return relationService.addRelation(relationDo);
     }
 
