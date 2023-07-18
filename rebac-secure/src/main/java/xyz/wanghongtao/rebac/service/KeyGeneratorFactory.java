@@ -19,13 +19,16 @@ public class KeyGeneratorFactory {
 
     SHA256KeyGenerate sha256KeyGenerate;
 
-    public GenerateKey generateKey(String algorithm) {
-        GenerateKey generateKey;
+    public KeyService getKeyService(String algorithm) {
         if (algorithm.equals("uuid")) {
-            generateKey = uuidKeyGenerate.generateKey();
+            return uuidKeyGenerate;
         } else {
-            generateKey = sha256KeyGenerate.generateKey();
+            return sha256KeyGenerate;
         }
+    }
+
+    public GenerateKey generateKey(String algorithm) {
+        GenerateKey generateKey = getKeyService(algorithm).generateKey();
         //存储
         storeService.storeKey(generateKey);
 

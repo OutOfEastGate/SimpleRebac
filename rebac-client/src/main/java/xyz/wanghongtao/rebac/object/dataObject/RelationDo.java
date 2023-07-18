@@ -25,4 +25,5 @@ public class RelationDo {
 
     String subject;
 
+    String triple;
 }

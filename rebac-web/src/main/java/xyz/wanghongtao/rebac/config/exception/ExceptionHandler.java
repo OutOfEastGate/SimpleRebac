@@ -27,9 +27,7 @@ public class ExceptionHandler {
     public Result<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         StringBuilder stringBuilder = new StringBuilder();
-        bindingResult.getFieldErrors().forEach(item -> {
-            stringBuilder.append(item.getField()).append(": ").append(item.getDefaultMessage()).append(";");
-        });
+        bindingResult.getFieldErrors().forEach(item -> stringBuilder.append(item.getField()).append(": ").append(item.getDefaultMessage()).append(";"));
         log.error(stringBuilder.toString());
         return Result.fail(PARAM_ERROR.getCode(), stringBuilder.toString());
     }
