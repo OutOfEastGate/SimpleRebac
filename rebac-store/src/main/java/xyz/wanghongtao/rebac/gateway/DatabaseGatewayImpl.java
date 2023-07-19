@@ -55,6 +55,11 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
     }
 
     @Override
+    public ModelDo getModelById(Long id) {
+        return modelService.getModelById(id);
+    }
+
+    @Override
     public List<ModelDo> getAllModelByStoreId(String storeId) {
         return modelService.getAllModelByStoreId(storeId);
     }
@@ -124,6 +129,11 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
                 .triple(addRelationForm.getTriple())
                 .build();
         return relationService.addRelation(relationDo);
+    }
+
+    @Override
+    public List<RelationDo> getRelationByTriple(String triple) {
+        return relationService.getByTriple(triple);
     }
 
 

@@ -16,6 +16,8 @@ import java.util.List;
 public interface DatabaseGateway {
     void addModel(AddModelForm addModelForm);
 
+    ModelDo getModelById(Long id);
+
     List<ModelDo> getAllModelByStoreId(String storeId);
 
     PolicyDo getPolicyById(String id);
@@ -41,5 +43,11 @@ public interface DatabaseGateway {
 
     StoreDo getStoreById(Long id);
 
+    /**
+     * 关系
+     */
     RelationDo addRelation(AddRelationForm addRelationForm);
+
+    List<RelationDo> getRelationByTriple(String triple);
+
 }

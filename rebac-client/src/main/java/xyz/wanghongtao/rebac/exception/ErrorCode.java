@@ -10,7 +10,7 @@ public enum ErrorCode {
     FILE_UPLOAD_FAILED("504","文件上传失败"),
     FILE_NOT_EXISTED("505","文件不存在"),
     Store_NOT_EXIST("506","Store不存在"),
-    FILE_TYPE_NOT_EXISTED("507","文件分类不存在"),
+    Policy_NOT_EXISTED("507","权限策略不存在"),
     MAIL_ERROR("508","邮件发送失败"),
     USER_NOT_EXISTED("509", "用户不存在"),
     TIME_EXISTED("510", "结束时间不可早于当前时间"),
