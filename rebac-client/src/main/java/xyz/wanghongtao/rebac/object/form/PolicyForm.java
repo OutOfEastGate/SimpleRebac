@@ -2,6 +2,7 @@ package xyz.wanghongtao.rebac.object.form;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 
@@ -22,6 +23,6 @@ public class PolicyForm {
     /**
      * 策略定义
      */
-    @NotEmpty(message = "definitions不可为空")
+    @NotNull(message = "definitions不可为空")
     List<Definition> definitions;
 }

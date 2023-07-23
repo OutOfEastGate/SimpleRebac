@@ -14,7 +14,7 @@ public interface ModelService {
      */
     void addModel(PolicyDo policyDo, ModelDo modelDo);
 
-    List<ModelDo> getAllModelByStoreId(String storeId);
+    List<ModelDo> getAllModelByStoreId(Long storeId);
 
     PolicyDo getPolicyById(String id);
 

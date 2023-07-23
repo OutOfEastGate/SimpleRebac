@@ -9,4 +9,8 @@ public interface RelationService {
     RelationDo addRelation(RelationDo relationDo);
 
     List<RelationDo> getByTriple(String triple);
+
+    List<RelationDo> getRelationByModelId(Long modelId);
+
+    void deleteRelation(Long modelId, Long id);
 }

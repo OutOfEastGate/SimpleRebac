@@ -15,7 +15,10 @@ public enum ErrorCode {
     USER_NOT_EXISTED("509", "用户不存在"),
     TIME_EXISTED("510", "结束时间不可早于当前时间"),
     Key_Generate_Error("511","密钥生成失败"),
-    Add_Store_Error("511","密钥生成失败");
+    Add_Store_Error("511","密钥生成失败"),
+    Delete_ERROR("512", "删除失败"),
+    OBJECT_OR_SUBJECT_NOT_EXIST("513","Object或Subject不存在"),
+    Relation_NOT_EXIST("514","Relation不存在");
 
 
     private final String code;

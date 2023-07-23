@@ -1,0 +1,4 @@
+
+interface AppKey {
+    appkey:string
+}

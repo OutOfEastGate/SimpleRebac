@@ -29,7 +29,7 @@ public class ModelController {
     }
 
     @GetMapping("/getAllByStoreId")
-    public Result<List<ModelDo>> getAllByStoreId(String storeId) {
+    public Result<List<ModelDo>> getAllByStoreId(Long storeId) {
         return Result.success(databaseGateway.getAllModelByStoreId(storeId));
     }
 

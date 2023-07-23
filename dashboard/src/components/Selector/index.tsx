@@ -1,43 +1,37 @@
 import React from 'react';
-import { Select } from 'antd';
+import {Select, Tooltip} from 'antd';
 
-const App: React.FC = () => (
-    <Select
-        showSearch
-        style={{ width: 200 }}
-        placeholder="选择存储模型"
-        optionFilterProp="children"
-        filterOption={(input, option) => (option?.label ?? '').includes(input)}
-        filterSort={(optionA, optionB) =>
-            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-        }
-        options={[
-            {
-                value: '1',
-                label: 'Not Identified',
-            },
-            {
-                value: '2',
-                label: 'Closed',
-            },
-            {
-                value: '3',
-                label: 'Communicated',
-            },
-            {
-                value: '4',
-                label: 'Identified',
-            },
-            {
-                value: '5',
-                label: 'Resolved',
-            },
-            {
-                value: '6',
-                label: 'Cancelled',
-            },
-        ]}
-    />
-);
+interface propsType {
+    ops:selector[]
+    handleOpsChange: (id:number)=>void
+}
+interface selector{
+    value:string
+    label: string
+    desc: string
+}
+function App(props:propsType){
+
+    const handleChange = (value: number) => {
+        props.handleOpsChange(value)
+    };
+    return(
+        <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="选择存储模型"
+            optionFilterProp="children"
+            onChange={handleChange}
+            filterOption={(input, option) => (option?.label ?? '').includes(input)}
+            filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+            }
+            options={props.ops}
+        />
+    )
+}
+
+
+
 
 export default App;

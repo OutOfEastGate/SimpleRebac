@@ -1,0 +1,11 @@
+import request from "./index";
+
+export const getAllStore = ():Promise<getAllStoreRes> => request.get("/store/getAllByAppKey");
+
+export const getAllModel = (id:number):Promise<getAllModelRes> => request.get("/model/getAllByStoreId?storeId=" + id);
+
+export const getPolicy = (id:string):Promise<getPolicyRes> => request.get("/model/getPolicyById?id=" + id)
+
+export const getRelation = (id:string):Promise<getRelationRes> => request.get("/relation/getByModelId?modelId=" + id)
+
+export const getGraph = (id:string):Promise<getGraphRes> => request.get("relation/getGraphRelation?modelId=" + id)

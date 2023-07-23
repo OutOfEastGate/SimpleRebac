@@ -1,6 +1,6 @@
 package xyz.wanghongtao.rebac.object.form;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class AddModelForm {
 
-    @NotEmpty(message = "storeId不可为空")
+    @NotNull(message = "storeId不可为空")
     Long storeId;
 
     @Size(max = 10, message = "name长度不可超过10")
@@ -20,7 +20,6 @@ public class AddModelForm {
     @Size(max = 100, message = "description长度不可超过100")
     String description;
 
-    @NotEmpty
     PolicyForm policy;
 
     String appKey;

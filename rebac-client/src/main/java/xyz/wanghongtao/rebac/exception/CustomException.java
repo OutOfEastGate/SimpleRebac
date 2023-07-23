@@ -10,6 +10,7 @@ public class CustomException extends RuntimeException {
     String msg;
 
     public CustomException(String msg) {
+        this.code = "500";
         this.msg = msg;
     }
     public CustomException(String code, String msg) {

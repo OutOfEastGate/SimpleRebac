@@ -15,4 +15,6 @@ public class RelationContext {
     String relation;
     String subject;
     String subjectType;
+
+    String triple;
 }

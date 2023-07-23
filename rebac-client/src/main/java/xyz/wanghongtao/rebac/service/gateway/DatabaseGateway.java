@@ -8,6 +8,7 @@ import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.AddStoreForm;
+import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 
@@ -18,7 +19,7 @@ public interface DatabaseGateway {
 
     ModelDo getModelById(Long id);
 
-    List<ModelDo> getAllModelByStoreId(String storeId);
+    List<ModelDo> getAllModelByStoreId(Long storeId);
 
     PolicyDo getPolicyById(String id);
 
@@ -50,4 +51,7 @@ public interface DatabaseGateway {
 
     List<RelationDo> getRelationByTriple(String triple);
 
+    List<RelationDo> getRelationByModelId(Long modelId);
+
+    void deleteRelation(DeleteRelationForm deleteRelationForm);
 }

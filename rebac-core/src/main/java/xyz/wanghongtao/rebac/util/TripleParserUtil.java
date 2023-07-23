@@ -15,8 +15,8 @@ public class TripleParserUtil {
         String objectType = parts[0];
         String object = parts[1];
         String relation = parts[2];
-        String subject = parts[3];
-        String subjectType = parts[4];
+        String subjectType = parts[3];
+        String subject = parts[4];
 
         return RelationContext.builder()
                 .objectType(objectType)
@@ -24,6 +24,7 @@ public class TripleParserUtil {
                 .relation(relation)
                 .subject(subject)
                 .subjectType(subjectType)
+                .triple(triple)
                 .build();
     }
 

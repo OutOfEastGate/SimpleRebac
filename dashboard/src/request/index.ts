@@ -3,10 +3,10 @@ import {backPath} from "../components/conf";
 //创建axios实例
 const instance = axios.create({
     //基本请求路径抽取
-    baseURL:"http://" + backPath + "/api",
+    baseURL:"http://" + backPath,
     timeout:20000,
     headers: {
-        Authorization : localStorage.getItem('token')
+        appKey : localStorage.getItem('appKey')
     }
 })
 

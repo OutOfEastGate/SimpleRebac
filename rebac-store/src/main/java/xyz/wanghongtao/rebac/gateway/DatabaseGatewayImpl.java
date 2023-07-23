@@ -2,24 +2,32 @@ package xyz.wanghongtao.rebac.gateway;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import xyz.wanghongtao.rebac.engine.model.ModelEngine;
+import xyz.wanghongtao.rebac.engine.relation.RelationEngine;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
+import xyz.wanghongtao.rebac.object.context.RelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.KeyDo;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
+import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.AddStoreForm;
+import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 import xyz.wanghongtao.rebac.service.ModelService;
 import xyz.wanghongtao.rebac.service.RelationService;
 import xyz.wanghongtao.rebac.service.StoreService;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
+import xyz.wanghongtao.rebac.util.TripleParserUtil;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * gateway用于处理数据库查询出来的数据，可以与上层模块解耦合
@@ -42,10 +50,15 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         if (storeById == null) {
             throw new CustomException(ErrorCode.Store_NOT_EXIST);
         }
+        //预检查policy
+        ModelEngine.preCheckPolicy(addModelForm);
+
         PolicyDo policyDo = PolicyDo.builder()
                 .description(addModelForm.getPolicy().getDescription())
                 .definitions(addModelForm.getPolicy().getDefinitions())
                 .build();
+
+
         ModelDo modelDo = ModelDo.builder()
                 .storeId(addModelForm.getStoreId())
                 .name(addModelForm.getName())
@@ -60,7 +73,7 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
     }
 
     @Override
-    public List<ModelDo> getAllModelByStoreId(String storeId) {
+    public List<ModelDo> getAllModelByStoreId(Long storeId) {
         return modelService.getAllModelByStoreId(storeId);
     }
 
@@ -110,30 +123,53 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         if (modelById == null) {
             throw new CustomException(ErrorCode.Model_NOT_EXIST);
         }
-        //解析三元组
-        String[] parts = addRelationForm.getTriple().split("#|@|:");
-
-        String objectType = parts[0];
-        String object = parts[1];
-        String relation = parts[2];
-        String subject = parts[3];
-        String subjectType = parts[4];
+        //解析关系三元组
+        RelationContext relationContext = TripleParserUtil.parseRelation(addRelationForm.getTriple());
+        //预检查关系定义
+        //查出policy定义
+        PolicyDo policyById = modelService.getPolicyById(modelById.getPolicyId());
+        if (policyById == null) {
+            throw new CustomException(ErrorCode.Policy_NOT_EXISTED);
+        }
+        //预检查relation
+        RelationEngine.preCheckRelation(relationContext, policyById);
 
         RelationDo relationDo = RelationDo.builder()
                 .modelId(addRelationForm.getModelId())
-                .objectType(objectType)
-                .object(object)
-                .relation(relation)
-                .subjectType(subjectType)
-                .subject(subject)
+                .objectType(relationContext.getObjectType())
+                .object(relationContext.getObject())
+                .relation(relationContext.getRelation())
+                .subjectType(relationContext.getSubjectType())
+                .subject(relationContext.getSubject())
                 .triple(addRelationForm.getTriple())
                 .build();
         return relationService.addRelation(relationDo);
     }
 
+
+
     @Override
     public List<RelationDo> getRelationByTriple(String triple) {
         return relationService.getByTriple(triple);
+    }
+
+    @Override
+    public List<RelationDo> getRelationByModelId(Long modelId) {
+        //根据modelId查找Relation
+        List<RelationDo> relationDos = relationService.getRelationByModelId(modelId);
+        return relationDos;
+    }
+
+    @Override
+    public void deleteRelation(DeleteRelationForm deleteRelationForm) {
+        //检查model是否存在
+        ModelDo modelById = modelService.getModelById(deleteRelationForm.getModelId());
+        if (modelById == null) {
+            throw new CustomException(ErrorCode.Model_NOT_EXIST);
+        }
+
+        //删除relation
+        relationService.deleteRelation(deleteRelationForm.getModelId(), deleteRelationForm.getId());
     }
 
 

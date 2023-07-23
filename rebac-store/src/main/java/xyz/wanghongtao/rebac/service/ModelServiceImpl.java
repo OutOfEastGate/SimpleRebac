@@ -30,7 +30,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<ModelDo> getAllModelByStoreId(String storeId) {
+    public List<ModelDo> getAllModelByStoreId(Long storeId) {
         LambdaQueryWrapper<ModelDo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ModelDo::getStoreId, storeId);
         return modelMapper.selectList(queryWrapper);
