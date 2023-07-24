@@ -1,5 +1,5 @@
 import React from 'react';
-import {Select, Tooltip} from 'antd';
+import {Select, Space, Tooltip} from 'antd';
 
 interface propsType {
     ops:selector[]
@@ -16,18 +16,24 @@ function App(props:propsType){
         props.handleOpsChange(value)
     };
     return(
-        <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="选择存储模型"
-            optionFilterProp="children"
-            onChange={handleChange}
-            filterOption={(input, option) => (option?.label ?? '').includes(input)}
-            filterSort={(optionA, optionB) =>
-                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-            }
-            options={props.ops}
-        />
+        <>
+            <Space>
+                {"选择存储模型"}
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="选择存储模型"
+                    optionFilterProp="children"
+                    onChange={handleChange}
+                    filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                    filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                    }
+                    options={props.ops}
+                />
+            </Space>
+        </>
+
     )
 }
 

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Graph from "../graph";
-import {Layout, Menu, MenuProps, Space, Tabs, TabsProps, Tooltip} from "antd";
+import {Layout, Space, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import Selector from "../Selector";
-import {getAllModel, getAllStore, getPolicy, getRelation} from "../../request/api";
+import {getAllModel, getAllStore} from "../../request/api";
 
 const headerStyle: React.CSSProperties = {
     textAlign: 'center',
@@ -52,11 +52,11 @@ function App() {
         getAllModel(id).then(res => {
             if (res.msg === "success") {
                 setModels(res.data)
+                setSelectTab(res.data[0].id)
             }
         })
     }
     const onTabChange = (key: string) => {
-        console.log("Tab变化" + key)
         setSelectTab(key)
     };
     return (
@@ -71,21 +71,12 @@ function App() {
                               items={models.map(item => ({key: item.id, label: item.name, children: <Graph selectModel={selectTab}></Graph>}))}
                               onChange={onTabChange} />
                     </Content>
-                    <Footer style={footerStyle}>ReBac权限演示中台</Footer>
+                    <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
                 </Layout>
             </Space>
         </div>
     );
 
-}
-
-//从policy中解析出对象
-function getNodes(relation:Relation[]|undefined):[] {
-    return []
-}
-//从policy中解析出关联关系
-function getLinks(policy:Relation[]|undefined):[] {
-    return []
 }
 
 export default App;

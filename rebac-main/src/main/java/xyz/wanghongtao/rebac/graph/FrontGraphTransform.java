@@ -39,6 +39,7 @@ public class FrontGraphTransform {
         });
 
         List<LinkVo> links = new ArrayList<>();
+
         relationByModelId.forEach(relationDo -> {
             LinkVo linkVo = new LinkVo();
             linkVo.setSource(objects.get(relationDo.getObject()));
