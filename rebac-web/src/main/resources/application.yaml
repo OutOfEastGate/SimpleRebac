@@ -6,6 +6,7 @@ wht:
     domain: www.wanghongtao.xyz
     qq: 1946066280
     endpoint: 114.116.9.68
+    virtualMachine: 192.168.240.128
 spring:
   data:
     mongodb:
@@ -27,3 +28,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+neo4j:
+  uri: bolt://192.168.240.128:7687
+  username: neo4j
+  password: password
