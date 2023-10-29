@@ -10,6 +10,7 @@ import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.CheckPermissionForm;
 import xyz.wanghongtao.rebac.object.form.CheckRelationForm;
+import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.PermissionService;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 import xyz.wanghongtao.rebac.service.gateway.PermissionServiceGateway;
@@ -37,7 +38,11 @@ public class PermissionGatewayImpl implements PermissionServiceGateway {
                 .policy(result.policyById())
                 .permissionContext(TripleParserUtil.parsePermission(checkPermission.getTriple()))
                 .build();
-        return permissionService.checkPermission(checkPermissionContext);
+
+      PermissionRuntime runtime = PermissionRuntime.builder()
+        .databaseGateway(databaseGateway)
+        .build();
+      return permissionService.checkPermission(runtime, checkPermissionContext);
     }
 
     @Override

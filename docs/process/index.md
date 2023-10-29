@@ -1,8 +1,15 @@
+---
+# 同时设置导航名称和顺序，order 越小越靠前，默认为 0
+group: 开发文档
+title: 开发介绍
+order: 1
+---
+
 开发进度见Process.md文档
 
 ## SimpleRebac设计文档
 
- 以下是Zanzibar整体架构
+以下是Zanzibar整体架构
 
 ![img](https://docs.qingque.cn/image/api/external/load/out?code=eZQBfAdmstOCT_QgVHRj_9D98:-4835615104140032079eZQBfAdmstOCT_QgVHRj_9D98:1690096996361&identityId=1zDXFsi49lD)
 

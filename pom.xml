@@ -46,6 +46,7 @@
         <mybatisplus.version>3.5.3</mybatisplus.version>
         <validation.version>2.0.1.Final</validation.version>
         <neo4j.driver.version>5.11.0</neo4j.driver.version>
+        <jooq.verson>3.18.6</jooq.verson>
     </properties>
 
     <dependencyManagement>
@@ -99,6 +100,11 @@
                 <artifactId>neo4j-java-driver</artifactId>
                 <version>${neo4j.driver.version}</version>
             </dependency>
+          <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.verson}</version>
+          </dependency>
         </dependencies>
     </dependencyManagement>
 

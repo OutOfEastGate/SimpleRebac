@@ -7,6 +7,7 @@ import xyz.wanghongtao.rebac.object.context.CheckRelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.Permission;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
+import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 
 import java.util.ArrayList;
@@ -23,10 +24,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 @Service
 public class PermissionServiceImpl implements PermissionService {
-    DatabaseGateway databaseGateway;
 
     @Override
-    public Boolean checkPermission(CheckPermissionContext checkPermissionContext) {
+    public Boolean checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
         //TODO 实现图关联模型查询
         Set<String> relationsHasPermission = new HashSet<>();
         AtomicReference<List<Permission>> permissions = new AtomicReference<>(new ArrayList<>());
@@ -57,7 +57,7 @@ public class PermissionServiceImpl implements PermissionService {
                     ":" +
                     checkPermissionContext.getPermissionContext().getSubject();
             System.out.println(stringBuilder);
-            List<RelationDo> relationByTriple = databaseGateway.getRelationByTriple(stringBuilder);
+            List<RelationDo> relationByTriple = permissionRuntime.getRelationByTriple(stringBuilder);
             if (relationByTriple.size() > 0) {
                 result.set(true);
             }
@@ -76,10 +76,10 @@ public class PermissionServiceImpl implements PermissionService {
         AtomicReference<List<RelationDo>> relationByTriple = new AtomicReference<>();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         //检查数据库是否有该条关系
-        Thread.startVirtualThread(() -> {
-            relationByTriple.set(databaseGateway.getRelationByTriple(checkRelationContext.getTriple()));
-            countDownLatch.countDown();
-        });
+//        Thread.startVirtualThread(() -> {
+//            relationByTriple.set(databaseGateway.getRelationByTriple(checkRelationContext.getTriple()));
+//            countDownLatch.countDown();
+//        });
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {

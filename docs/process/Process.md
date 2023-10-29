@@ -1,3 +1,12 @@
+---
+# 同时设置导航名称和顺序，order 越小越靠前，默认为 0
+group: 
+  title: 开发文档
+  order: 3
+order: 1
+title: 开发进度
+---
+
 ## 2023-7-20
 
 - [x] 初步实现model定义、存储
@@ -11,4 +20,4 @@
 - [x] 前端能够展示数据库中的节点关联关系
 - [ ] 分析spicedb鉴权过程（图查找模型）
 
-<img src="img\Process2023-07-23_22-23-07.png" style="zoom: 25%;" />
+<img src="./img/Process2023-07-23_22-23-07.png" style="zoom: 25%;" />

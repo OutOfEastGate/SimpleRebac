@@ -8,6 +8,8 @@ hero:
       link: /process
     - text: 使用文档
       link: /use
+    - text: 领域驱动设计
+      link: /ddd
 features:
   - title: Hello
     emoji: 
