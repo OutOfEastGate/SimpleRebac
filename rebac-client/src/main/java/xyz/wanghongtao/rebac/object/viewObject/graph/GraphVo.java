@@ -12,5 +12,5 @@ import java.util.List;
 public class GraphVo {
     List<NodeVo> nodes;
 
-    List<LinkVo> links;
+    List<LinkVo> edges;
 }

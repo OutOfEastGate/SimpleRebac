@@ -70,6 +70,10 @@ interface getGraphRes extends BaseRes{
     data: Graph
 }
 
+interface getSystemInfoRes extends BaseRes{
+  data: any
+}
+
 interface Graph {
     nodes:GraphNode[]
     links:Link[]

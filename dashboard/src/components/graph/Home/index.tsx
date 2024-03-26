@@ -1,9 +1,10 @@
+
 import React, {useEffect, useState} from 'react';
-import Graph from "../graph";
-import {Layout, Space, Tabs} from "antd";
+import {Layout, message, Space, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import Selector from "../Selector";
-import {getAllModel, getAllStore} from "../../request/api";
+import Relation from "../Relation"
+import {getAllModel, getAllStore} from "../../../request/api";
 
 const headerStyle: React.CSSProperties = {
     textAlign: 'center',
@@ -28,6 +29,16 @@ const footerStyle: React.CSSProperties = {
     backgroundColor: '#7dbcea',
 };
 
+const siderStyle: React.CSSProperties = {
+  textAlign: 'center',
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#1677ff',
+};
+
+
+
+
 function App() {
 
     //权限model
@@ -45,6 +56,8 @@ function App() {
                 if (res.msg === 'success' && res.data != null) {
                     setStores(res.data);
                 }
+            }).catch(error => {
+              message.error(error.message)
             });
         }
     }, []);
@@ -67,16 +80,17 @@ function App() {
                         <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
                     </Header>
                     <Content style={contentStyle}>
-                        <Tabs defaultActiveKey="1"
-                              items={models.map(item => ({key: item.id, label: item.name, children: <Graph selectModel={selectTab}></Graph>}))}
-                              onChange={onTabChange} />
+                      {models.length == 0 ? <Relation isEmpty={true} selectModel={selectTab}></Relation> : <Tabs defaultActiveKey="1"
+                                                          items={models.map(item => ({key: item.id, label: item.name, children:  <Relation isEmpty={false} selectModel={selectTab}></Relation>}))}
+                                                          onChange={onTabChange} />}
                     </Content>
                     <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
                 </Layout>
+
             </Space>
         </div>
     );
 
 }
 
-export default App;
+export default App

@@ -1,12 +1,16 @@
 import React from 'react';
-import Home from "./components/home";
+import {useRoutes} from "react-router-dom";
+import router from "./router";
 
+
+function BeforeEnter() {
+
+  return useRoutes(router);
+}
 
 function App() {
   return (
-    <div>
-        <Home></Home>
-    </div>
+      <BeforeEnter></BeforeEnter>
   );
 }
 

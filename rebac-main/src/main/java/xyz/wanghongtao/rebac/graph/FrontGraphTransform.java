@@ -32,8 +32,11 @@ public class FrontGraphTransform {
 
         List<NodeVo> nodes = new ArrayList<>();
         objects.forEach((object, node) -> {
-            NodeVo nodeVo = new NodeVo();
-            nodeVo.setId(object);
+            NodeVo nodeVo = NodeVo.builder()
+              .id(object)
+              .attrs(getNodeAttrs())
+              .label(object)
+              .build();
             nodes.add(nodeVo);
             objects.put(object, nodeVo);
         });
@@ -41,15 +44,38 @@ public class FrontGraphTransform {
         List<LinkVo> links = new ArrayList<>();
 
         relationByModelId.forEach(relationDo -> {
-            LinkVo linkVo = new LinkVo();
-            linkVo.setSource(objects.get(relationDo.getObject()));
-            linkVo.setTarget(objects.get(relationDo.getSubject()));
+            LinkVo linkVo = LinkVo.builder().build();
+            linkVo.setSource(objects.get(relationDo.getObject()).getId());
+            linkVo.setTarget(objects.get(relationDo.getSubject()).getId());
             linkVo.setText(relationDo.getRelation());
+            linkVo.setLabel(relationDo.getRelation());
+            linkVo.setAttrs(getEdgeAttrs());
             links.add(linkVo);
         });
 
         graphVo.setNodes(nodes);
-        graphVo.setLinks(links);
+        graphVo.setEdges(links);
         return graphVo;
     }
+
+  private Map<String, Object> getEdgeAttrs() {
+    Map<String, Object> attrs = new HashMap<>();
+    Map<String, Object> line = new HashMap<>();
+    line.put("stroke", "#8f8f8f");
+    line.put("strokeWidth", 1);
+    attrs.put("line", line);
+    return attrs;
+  }
+
+  private Map<String, Object> getNodeAttrs() {
+    Map<String, Object> attrs = new HashMap<>();
+    Map<String, Object> body = new HashMap<>();
+    body.put("stroke", "#8f8f8f");
+    body.put("strokeWidth", 1);
+    body.put("fill", "#fff");
+    body.put("rx", 6);
+    body.put("ry", 6);
+    attrs.put("body", body);
+    return attrs;
+  }
 }

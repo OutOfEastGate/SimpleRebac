@@ -105,6 +105,11 @@
             <artifactId>jooq</artifactId>
             <version>${jooq.verson}</version>
           </dependency>
+          <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>5.6.1</version>
+          </dependency>
         </dependencies>
     </dependencyManagement>
 
