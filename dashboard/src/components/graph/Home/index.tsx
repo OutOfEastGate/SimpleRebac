@@ -1,11 +1,10 @@
 
 import React, {useEffect, useState} from 'react';
-import {Button, Layout, message, Space, Tabs} from "antd";
+import { Layout, message, Space, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import Selector from "../Selector";
 import Relation from "../Relation"
 import {getAllModel, getAllStore} from "../../../request/api";
-import graph from "../index";
 
 const headerStyle: React.CSSProperties = {
     textAlign: 'center',

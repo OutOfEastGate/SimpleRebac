@@ -5,6 +5,7 @@ import HomePage from "../page/HomePage";
 import {Navigate} from "react-router-dom";
 import System from "../components/system";
 import Key from "../components/key";
+import Model from "../components/model";
 
 
 const routes = [
@@ -31,6 +32,10 @@ const routes = [
       {
         path: "/key",
         element: <Key></Key>
+      },
+      {
+        path: "/model",
+        element: <Model></Model>
       }
     ]
   },

@@ -421,7 +421,6 @@ function MyEditor(props:PropsType) {
 
 //官方文档写的是componentDidMount，因为react取消了三个生命周期函数，所以使用useEffect
   useEffect(() => {
-      console.log('开始更新', data)
       if (!container || minimapContainer==undefined || !data) return;
       // 清空容器内容
       container.innerHTML = '';
@@ -519,13 +518,14 @@ function MyEditor(props:PropsType) {
           Circle
         </div>
       </div>
-      <div className="app-content" ref={refContainer} />
+      {Array.isArray(data) ?  <></> : <Loading></Loading>}
+      <div className="app-content" ref={refContainer}/>
       <div className="app-minimap" ref={refMiniMapContainer} />
     </div>
   )
   function confirmEdge(addRelationParam:AddRelationType) {
     setShowModal(false)
-    if(currentEdge!= undefined) {
+    if(currentEdge != undefined) {
       currentEdge.setLabels([{
         "attrs": {
           "label": {
@@ -551,7 +551,6 @@ function MyEditor(props:PropsType) {
   function cancelNode() {
     setShowAddNodeModal(false)
     if(graph != undefined && currentNode != undefined) {
-      console.log(currentNode.id)
       graph.removeNode(currentNode.id)
     }
   }

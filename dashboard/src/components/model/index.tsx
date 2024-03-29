@@ -1,10 +1,10 @@
 
 import React, {useEffect, useState} from 'react';
-import {Button, Layout, message, Space, Tabs} from "antd";
+import { Layout, message, Space } from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import {getAllModel, getAllStore} from "../../request/api";
 import Selector from "../graph/Selector";
-import Table from "./Table";
+import ModelTable from "./ModelTable";
 
 
 const headerStyle: React.CSSProperties = {
@@ -44,13 +44,10 @@ function App() {
   const [models, setModels] = useState<Model[]>([])
   //存储模型
   const [stores, setStores] = useState<Store[]>([]);
-  //当前选择tab
-  const [selectTab, setSelectTab] = useState<string>();
   //权限策略
   const [policy, setPolicy] = useState<Policy>();
 
   useEffect(() => {
-    console.log("getAppKey")
     if (stores.length === 0) {
       getAllStore().then((res) => {
         if (res.msg === 'success' && res.data != null) {
@@ -65,13 +62,9 @@ function App() {
     getAllModel(id).then(res => {
       if (res.msg === "success") {
         setModels(res.data)
-        setSelectTab(res.data[0].id)
       }
     })
   }
-  const onTabChange = (key: string) => {
-    setSelectTab(key)
-  };
 
 
   return (
@@ -82,7 +75,7 @@ function App() {
             <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
           </Header>
           <Content style={contentStyle}>
-           <Table></Table>
+            <ModelTable data={models}></ModelTable>
           </Content>
           <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
         </Layout>

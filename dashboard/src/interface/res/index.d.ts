@@ -33,7 +33,7 @@ interface getPolicyRes extends BaseRes {
 interface Policy {
     id: string
     description:string
-    definition: Definition[]
+    definitions: Definition[]
 }
 interface Definition {
     description:string

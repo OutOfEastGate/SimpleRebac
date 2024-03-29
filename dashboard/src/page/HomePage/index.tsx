@@ -16,7 +16,7 @@ const items = [
     label: "关系演示中台"
   },
   {
-    key: "2",
+    key: "/model",
     label: "存储模型管理"
   },
   {
