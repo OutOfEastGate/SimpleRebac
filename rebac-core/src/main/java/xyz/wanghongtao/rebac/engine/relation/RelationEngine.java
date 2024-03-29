@@ -1,8 +1,6 @@
 package xyz.wanghongtao.rebac.engine.relation;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bson.json.JsonObject;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
@@ -19,7 +17,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @data 2023/7/23 16:24
  */
 @Slf4j
-@Component
 public class RelationEngine {
 
 

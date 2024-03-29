@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 @Service
 public class PermissionServiceImpl implements PermissionService {
-
+    private final DatabaseGateway databaseGateway;
     @Override
     public Boolean checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
         //TODO 实现图关联模型查询
@@ -76,10 +76,10 @@ public class PermissionServiceImpl implements PermissionService {
         AtomicReference<List<RelationDo>> relationByTriple = new AtomicReference<>();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         //检查数据库是否有该条关系
-//        Thread.startVirtualThread(() -> {
-//            relationByTriple.set(databaseGateway.getRelationByTriple(checkRelationContext.getTriple()));
-//            countDownLatch.countDown();
-//        });
+        Thread.startVirtualThread(() -> {
+            relationByTriple.set(databaseGateway.getRelationByTriple(checkRelationContext.getTriple()));
+            countDownLatch.countDown();
+        });
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {

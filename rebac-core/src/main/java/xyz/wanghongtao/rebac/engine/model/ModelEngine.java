@@ -1,7 +1,6 @@
 package xyz.wanghongtao.rebac.engine.model;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.object.form.AddModelForm;
@@ -13,7 +12,6 @@ import java.util.*;
  * @data 2023/7/23 16:41
  */
 @Slf4j
-@Component
 public class ModelEngine {
 
     /**

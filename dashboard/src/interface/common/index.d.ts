@@ -8,3 +8,13 @@ interface SystemInfo {
   memoryUsage:number,
   jvmMemoryUsage:number
 }
+
+
+type AddRelationType = {
+  relation?: string;
+  isPenetrate: boolean
+};
+
+type AddNodeType = {
+  label: string;
+};

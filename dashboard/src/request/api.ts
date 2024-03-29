@@ -11,3 +11,7 @@ export const getRelation = (id:string):Promise<getRelationRes> => request.get("/
 export const getGraph = (id:string):Promise<getGraphRes> => request.get("relation/getGraphRelation?modelId=" + id)
 
 export const getSystemInfo = ():Promise<getSystemInfoRes> => request.get("system/getSystemInfo")
+
+export const getGraphPreview = (id:string):Promise<getGraphPreviewRes> => request.get("graph/get/" + id)
+
+export const saveGraphPreview = (graphDo:any):Promise<getGraphPreviewRes> => request.post("graph/save", graphDo)

@@ -1,10 +1,11 @@
 
 import React, {useEffect, useState} from 'react';
-import {Layout, message, Space, Tabs} from "antd";
+import {Button, Layout, message, Space, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import Selector from "../Selector";
 import Relation from "../Relation"
 import {getAllModel, getAllStore} from "../../../request/api";
+import graph from "../index";
 
 const headerStyle: React.CSSProperties = {
     textAlign: 'center',
@@ -37,8 +38,6 @@ const siderStyle: React.CSSProperties = {
 };
 
 
-
-
 function App() {
 
     //权限model
@@ -51,6 +50,7 @@ function App() {
     const [policy, setPolicy] = useState<Policy>();
 
     useEffect(() => {
+      console.log("getAppKey")
         if (stores.length === 0) {
             getAllStore().then((res) => {
                 if (res.msg === 'success' && res.data != null) {
@@ -72,12 +72,14 @@ function App() {
     const onTabChange = (key: string) => {
         setSelectTab(key)
     };
-    return (
+
+
+  return (
         <div>
             <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
                 <Layout>
                     <Header style={headerStyle}>
-                        <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
+                      <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
                     </Header>
                     <Content style={contentStyle}>
                       {models.length == 0 ? <Relation isEmpty={true} selectModel={selectTab}></Relation> : <Tabs defaultActiveKey="1"

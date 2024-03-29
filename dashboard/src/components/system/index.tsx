@@ -9,6 +9,7 @@ interface stateType{
   systemInfo: SystemInfo | null
 }
 class App extends React.Component<any, stateType>{
+  private timerId: NodeJS.Timeout | null = null;
   constructor(props:any) {
     super(props);
     this.state={
@@ -17,7 +18,7 @@ class App extends React.Component<any, stateType>{
   }
 
   UNSAFE_componentWillMount() {
-    const id = setInterval(() => {
+    this.timerId  = setInterval(() => {
       getSystemInfo().then(res => {
         this.setState({
           systemInfo: res.data
@@ -26,6 +27,11 @@ class App extends React.Component<any, stateType>{
         message.error(error.message)
       })
     }, 1000 * 2)
+  }
+  componentWillUnmount() {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
   }
 
   render() {

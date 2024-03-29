@@ -34,7 +34,6 @@ const App: React.FC = () => {
   const navigateTo = useNavigate()
 
   const selectMenu = (params: {key:string}) => {
-    console.log(params)
     navigateTo(params.key)
   }
 
