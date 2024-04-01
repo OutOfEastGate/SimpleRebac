@@ -49,7 +49,6 @@ function App() {
     const [policy, setPolicy] = useState<Policy>();
 
     useEffect(() => {
-      console.log("getAppKey")
         if (stores.length === 0) {
             getAllStore().then((res) => {
                 if (res.msg === 'success' && res.data != null) {
@@ -81,8 +80,8 @@ function App() {
                       <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
                     </Header>
                     <Content style={contentStyle}>
-                      {models.length == 0 ? <Relation isEmpty={true} selectModel={selectTab}></Relation> : <Tabs defaultActiveKey="1"
-                                                          items={models.map(item => ({key: item.id, label: item.name, children:  <Relation isEmpty={false} selectModel={selectTab}></Relation>}))}
+                      {models.length == 0 ? <Relation isEmpty={true} selectModel={selectTab} storeId={0} policyId={""}></Relation> : <Tabs defaultActiveKey="1"
+                                                          items={models.map(item => ({key: item.id, label: item.name, children:  <Relation isEmpty={false} selectModel={selectTab} storeId = {item.storeId} policyId={item.policyId}></Relation>}))}
                                                           onChange={onTabChange} />}
                     </Content>
                     <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>

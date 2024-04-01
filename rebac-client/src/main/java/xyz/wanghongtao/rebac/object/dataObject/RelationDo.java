@@ -27,6 +27,8 @@ public class RelationDo {
 
     String relation;
 
+    Boolean isPenetrate;
+
     String subjectType;
 
     String subject;

@@ -45,6 +45,7 @@ public class SystemServiceImpl implements SystemService {
     Runtime runtime = Runtime.getRuntime();
     long jvmTotalMemoryByte = runtime.totalMemory();
     long freeMemoryByte = runtime.freeMemory();
+
     systemInfoDto.setJvmMemoryUsage(Double.parseDouble(df.format((jvmTotalMemoryByte - freeMemoryByte) * 1.0 / jvmTotalMemoryByte)));
 
     return systemInfoDto;

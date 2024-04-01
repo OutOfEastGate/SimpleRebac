@@ -1,32 +1,58 @@
-import React, { useState } from 'react';
-import {Button, Checkbox, Form, FormProps, Input, Modal, Space} from 'antd';
+import React from 'react';
+import {Button, Form, FormProps, Input, Modal, Select, Space, Tooltip} from 'antd';
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 interface PropsType{
   showModal: boolean,
   confirmNode: (param:AddNodeType) => void
-  cancelNode: () => void
+  cancelNode: () => void,
+  policy: Policy | undefined
 }
 
 
 const App: React.FC<PropsType> = (props) => {
 
   const handleCancel = () => {
-    console.log(111)
     props.cancelNode()
   };
 
   const onFinish: FormProps<AddNodeType>["onFinish"] = (values) => {
-    props.confirmNode({
-      label: values.label
-    })
-    console.log('Success:', values);
+    props.confirmNode(values)
   };
 
   const onFinishFailed: FormProps<AddNodeType>["onFinishFailed"] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+
   };
+
+  function handleSelectChange() {
+
+  }
+
+
+
+  const items = props.policy == undefined ? [
+    {
+      objectType: "user",
+      description: "用户定义"
+    }
+  ] : props.policy.definitions.map(def => {
+    return {
+      objectType: def.objectType,
+      description: def.description
+    }
+  })
+
+  const ops = items.map(item => ({
+    value: item.objectType,
+    label: <div>
+      <Tooltip placement="topRight" title={item.description}>
+        {item.objectType}
+      </Tooltip></div>,
+    desc: item.description,
+  }))
+
+
 
   return (
     <>
@@ -41,10 +67,29 @@ const App: React.FC<PropsType> = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item<AddRelationType>
+          <Form.Item
+            label={"实体类型"}
+            name={"objectType"}
+            rules={[{ required: true, message: '请选择实体类型!' }]}
+          >
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="选择存储模型"
+              optionFilterProp="children"
+              onChange={handleSelectChange}
+              filterOption={(input, option) => (option?.value ?? '').includes(input)}
+              filterSort={(optionA, optionB) =>
+                (optionA?.value ?? '').toLowerCase().localeCompare((optionB?.value ?? '').toLowerCase())
+              }
+              options={ops}
+            >
+            </Select>
+          </Form.Item>
+          <Form.Item
             label="实体名称"
-            name="label"
-            rules={[{ required: true, message: '请输入关系名称!' }]}
+            name="objectName"
+            rules={[{ required: true, message: '请输入实体名称!' }]}
           >
             <Input />
           </Form.Item>
