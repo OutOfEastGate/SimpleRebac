@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import {Edge, Graph, Node} from '@antv/x6';
 import  './index.less'
-import {getGraph, getGraphPreview, saveGraphPreview} from "../../../request/api";
+import {getGraph, getGraphPreview, getPolicy, saveGraphPreview} from "../../../request/api";
 import { MiniMap } from '@antv/x6-plugin-minimap'
 import {CircularLayout} from '@antv/layout'
 import {Dnd} from "@antv/x6-plugin-dnd";
@@ -12,7 +12,9 @@ import Loading from "../../common/Loading";
 
 interface PropsType{
   isEmpty:boolean,
-  selectModel: string | undefined
+  selectModel: string | undefined,
+  storeId: number,
+  policyId: string,
 }
 const templateGraph = [
   {
@@ -252,6 +254,7 @@ function MyEditor(props:PropsType) {
   const [showAddNodeModal, setShowAddNodeModal] = useState<boolean>(false)
   const [currentEdge,setCurrentEdge] = useState<Edge>()
   const [currentNode,setCurrentNode] = useState<Node>()
+  const [currentPolicy, setCurrentPolicy] = useState<Policy>()
 
   const [isSaveLoading, setIsSaveLoading] = useState<Boolean>(false)
 
@@ -280,11 +283,17 @@ function MyEditor(props:PropsType) {
         if (originData != null) {
           setData(originData.cells)
           isHasPreview = true
-        }  else if(props.selectModel != undefined) {
+        } else if(props.selectModel !== undefined) {
           getGraph(props.selectModel).then(res => {
             let originData = res.data
             circularLayout.layout(originData)
             setData(originData)
+          })
+        }
+
+        if(props.selectModel !== undefined) {
+          getPolicy(props.policyId).then(res => {
+            setCurrentPolicy(res.data)
           })
         }
       }).catch(error => {
@@ -383,7 +392,7 @@ function MyEditor(props:PropsType) {
   const startDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.currentTarget
     const type = target.getAttribute('data-type')
-    if(graph == undefined) return
+    if(graph === undefined) return
     const node =
       type === 'rect'
         ? graph.createNode(nodeToCreate)
@@ -400,12 +409,11 @@ function MyEditor(props:PropsType) {
             },
           },
         })
-    if(dnd == undefined) return;
+    if(dnd === undefined) return;
     dnd.start(node, e.nativeEvent as any)
   }
 
   useEffect(() => {
-    console.log(props.isEmpty)
     if(props.isEmpty) {
       setData(templateGraph)
       return
@@ -492,13 +500,63 @@ function MyEditor(props:PropsType) {
         message.info("保存成功")
       })
     }
+  }
 
+  function getTargetNode() {
+    if(currentEdge === undefined) {
+      return undefined
+    }
+    if(currentEdge.target === undefined) {
+      return undefined
+    }
+
+    if("cell" in currentEdge.target) {
+      console.log(currentEdge.target)
+      let targetNode = currentEdge.target.cell
+      let nodes = graph?.getNodes();
+      if(nodes === undefined) {
+        return undefined
+      }
+      let res
+      nodes.forEach(node => {
+        if(node.id === targetNode) {
+          res = node
+        }
+      })
+      return res
+    }
+    return undefined
+  }
+
+  function getSourceNode() {
+    if(currentEdge === undefined) {
+      return undefined
+    }
+    if(currentEdge.source === undefined) {
+      return undefined
+    }
+
+    if("cell" in currentEdge.source) {
+      let sourceNode = currentEdge.source.cell
+      let nodes = graph?.getNodes();
+      if(nodes === undefined) {
+        return undefined
+      }
+      let res
+      nodes.forEach(node => {
+        if(node.id === sourceNode) {
+          res = node
+        }
+      })
+      return res
+    }
+    return undefined
   }
 
   return (
     <div className="dnd-app">
-      <AddEdgeModal showModal={showModal} confirmEdge={confirmEdge} cancelEdge={cancelEdge}></AddEdgeModal>
-      <AddNodeModal showModal={showAddNodeModal} confirmNode={confirmNode} cancelNode={cancelNode}></AddNodeModal>
+      <AddEdgeModal showModal={showModal} confirmEdge={confirmEdge} cancelEdge={cancelEdge} policy={currentPolicy} edge={currentEdge} targetNode={getTargetNode()} sourceNode={getSourceNode()}></AddEdgeModal>
+      <AddNodeModal showModal={showAddNodeModal} confirmNode={confirmNode} cancelNode={cancelNode} policy={currentPolicy}></AddNodeModal>
       <div className="dnd-wrap" ref={dndContainerRef}>
         <Divider plain>操作</Divider>
         <Button onClick={saveGraph}> {isSaveLoading ? <Loading></Loading> : "保存"}</Button>
@@ -525,9 +583,11 @@ function MyEditor(props:PropsType) {
   )
   function confirmEdge(addRelationParam:AddRelationType) {
     setShowModal(false)
-    if(currentEdge != undefined) {
+    if(currentEdge !== undefined) {
       currentEdge.setLabels([{
         "attrs": {
+          "isPenetrate": addRelationParam.isPenetrate,
+          "relation": addRelationParam.relation,
           "label": {
             "text": addRelationParam.relation
           }
@@ -537,20 +597,22 @@ function MyEditor(props:PropsType) {
   }
   function confirmNode(addNodeParam:AddNodeType) {
     setShowAddNodeModal(false)
-    if(currentNode!= undefined) {
-      currentNode.attr("text/text", addNodeParam.label)
+    if(currentNode !== undefined) {
+      currentNode.attr("text/text", addNodeParam.objectName)
+      currentNode.attr("objectType/objectType", addNodeParam.objectType)
+      currentNode.attr("objectType/objectName", addNodeParam.objectName)
     }
   }
   function cancelEdge() {
     setShowModal(false)
-    if(currentEdge != undefined) {
+    if(currentEdge !== undefined) {
       graph?.removeEdge(currentEdge.id)
     }
   }
 
   function cancelNode() {
     setShowAddNodeModal(false)
-    if(graph != undefined && currentNode != undefined) {
+    if(graph !== undefined && currentNode !== undefined) {
       graph.removeNode(currentNode.id)
     }
   }
@@ -559,8 +621,8 @@ function MyEditor(props:PropsType) {
     graph.on('edge:connected', ({ isNew, edge }) => {
       if (isNew) {
         // 对新创建的边进行插入数据库等持久化操作
-        setShowModal(true)
         setCurrentEdge(edge)
+        setShowModal(true)
       }
     })
     graph.on('node:added', ({node, index, options}) => {

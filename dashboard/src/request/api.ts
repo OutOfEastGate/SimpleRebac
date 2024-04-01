@@ -4,7 +4,7 @@ export const getAllStore = ():Promise<getAllStoreRes> => request.get("/store/get
 
 export const getAllModel = (id:number):Promise<getAllModelRes> => request.get("/model/getAllByStoreId?storeId=" + id);
 
-export const getPolicy = (id:string):Promise<getPolicyRes> => request.get("/model/getPolicyById?id=" + id)
+export const getPolicy = (id:string | number):Promise<getPolicyRes> => request.get("/model/getPolicyById?id=" + id)
 
 export const getRelation = (id:string):Promise<getRelationRes> => request.get("/relation/getByModelId?modelId=" + id)
 

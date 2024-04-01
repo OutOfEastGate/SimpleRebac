@@ -1,0 +1,279 @@
+[
+  {
+    "id": "user1",
+    "weight": 1,
+    "position": {
+      "x": 500,
+      "y": 250
+    },
+    "size": {
+      "width": 100,
+      "height": 40
+    },
+    "ports": {
+      "groups": {
+        "top": {
+          "position": "top",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        },
+        "bottom": {
+          "position": "bottom",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        }
+      },
+      "items": []
+    },
+    "visible": true,
+    "attrs": {
+      "text": {
+        "text": "user1"
+      },
+      "image": {
+        "event": "node:delete",
+        "xlinkHref": "trash.png",
+        "width": 20,
+        "height": 20
+      }
+    },
+    "shape": "custom-node-width-port",
+    "zIndex": 1
+  },
+  {
+    "id": "doc1",
+    "weight": 1,
+    "position": {
+      "x": 200,
+      "y": 250
+    },
+    "size": {
+      "width": 100,
+      "height": 40
+    },
+    "ports": {
+      "groups": {
+        "top": {
+          "position": "top",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        },
+        "bottom": {
+          "position": "bottom",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        }
+      },
+      "items": []
+    },
+    "visible": true,
+    "attrs": {
+      "text": {
+        "text": "doc1"
+      }
+    },
+    "shape": "custom-node-width-port",
+    "zIndex": 1
+  },
+  {
+    "id": "9362a79a-4094-4ad0-aecc-a8c8e3d12315",
+    "weight": 0,
+    "labels": [
+      {
+        "attrs": {
+          "label": {
+            "text": "reader"
+          }
+        }
+      }
+    ],
+    "vertices": null,
+    "source": {
+      "port": null,
+      "cell": "doc1"
+    },
+    "target": {
+      "port": null,
+      "cell": "user1"
+    },
+    "text": "reader",
+    "shape": "edge",
+    "zIndex": 1
+  },
+  {
+    "id": "f73f1063-3c08-4cab-8903-417da6aee133",
+    "weight": null,
+    "position": {
+      "x": 120,
+      "y": 0
+    },
+    "size": {
+      "width": 100,
+      "height": 40
+    },
+    "ports": {
+      "groups": {
+        "in": {
+          "position": "top",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        },
+        "out": {
+          "position": "bottom",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "port_1",
+          "group": "in"
+        },
+        {
+          "id": "port_2",
+          "group": "out"
+        }
+      ]
+    },
+    "visible": true,
+    "attrs": {
+      "text": {
+        "text": "123"
+      },
+      "body": {
+        "stroke": "#8f8f8f",
+        "strokeWidth": 1,
+        "fill": "#fff",
+        "rx": 6,
+        "ry": 6
+      },
+      "objectType": {
+        "objectType": "user",
+        "objectName": "123"
+      }
+    },
+    "shape": "rect",
+    "zIndex": 2
+  },
+  {
+    "id": "cd990a32-c25f-464a-8adc-4eec7abac3a3",
+    "weight": null,
+    "position": {
+      "x": 370,
+      "y": 30
+    },
+    "size": {
+      "width": 100,
+      "height": 40
+    },
+    "ports": {
+      "groups": {
+        "in": {
+          "position": "top",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        },
+        "out": {
+          "position": "bottom",
+          "attrs": {
+            "circle": {
+              "magnet": true,
+              "stroke": "#8f8f8f",
+              "r": 5
+            }
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "port_1",
+          "group": "in"
+        },
+        {
+          "id": "port_2",
+          "group": "out"
+        }
+      ]
+    },
+    "visible": true,
+    "attrs": {
+      "text": {
+        "text": "456"
+      },
+      "body": {
+        "stroke": "#8f8f8f",
+        "strokeWidth": 1,
+        "fill": "#fff",
+        "rx": 6,
+        "ry": 6
+      },
+      "objectType": {
+        "objectType": "user",
+        "objectName": "456"
+      }
+    },
+    "shape": "rect",
+    "zIndex": 3
+  },
+  {
+    "id": "9e2b492f-382c-49c8-80f4-24d6fac12628",
+    "weight": null,
+    "labels": [
+      {
+        "attrs": {
+          "relation": "测试",
+          "label": {
+            "text": "测试"
+          }
+        }
+      }
+    ],
+    "vertices": null,
+    "source": {
+      "port": "port_2",
+      "cell": "f73f1063-3c08-4cab-8903-417da6aee133"
+    },
+    "target": {
+      "port": "port_1",
+      "cell": "cd990a32-c25f-464a-8adc-4eec7abac3a3"
+    },
+    "text": null,
+    "shape": "edge",
+    "zIndex": 4
+  }
+]

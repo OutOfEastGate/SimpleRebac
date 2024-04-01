@@ -2,6 +2,7 @@ package xyz.wanghongtao.rebac.util;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -26,11 +27,10 @@ public class JacksonUtils {
     }
     ObjectMapper objectMapper = getObjectMapper();
     try {
-      objectMapper.writeValueAsString(tList);
+      return objectMapper.writeValueAsString(tList);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
-    throw new RuntimeException("Json序列化失败");
   }
   public static <T> String toJson(Object obj) {
     if(Objects.isNull(obj)) {
@@ -46,6 +46,19 @@ public class JacksonUtils {
   }
 
   public static <T> T fromJsonStr(String json, Class<T> tClass) {
+    if (StringUtils.isEmpty(json)) {
+      return null;
+    }
+
+    ObjectMapper objectMapper = getObjectMapper();
+    try {
+      return objectMapper.readValue(json, tClass);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static <T> T fromJsonStr(String json, TypeReference<T> tClass) {
     if (StringUtils.isEmpty(json)) {
       return null;
     }

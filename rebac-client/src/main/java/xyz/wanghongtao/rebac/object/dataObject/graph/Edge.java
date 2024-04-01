@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghongtao
@@ -17,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Edge extends GraphBase {
-  List<Object> labels;
+  List<Map<String, Object>> labels;
   List<Object> vertices;
   Cell source;
   Cell target;
@@ -26,7 +27,7 @@ public class Edge extends GraphBase {
   @NoArgsConstructor
   @AllArgsConstructor
   @Data
-  static class Cell {
+  public static class Cell {
     @JsonProperty("cell")
     String cell;
     String port;

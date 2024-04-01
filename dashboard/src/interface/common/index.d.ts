@@ -16,5 +16,6 @@ type AddRelationType = {
 };
 
 type AddNodeType = {
-  label: string;
+  objectType: string;
+  objectName: string;
 };
