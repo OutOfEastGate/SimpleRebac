@@ -45,6 +45,9 @@ public class GraphPreviewToRelationEngine {
         String sourceObjectType = getObjectTypeFromNode(sourceNode);
         String targetObjectType = getObjectTypeFromNode(targetNode);
 
+        //document:doc1#reader@user:user1
+        String triple = sourceObjectType + ":" + source.getCell() + "#" + relation + "@" + targetObjectType + ":" + target.getCell();
+
         RelationDo relationDo = RelationDo.builder()
           .modelId(runtime.getModelId())
           .object(sourceNode.getId())
@@ -52,6 +55,7 @@ public class GraphPreviewToRelationEngine {
           .subject(targetNode.getId())
           .subjectType(targetObjectType)
           .relation(relation)
+          .triple(triple)
           .build();
         relationDoList.add(relationDo);
       }

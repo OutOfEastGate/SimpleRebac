@@ -36,6 +36,7 @@ interface Policy {
     definitions: Definition[]
 }
 interface Definition {
+    key: string,
     description:string
     objectType:string
     permissions:PermissionDefinition[]
