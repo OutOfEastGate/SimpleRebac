@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Descriptions, Space, Table} from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
-import {add} from "husky";
 
 
 interface PropsType {

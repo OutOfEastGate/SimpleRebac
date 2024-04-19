@@ -7,13 +7,14 @@ wht:
     qq: 1946066280
     endpoint: 114.116.9.68
     virtualMachine: 192.168.240.128
+    wifiMachine: 172.30.206.167
 spring:
   data:
     mongodb:
-      uri: mongodb://admin:19460@${wht.back.endpoint}:27017/SimpleRebac?authSource=admin&authMechanism=SCRAM-SHA-256
+      uri: mongodb://admin:19460@${wht.back.wifiMachine}:27017/SimpleRebac?authSource=admin&authMechanism=SCRAM-SHA-256
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${wht.back.endpoint}:3306/SimpleRebac?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://${wht.back.wifiMachine}:3306/SimpleRebac?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: 19460
     hikari:
