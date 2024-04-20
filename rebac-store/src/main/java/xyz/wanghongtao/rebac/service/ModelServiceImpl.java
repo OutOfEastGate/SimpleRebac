@@ -29,7 +29,12 @@ public class ModelServiceImpl implements ModelService {
        modelMapper.insert(modelDo);
     }
 
-    @Override
+  @Override
+  public void updatePolicy(PolicyDo policyDo) {
+    policyRepository.save(policyDo);
+  }
+
+  @Override
     public List<ModelDo> getAllModelByStoreId(Long storeId) {
         LambdaQueryWrapper<ModelDo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ModelDo::getStoreId, storeId);

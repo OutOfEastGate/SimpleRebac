@@ -17,6 +17,7 @@ import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
+import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 import xyz.wanghongtao.rebac.service.ModelService;
@@ -82,7 +83,16 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         return modelService.getPolicyById(id);
     }
 
-    @Override
+  @Override
+  public void updatePolicy(UpdatePolicyForm updatePolicyForm) {
+      modelService.updatePolicy(PolicyDo.builder()
+          .id(updatePolicyForm.getId())
+          .definitions(updatePolicyForm.getDefinitions())
+          .description(updatePolicyForm.getDescription())
+          .build());
+  }
+
+  @Override
     public void storeKey(GenerateKey key) {
         storeService.storeKey(key);
     }

@@ -18,11 +18,11 @@ function App(props:propsType){
     return(
         <>
             <Space>
-                {"选择存储模型"}
+                {"选择存储空间"}
                 <Select
                     showSearch
                     style={{ width: 200 }}
-                    placeholder="选择存储模型"
+                    placeholder="选择存储空间"
                     optionFilterProp="children"
                     onChange={handleChange}
                     filterOption={(input, option) => (option?.label ?? '').includes(input)}

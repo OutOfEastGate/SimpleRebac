@@ -19,3 +19,8 @@ type AddNodeType = {
   objectType: string;
   objectName: string;
 };
+
+type AddDefinitionType = {
+  description:string
+  objectType:string
+}

@@ -6,6 +6,8 @@ export const getAllModel = (id:number):Promise<getAllModelRes> => request.get("/
 
 export const getPolicy = (id:string | number):Promise<getPolicyRes> => request.get("/model/getPolicyById?id=" + id)
 
+export const updatePolicy = (updatePolicyForm: Policy):Promise<BaseRes> => request.post("/model/updatePolicy", updatePolicyForm)
+
 export const getRelation = (id:string):Promise<getRelationRes> => request.get("/relation/getByModelId?modelId=" + id)
 
 export const getGraph = (id:string):Promise<getGraphRes> => request.get("relation/getGraphRelation?modelId=" + id)

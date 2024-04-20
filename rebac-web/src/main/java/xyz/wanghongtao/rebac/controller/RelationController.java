@@ -9,7 +9,6 @@ import xyz.wanghongtao.rebac.object.form.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.form.GetRelationByModelIdForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
-import xyz.wanghongtao.rebac.object.viewObject.graph.GraphVo;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 
 import java.util.List;

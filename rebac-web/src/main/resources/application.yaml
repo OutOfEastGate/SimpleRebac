@@ -7,7 +7,7 @@ wht:
     qq: 1946066280
     endpoint: 114.116.9.68
     virtualMachine: 192.168.240.128
-    wifiMachine: 172.30.206.167
+    wifiMachine: 172.30.206.167 #172.30.206.167
 spring:
   data:
     mongodb:

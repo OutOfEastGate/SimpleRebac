@@ -1,1 +1,1 @@
-export const backPath = "172.30.206.167:8080"
+export const backPath = "localhost:8080"

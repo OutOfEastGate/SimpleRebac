@@ -9,6 +9,7 @@ import xyz.wanghongtao.rebac.object.form.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
+import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 
@@ -22,6 +23,8 @@ public interface DatabaseGateway {
     List<ModelDo> getAllModelByStoreId(Long storeId);
 
     PolicyDo getPolicyById(String id);
+
+    void updatePolicy(UpdatePolicyForm updatePolicyForm);
 
     /**
      * 存储Key

@@ -23,7 +23,6 @@
         <module>rebac-secure</module>
         <module>rebac-client</module>
         <module>rebac-web</module>
-        <module>rebac-main</module>
         <module>rebac-core</module>
     </modules>
 

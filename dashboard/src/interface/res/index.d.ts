@@ -36,6 +36,7 @@ interface Policy {
     definitions: Definition[]
 }
 interface Definition {
+    policyId:string,
     key: string,
     description:string
     objectType:string

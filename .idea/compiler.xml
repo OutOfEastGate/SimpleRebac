@@ -9,19 +9,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="rebac-secure" />
         <module name="rebac-web" />
-        <module name="rebac-main" />
         <module name="rebac-store" />
         <module name="rebac-client" />
         <module name="rebac-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="20">
-      <module name="rebac-client" target="20" />
-      <module name="rebac-core" target="20" />
       <module name="rebac-main" target="20" />
-      <module name="rebac-secure" target="20" />
-      <module name="rebac-store" target="20" />
-      <module name="rebac-web" target="20" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
