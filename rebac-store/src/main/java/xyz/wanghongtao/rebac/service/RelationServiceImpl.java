@@ -25,8 +25,15 @@ public class RelationServiceImpl implements RelationService {
         return relationDo;
     }
 
-    @Override
-    public List<RelationDo> getByTriple(String triple) {
+  @Override
+  public void batchAddRelation(List<RelationDo> relationDoList) {
+      relationDoList.forEach(relationDo -> {
+        relationMapper.insert(relationDo);
+      });
+  }
+
+  @Override
+  public List<RelationDo> getByTriple(String triple) {
         LambdaQueryWrapper<RelationDo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RelationDo::getTriple, triple);
         return relationMapper.selectList(queryWrapper);
@@ -50,4 +57,11 @@ public class RelationServiceImpl implements RelationService {
             throw new CustomException(ErrorCode.Delete_ERROR);
         }
     }
+
+  @Override
+  public void deleteRelation(Long modelId) {
+    LambdaQueryWrapper<RelationDo> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(RelationDo::getModelId, modelId);
+    relationMapper.delete(queryWrapper);
+  }
 }

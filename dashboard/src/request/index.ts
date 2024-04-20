@@ -1,5 +1,6 @@
 import axios from "axios"
 import {backPath} from "../components/conf";
+import {message} from "antd";
 //创建axios实例
 const instance = axios.create({
     //基本请求路径抽取
@@ -13,7 +14,8 @@ const instance = axios.create({
 //请求拦截器
 instance.interceptors.request.use((config)=>{
     return config
-},err=>{
+},err => {
+  message.error(err.message)
     return Promise.reject(err)
 });
 

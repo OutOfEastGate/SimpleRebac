@@ -6,6 +6,8 @@ import {Navigate} from "react-router-dom";
 import System from "../components/system";
 import Key from "../components/key";
 import Model from "../components/model";
+import Store from "../components/store";
+import Relation from "../components/relation";
 
 
 const routes = [
@@ -20,6 +22,14 @@ const routes = [
       {
         path: "/homepage",
         element: <FirstPage/>
+      },
+      {
+        path: "/space",
+        element: <Store/>
+      },
+      {
+        path: "/permission",
+        element: <Relation></Relation>
       },
       {
         path: "/relation",

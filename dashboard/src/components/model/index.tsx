@@ -29,14 +29,6 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: '#7dbcea',
 };
 
-const siderStyle: React.CSSProperties = {
-  textAlign: 'center',
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#1677ff',
-};
-
-
 function App() {
 
   //权限model

@@ -12,8 +12,16 @@ const items = [
     label: "首页"
   },
   {
+    key: "/space",
+    label: "存储空间管理"
+  },
+  {
     key: "/relation",
     label: "关系演示中台"
+  },
+  {
+    key: "/permission",
+    label: "权限演示中台"
   },
   {
     key: "/model",

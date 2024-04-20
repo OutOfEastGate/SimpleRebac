@@ -6,7 +6,7 @@ import { MiniMap } from '@antv/x6-plugin-minimap'
 import {CircularLayout} from '@antv/layout'
 import {Dnd} from "@antv/x6-plugin-dnd";
 import AddEdgeModal from "./AddEdgeModal";
-import {Button, Divider, message} from "antd";
+import {Button, Divider, message, Spin} from "antd";
 import AddNodeModal from "./AddNodeModal";
 import Loading from "../../common/Loading";
 
@@ -488,6 +488,7 @@ function MyEditor(props:PropsType) {
 
   function saveGraph() {
     if(graph != undefined) {
+      setIsSaveLoading(true)
       let previewJson = graph.toJSON()
       let previewGraph = {
         modelId: props.selectModel,
@@ -498,6 +499,10 @@ function MyEditor(props:PropsType) {
       }
       saveGraphPreview(previewGraph).then(r => {
         message.info("保存成功")
+        setIsSaveLoading(false)
+      }).catch(err => {
+        message.error("保存失败")
+        setIsSaveLoading(false)
       })
     }
   }

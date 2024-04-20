@@ -38,6 +38,7 @@ public class GraphPreviewToRelationEngine {
         Edge.Cell target = edge.getTarget();
         //relation
         String relation = getEdgeRelation(edge);
+        Boolean isPenetrate = getIsPenetrate(edge);
 
         Node sourceNode = idToNodeMap.get(source.getCell());
         Node targetNode = idToNodeMap.get(target.getCell());
@@ -45,22 +46,39 @@ public class GraphPreviewToRelationEngine {
         String sourceObjectType = getObjectTypeFromNode(sourceNode);
         String targetObjectType = getObjectTypeFromNode(targetNode);
 
+        String sourceText = (String)((Map<?, ?>) sourceNode.getAttrs().get("text")).get("text");
+        String targetText = (String)((Map<?, ?>) targetNode.getAttrs().get("text")).get("text");
+
         //document:doc1#reader@user:user1
-        String triple = sourceObjectType + ":" + source.getCell() + "#" + relation + "@" + targetObjectType + ":" + target.getCell();
+        String triple = sourceObjectType + ":" + sourceText + "#" + relation + "@" + targetObjectType + ":" + targetText;
+
+
 
         RelationDo relationDo = RelationDo.builder()
           .modelId(runtime.getModelId())
-          .object(sourceNode.getId())
+          .object(sourceText)
           .objectType(sourceObjectType)
-          .subject(targetNode.getId())
+          .subject(targetText)
           .subjectType(targetObjectType)
           .relation(relation)
           .triple(triple)
+          .isPenetrate(isPenetrate != null && isPenetrate)
           .build();
         relationDoList.add(relationDo);
       }
     });
     return relationDoList;
+  }
+
+  private static Boolean getIsPenetrate(Edge edge) {
+    List<Map<String, Object>> labels = edge.getLabels();
+    if (labels == null || labels.isEmpty()) {
+      return null;
+    }
+    Map<String, Object> stringObjectMap = labels.get(0);
+    Map<String, Object> attrs = (Map<String, Object>)stringObjectMap.get("attrs");
+    Boolean isPenetrate = (Boolean) attrs.get("isPenetrate");
+    return isPenetrate;
   }
 
   private static String getEdgeRelation(Edge edge) {
