@@ -3,6 +3,7 @@ package xyz.wanghongtao.rebac.object.form;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author wanghongtao
  * @data 2023/7/17 22:49
  */
+@Builder
 @Data
 public class PolicyForm {
     /**

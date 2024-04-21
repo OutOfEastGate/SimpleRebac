@@ -1,7 +1,9 @@
 package xyz.wanghongtao.rebac.object.dataObject.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
  * @author wanghongtao
  * @data 2023/7/17 22:22
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 public class Definition {

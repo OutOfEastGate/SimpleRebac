@@ -1,6 +1,7 @@
 package xyz.wanghongtao.rebac.service;
 
 import org.springframework.stereotype.Service;
+import oshi.software.os.NetworkParams;
 import xyz.wanghongtao.rebac.object.viewObject.system.SystemInfoDto;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -11,7 +12,7 @@ import java.text.DecimalFormat;
 
 /**
  * @author wanghongtao
- * @data 2024/3/25 9:56
+ * @date 2024/3/25 9:56
  */
 @Service
 public class SystemServiceImpl implements SystemService {
@@ -27,6 +28,8 @@ public class SystemServiceImpl implements SystemService {
     GlobalMemory memory = hardware.getMemory();
     CentralProcessor processor = hardware.getProcessor();
     // CPU信息
+    NetworkParams networkParams = operatingSystem.getNetworkParams();
+    String ipv4DefaultGateway = networkParams.getIpv4DefaultGateway();
     long systemUptime = operatingSystem.getSystemUptime();
     long h = systemUptime/3600;
     long m = (systemUptime%3600)/60;

@@ -1,12 +1,16 @@
 package xyz.wanghongtao.rebac.object.dataObject.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author wanghongtao
  * @data 2023/7/17 22:35
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 public class Permission {

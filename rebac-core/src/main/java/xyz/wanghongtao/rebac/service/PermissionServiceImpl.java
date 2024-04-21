@@ -33,7 +33,7 @@ public class PermissionServiceImpl implements PermissionService {
         //查询出具有该权限的关系
         PolicyDo policy = checkPermissionContext.getPolicy();
         policy.getDefinitions().forEach(definition -> {
-            if (definition.getObjectType().equals(checkPermissionContext.getPermissionContext().getObjectType())) {
+            if (definition.getObjectType().equals(checkPermissionContext.getPermissionContext().getSubjectType())) {
                 permissions.set(definition.getPermissions());
             }
         });

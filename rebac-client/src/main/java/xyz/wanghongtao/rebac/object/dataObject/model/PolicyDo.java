@@ -1,7 +1,9 @@
 package xyz.wanghongtao.rebac.object.dataObject.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * @author wanghongtao
  * @data 2023/7/17 22:17
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 @Document(collection = "policy")

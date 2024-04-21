@@ -1,0 +1,67 @@
+{
+  "id": "64bd179dae38712eb29aa77c",
+  "description": "策略描述",
+  "definitions": [
+    {
+      "description": "用户定义1",
+      "objectType": "user",
+      "permissions": [
+        {
+          "permission": "admin",
+          "relationCanAccess": "root"
+        }
+      ],
+      "relations": [
+        {
+          "relation": "editor",
+          "subjectNamespaceCode": null,
+          "subjectType": "user"
+        },
+        {
+          "relation": "root",
+          "subjectNamespaceCode": null,
+          "subjectType": "user"
+        }
+      ],
+      "policyId": "64bd179dae38712eb29aa77c",
+      "key": "user"
+    },
+    {
+      "description": "文档定义1",
+      "objectType": "document",
+      "permissions": [
+        {
+          "permission": "canRead",
+          "relationCanAccess": "reader"
+        },
+        {
+          "permission": "canWrite",
+          "relationCanAccess": "writer"
+        }
+      ],
+      "relations": [
+        {
+          "relation": "reader",
+          "subjectNamespaceCode": null,
+          "subjectType": "user"
+        },
+        {
+          "relation": "writer",
+          "subjectNamespaceCode": null,
+          "subjectType": "user"
+        },
+        {
+          "relation": "creator",
+          "subjectNamespaceCode": null,
+          "subjectType": "user"
+        },
+        {
+          "relation": "reader-2",
+          "subjectType": "user"
+        }
+      ],
+      "policyId": "64bd179dae38712eb29aa77c",
+      "key": "document"
+    }
+  ]
+}

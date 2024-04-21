@@ -3,6 +3,7 @@ package xyz.wanghongtao.rebac.util;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,10 @@ import java.util.Objects;
  */
 public class JacksonUtils {
   private static final ObjectMapper objectMapper = new ObjectMapper();
+
+  static {
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
 
   public static ObjectMapper getObjectMapper() {
     return objectMapper;

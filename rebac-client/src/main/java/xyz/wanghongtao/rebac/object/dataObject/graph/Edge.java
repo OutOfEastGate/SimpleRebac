@@ -23,6 +23,7 @@ public class Edge extends GraphBase {
   Cell source;
   Cell target;
   String text;
+  Object tools;
 
   @NoArgsConstructor
   @AllArgsConstructor

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.object.form.AddModelForm;
+import xyz.wanghongtao.rebac.util.JacksonUtils;
 
 import java.util.*;
 
@@ -85,6 +86,8 @@ public class ModelEngine {
         });
         stopWatch.stop();
         if (!errorInfo.isEmpty()) {
+          log.error("#预检查未通过: 耗时{}", stopWatch.getTotalTimeSeconds());
+          log.error(errorInfo.toString());
             throw new CustomException(errorInfo.toString());
         }
         log.info("#预检查Policy结束: 耗时{}", stopWatch.getTotalTimeSeconds());

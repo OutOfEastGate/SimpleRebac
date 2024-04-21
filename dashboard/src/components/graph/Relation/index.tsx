@@ -6,7 +6,7 @@ import { MiniMap } from '@antv/x6-plugin-minimap'
 import {CircularLayout} from '@antv/layout'
 import {Dnd} from "@antv/x6-plugin-dnd";
 import AddEdgeModal from "./AddEdgeModal";
-import {Button, Divider, message, Spin} from "antd";
+import { Button, Divider, message } from "antd";
 import AddNodeModal from "./AddNodeModal";
 import Loading from "../../common/Loading";
 
@@ -191,7 +191,7 @@ const templateGraph = [
   }
 ]
 
-const nodeToCreate = {
+const rectNodeToCreate = {
   width: 100,
   height: 40,
   label: 'Rect',
@@ -205,6 +205,54 @@ const nodeToCreate = {
     },
   },
   tools: ['button-remove'],
+  ports: {
+    groups: {
+      in: {
+        position: 'top',
+        attrs: {
+          circle: {
+            magnet: true,
+            stroke: '#8f8f8f',
+            r: 5,
+          },
+        },
+      },
+      out: {
+        position: 'bottom',
+        attrs: {
+          circle: {
+            magnet: true,
+            stroke: '#8f8f8f',
+            r: 5,
+          },
+        },
+      },
+    },
+    items: [
+      {
+        id: 'port_1',
+        group: 'in',
+      },
+      {
+        id: 'port_2',
+        group: 'out',
+      },
+    ],
+  },
+}
+
+const circleNodeToCreate = {
+  width: 60,
+  height: 60,
+  shape: 'circle',
+  label: 'Circle',
+  attrs: {
+    body: {
+      stroke: '#8f8f8f',
+      strokeWidth: 1,
+      fill: '#fff',
+    },
+  },
   ports: {
     groups: {
       in: {
@@ -395,20 +443,8 @@ function MyEditor(props:PropsType) {
     if(graph === undefined) return
     const node =
       type === 'rect'
-        ? graph.createNode(nodeToCreate)
-        : graph.createNode({
-          width: 60,
-          height: 60,
-          shape: 'circle',
-          label: 'Circle',
-          attrs: {
-            body: {
-              stroke: '#8f8f8f',
-              strokeWidth: 1,
-              fill: '#fff',
-            },
-          },
-        })
+        ? graph.createNode(rectNodeToCreate)
+        : graph.createNode(circleNodeToCreate)
     if(dnd === undefined) return;
     dnd.start(node, e.nativeEvent as any)
   }
@@ -516,7 +552,6 @@ function MyEditor(props:PropsType) {
     }
 
     if("cell" in currentEdge.target) {
-      console.log(currentEdge.target)
       let targetNode = currentEdge.target.cell
       let nodes = graph?.getNodes();
       if(nodes === undefined) {
@@ -589,6 +624,12 @@ function MyEditor(props:PropsType) {
   function confirmEdge(addRelationParam:AddRelationType) {
     setShowModal(false)
     if(currentEdge !== undefined) {
+      currentEdge.addTools([
+        {
+          name: 'button-remove',
+          args: { distance: -40 },
+        }
+      ])
       currentEdge.setLabels([{
         "attrs": {
           "isPenetrate": addRelationParam.isPenetrate,
@@ -664,7 +705,9 @@ function MyEditor(props:PropsType) {
     })
 
     graph.on('cell:mouseleave', ({cell}) => {
-      cell.removeTools()
+      if(cell.isNode()) {
+        cell.removeTools()
+      }
     })
   }
 }

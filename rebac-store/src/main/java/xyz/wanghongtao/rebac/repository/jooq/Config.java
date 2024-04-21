@@ -21,8 +21,10 @@ import java.sql.SQLException;
 public class Config {
   @Value("${spring.datasource.url}")
   String datasourceUrl;
+  @Value("${wht.back.wifiMachine}")
+  String wifiMachine;
 
-  String url = "jdbc:mysql://114.116.9.68:3306/SimpleRebac";
+  String url = "jdbc:mysql://" + wifiMachine +":3306/SimpleRebac";
 
   @Value("${spring.datasource.username}")
   String username;
@@ -33,7 +35,7 @@ public class Config {
 
   @Bean
   public Connection getConnection() {
-    String url = "jdbc:mysql://114.116.9.68:3306/SimpleRebac";
+    String url = "jdbc:mysql://" + wifiMachine +":3306/SimpleRebac";
     String username = "root";
     String password = "19460";
     Connection connection;
