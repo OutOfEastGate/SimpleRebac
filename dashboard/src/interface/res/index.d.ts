@@ -94,3 +94,7 @@ interface Link {
 interface GraphNode extends d3.SimulationNodeDatum {
     id: string;
 }
+
+interface checkPermissionRes extends BaseRes{
+  data:Boolean
+}

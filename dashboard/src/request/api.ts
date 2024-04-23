@@ -23,3 +23,5 @@ export const getSystemInfo = ():Promise<getSystemInfoRes> => request.get("system
 export const getGraphPreview = (id:string):Promise<getGraphPreviewRes> => request.get("graph/get/" + id)
 
 export const saveGraphPreview = (graphDo:any):Promise<getGraphPreviewRes> => request.post("graph/save", graphDo)
+
+export const checkPermission = (checkPermission:CheckPermissionParam):Promise<checkPermissionRes> => request.post("/checkPermission", checkPermission)

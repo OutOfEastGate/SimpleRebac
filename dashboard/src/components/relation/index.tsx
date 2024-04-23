@@ -1,10 +1,11 @@
 
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Form, Input, Layout, message, Space, Tabs} from "antd";
+import {Button, Card, Form, FormProps, Input, Layout, message, notification, Select, Space, Tabs, Tooltip} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
-import {getAllModel, getAllStore} from "../../request/api";
+import {checkPermission, getAllModel, getAllStore, getPolicy} from "../../request/api";
 import Selector from "../graph/Selector";
 import Relation from "../graph/Relation";
+import {SmileOutlined} from "@ant-design/icons";
 
 
 const headerStyle: React.CSSProperties = {
@@ -29,8 +30,24 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: '#7dbcea',
 };
 
-function App() {
+interface CheckPermissionParam{
+  objectType:string,
+  objectName:string,
+  permission:string,
+  subjectType:string,
+  subjectName:string
+}
 
+interface CheckRelationParam{
+  objectType:string,
+  objectName:string,
+  relation:string,
+  subjectType:string,
+  subjectName:string
+}
+
+function App() {
+  const [api, contextHolder] = notification.useNotification();
   //权限model
   const [models, setModels] = useState<Model[]>([])
   //存储模型
@@ -39,6 +56,73 @@ function App() {
   const [policy, setPolicy] = useState<Policy>();
 
   const [selectTab, setSelectTab] = useState<string>();
+
+  const [currentSelectModel, setCurrentSelectModel] = useState<Model>()
+
+  const [currentSelectObjectType, setCurrentSelectObjectType] = useState<string>()
+  const [currentSelectSubjectType, setCurrentSelectSubjectType] = useState<string>()
+
+  const onFinish: FormProps<CheckPermissionParam | CheckRelationParam>["onFinish"] = (values) => {
+    if(selectTab === undefined) {
+      api.open({
+        message: '错误',
+        description:"请选择存储模型",
+        duration: 0,
+        icon: <SmileOutlined style={{ color: '#108ee9' }} />
+      });
+      return
+    }
+    if("permission" in values && values.permission) {
+      checkPermission({
+        modelId:selectTab,
+        triple: `${values.objectType}:${values.objectName}#${values.permission}@${values.subjectType}:${values.subjectName}`
+      }).then(res => {
+        if(res.msg === "success") {
+          api.open({
+            message: '权限校验结果',
+            description:
+              res.data.toString(),
+            duration: 0,
+          });
+        } else {
+          message.error(res.msg)
+        }
+      })
+    } else if ("relation" in values && values.relation) {
+      console.log("relation", values)
+    }
+  };
+
+  const typeSelectItems = policy === undefined ? [] : policy.definitions.map(def => {
+    return {
+      objectType: def.objectType,
+      description: def.description
+    }
+  })
+  const ops = typeSelectItems.map(item => ({
+    value: item.objectType,
+    label: <div>
+      <Tooltip placement="topRight" title={item.description}>
+        {item.objectType}
+      </Tooltip></div>,
+    desc: item.description,
+  }))
+
+  let permissions:PermissionDefinition[] = []
+
+  const permissionItems = currentSelectSubjectType === undefined || policy === undefined ? [] : policy.definitions.map(def => {
+    if(def.objectType === currentSelectSubjectType) {
+      permissions = def.permissions
+    }
+  })
+
+  const permissionOps = permissions.map(item => ({
+    value: item.permission,
+    label: item.permission,
+    desc: item.permission,
+  }))
+
+
 
   useEffect(() => {
     if (stores.length === 0) {
@@ -55,13 +139,32 @@ function App() {
     getAllModel(id).then(res => {
       if (res.msg === "success") {
         setModels(res.data)
+        if(res.data.length > 0) {
+          setSelectTab(res.data[0].id)
+          setCurrentSelectModel(res.data[0])
+        }
       }
     })
   }
 
   const onTabChange = (key: string) => {
     setSelectTab(key)
+    models.forEach(model => {
+      if(model.id === key) {
+        setCurrentSelectModel(model)
+      }
+    })
   };
+
+  useEffect(() => {
+    if(currentSelectModel !== undefined && currentSelectModel.policyId !== undefined) {
+      getPolicy(currentSelectModel.policyId).then(r => {
+        setPolicy(r.data)
+      }).catch(err => {
+        message.error("获取权限策略失败")
+      })
+    }
+  }, [selectTab])
 
   function getDemo() {
 
@@ -71,22 +174,22 @@ function App() {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           layout="horizontal"
-
+          onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型">
+          <Form.Item label="主体类型" name="objectType">
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="主体" name={"objectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="主体">
+          <Form.Item label="客体类型" name={"subjectType"}>
             <Input />
           </Form.Item>
-          <Form.Item label="关系">
+          <Form.Item label="客体" name={"subjectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="客体类型">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体">
+          <Form.Item label="关系" name={"relation"}>
             <Input />
           </Form.Item>
           <Form.Item label="操作">
@@ -99,22 +202,22 @@ function App() {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           layout="horizontal"
-
+          onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型">
+          <Form.Item label="主体类型" name={"objectType"}>
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="主体" name={"objectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="主体">
+          <Form.Item label="客体类型" name={"subjectType"}>
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="客体" name={"subjectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="权限">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体类型">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体">
+          <Form.Item label="权限" name={"permission"}>
             <Input />
           </Form.Item>
           <Form.Item label="操作">
@@ -125,6 +228,10 @@ function App() {
     </div>;
   }
 
+  function onSubjectTypeChange(subjectType:string) {
+    setCurrentSelectSubjectType(subjectType)
+  }
+
   function getChildren(model : Model) {
 
     return <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -133,22 +240,22 @@ function App() {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           layout="horizontal"
-
+          onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型">
+          <Form.Item label="主体类型" name="objectType">
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="主体" name={"objectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="主体">
+          <Form.Item label="客体类型" name={"subjectType"}>
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="客体" name={"subjectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="关系">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体类型">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体">
+          <Form.Item label="关系" name={"relation"}>
             <Input />
           </Form.Item>
           <Form.Item label="操作">
@@ -161,23 +268,23 @@ function App() {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           layout="horizontal"
-
+          onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型">
+          <Form.Item label="主体类型" name={"objectType"}>
+            <Select options={ops}></Select>
+          </Form.Item>
+          <Form.Item label="主体" name={"objectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="主体">
+          <Form.Item label="客体类型" name={"subjectType"}>
+            <Select options={ops} onChange={onSubjectTypeChange}></Select>
+          </Form.Item>
+          <Form.Item label="客体" name={"subjectName"}>
             <Input />
           </Form.Item>
-          <Form.Item label="权限">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体类型">
-            <Input />
-          </Form.Item>
-          <Form.Item label="客体">
-            <Input />
+          <Form.Item label="权限" name={"permission"}>
+            <Select options={permissionOps}></Select>
           </Form.Item>
           <Form.Item label="操作">
             <Button type={"primary"} htmlType="submit"> 校验 </Button>
@@ -189,6 +296,7 @@ function App() {
 
   return (
     <div>
+      {contextHolder}
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
         <Layout>
           <Header style={headerStyle}>
