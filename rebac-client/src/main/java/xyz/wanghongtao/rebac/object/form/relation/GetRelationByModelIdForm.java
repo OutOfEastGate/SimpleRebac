@@ -1,4 +1,4 @@
-package xyz.wanghongtao.rebac.object.form;
+package xyz.wanghongtao.rebac.object.form.relation;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

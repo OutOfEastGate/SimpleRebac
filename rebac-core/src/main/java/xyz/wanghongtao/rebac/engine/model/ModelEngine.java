@@ -3,8 +3,9 @@ package xyz.wanghongtao.rebac.engine.model;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.exception.CustomException;
-import xyz.wanghongtao.rebac.object.form.AddModelForm;
-import xyz.wanghongtao.rebac.util.JacksonUtils;
+import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
+import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
 
 import java.util.*;
 
@@ -24,67 +25,21 @@ public class ModelEngine {
     public static void preCheckPolicy(AddModelForm addModelForm) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        log.info("#预检查Policy开始: {}", addModelForm.getName());
+
+        if(addModelForm.getPolicy() == null) {
+          log.info("#policy为空，初始化policy");
+          addModelForm.setPolicy(PolicyForm.builder()
+            .description(addModelForm.getDescription())
+            .definitions(new ArrayList<>())
+            .build());
+          return;
+        }
+
+        log.info("#新增-预检查Policy开始: {}", addModelForm.getPolicy());
 
 
-        Map<String, Map<String, List<String>>> permissionMap = new HashMap<>();
-        Map<String, Map<String, String>> relationMap = new HashMap<>();
-
-        StringBuilder errorInfo = new StringBuilder();
-
-        addModelForm.getPolicy().getDefinitions().forEach(definition -> {
-            if (permissionMap.containsKey(definition.getObjectType())) {
-                errorInfo.append("ObjectType: ").append(definition.getObjectType()).append("定义重复; ");
-            } else {
-                Map<String, List<String>> permission_relationsCanAccess = new HashMap<>();
-                if (definition.getPermissions() != null && definition.getPermissions().size() > 0) {
-                    definition.getPermissions().forEach(permission -> {
-                        //TODO 解析表达式 + - ->成RelationList
-                        if (permission_relationsCanAccess.containsKey(permission.getPermission())) {
-                            errorInfo.append("Permission：").append(permission.getPermission()).append("定义重复; ");
-                        }else {
-                            List<String> relationCanAccess = List.of(permission.getRelationCanAccess());
-                            permission_relationsCanAccess.put(permission.getPermission(), relationCanAccess);
-                        }
-                    });
-                }
-                permissionMap.put(definition.getObjectType(), permission_relationsCanAccess);
-
-                Map<String, String> relation_subjectType = new HashMap<>();
-                if (definition.getRelations() != null && definition.getRelations().size() > 0) {
-                    definition.getRelations().forEach(relation -> {
-                        if (relation_subjectType.containsKey(relation.getRelation())) {
-                            errorInfo.append("Relation：").append(relation.getRelation()).append("定义重复; ");
-                        }else {
-                            relation_subjectType.put(relation.getRelation(), relation.getSubjectType());
-                        }
-                    });
-                }
-                relationMap.put(definition.getObjectType(), relation_subjectType);
-            }
-        });
-
-        //检验relation
-        relationMap.forEach((objectType, relation_subjectType) -> {
-            relation_subjectType.forEach((relation, subjectType) -> {
-                if (!relationMap.containsKey(subjectType)) {
-                    errorInfo.append("Relation定义错误: ").append(subjectType).append("不存在; ");
-                }
-            });
-        });
-        //检查关联关系
-        permissionMap.forEach((objectType, permissionMaps) -> {
-            if (permissionMaps !=null && permissionMaps.size() > 0) {
-                permissionMaps.forEach((permission, relationsCanAccess) -> {
-                    relationsCanAccess.forEach(relationCanAccess -> {
-                        if (!relationMap.get(objectType).containsKey(relationCanAccess)) {
-                            errorInfo.append("Permission定义错误: ").append(relationCanAccess).append("不存在; ");
-                        }
-                    });
-                });
-            }
-        });
-        stopWatch.stop();
+      StringBuilder errorInfo = preCheckPolicy(addModelForm.getPolicy());
+      stopWatch.stop();
         if (!errorInfo.isEmpty()) {
           log.error("#预检查未通过: 耗时{}", stopWatch.getTotalTimeSeconds());
           log.error(errorInfo.toString());
@@ -92,4 +47,92 @@ public class ModelEngine {
         }
         log.info("#预检查Policy结束: 耗时{}", stopWatch.getTotalTimeSeconds());
     }
+
+  /**
+   * 预检查policy
+   * 1. 检查对象定义之间是否重复
+   * 2. 检查关联对象的关系是否合理
+   * @param updatePolicyForm model定义
+   */
+  public static void preCheckPolicy(UpdatePolicyForm updatePolicyForm) {
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
+
+
+    log.info("#更新-预检查Policy开始: {}", updatePolicyForm.getId());
+
+
+    StringBuilder errorInfo = preCheckPolicy(PolicyForm.builder()
+      .description(updatePolicyForm.getDescription())
+      .definitions(updatePolicyForm.getDefinitions())
+      .build());
+    stopWatch.stop();
+    if (!errorInfo.isEmpty()) {
+      log.error("#预检查未通过: 耗时{}", stopWatch.getTotalTimeSeconds());
+      log.error(errorInfo.toString());
+      throw new CustomException(errorInfo.toString());
+    }
+    log.info("#预检查Policy结束: 耗时{}", stopWatch.getTotalTimeSeconds());
+  }
+
+  private static StringBuilder preCheckPolicy(PolicyForm policyForm) {
+    Map<String, Map<String, List<String>>> permissionMap = new HashMap<>();
+    Map<String, Map<String, String>> relationMap = new HashMap<>();
+
+    StringBuilder errorInfo = new StringBuilder();
+
+    policyForm.getDefinitions().forEach(definition -> {
+        if (permissionMap.containsKey(definition.getObjectType())) {
+            errorInfo.append("ObjectType: ").append(definition.getObjectType()).append("定义重复; ");
+        } else {
+            Map<String, List<String>> permission_relationsCanAccess = new HashMap<>();
+            if (definition.getPermissions() != null && definition.getPermissions().size() > 0) {
+                definition.getPermissions().forEach(permission -> {
+                    //TODO 解析表达式 + - ->成RelationList
+                    if (permission_relationsCanAccess.containsKey(permission.getPermission())) {
+                        errorInfo.append("Permission：").append(permission.getPermission()).append("定义重复; ");
+                    }else {
+                        List<String> relationCanAccess = List.of(permission.getRelationCanAccess());
+                        permission_relationsCanAccess.put(permission.getPermission(), relationCanAccess);
+                    }
+                });
+            }
+            permissionMap.put(definition.getObjectType(), permission_relationsCanAccess);
+
+            Map<String, String> relation_subjectType = new HashMap<>();
+            if (definition.getRelations() != null && definition.getRelations().size() > 0) {
+                definition.getRelations().forEach(relation -> {
+                    if (relation_subjectType.containsKey(relation.getRelation())) {
+                        errorInfo.append("Relation：").append(relation.getRelation()).append("定义重复; ");
+                    }else {
+                        relation_subjectType.put(relation.getRelation(), relation.getSubjectType());
+                    }
+                });
+            }
+            relationMap.put(definition.getObjectType(), relation_subjectType);
+        }
+    });
+
+    //检验relation
+    relationMap.forEach((objectType, relation_subjectType) -> {
+        relation_subjectType.forEach((relation, subjectType) -> {
+            if (!relationMap.containsKey(subjectType)) {
+                errorInfo.append("Relation定义错误: ").append(subjectType).append("不存在; ");
+            }
+        });
+    });
+    //检查关联关系
+    permissionMap.forEach((objectType, permissionMaps) -> {
+        if (permissionMaps !=null && permissionMaps.size() > 0) {
+            permissionMaps.forEach((permission, relationsCanAccess) -> {
+                relationsCanAccess.forEach(relationCanAccess -> {
+                    if (!relationMap.get(objectType).containsKey(relationCanAccess)) {
+                        errorInfo.append("Permission定义错误: ").append(relationCanAccess).append("不存在; ");
+                    }
+                });
+            });
+        }
+    });
+    return errorInfo;
+  }
 }

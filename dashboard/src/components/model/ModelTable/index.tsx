@@ -1,12 +1,17 @@
 import React, {useState} from 'react';
 import {Button, message, Space, Table} from 'antd';
 import type { TableProps } from 'antd';
-import {getPolicy, updatePolicy as updatePolicyById} from "../../../request/api";
+import {getPolicy, saveModel, updatePolicy as updatePolicyById} from "../../../request/api";
 import ModelDetail from "./ModelDetail";
+import AddModelModal from "../AddModelModal";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 
 interface PropsType {
   data: Model[]
+  updateModel: () => void
+  currentSelectStore: number | undefined
 }
 
 
@@ -18,13 +23,33 @@ const App: React.FC<PropsType> = (props) => {
   const [visibleModelDetail, setVisibleModelDetail] = useState<boolean>(false);
   const [currentModelDetail, setCurrentModelDetail] = useState<Policy>()
 
+  const [isShowAddModelModal, setIsShowAddModelModal] = useState<boolean>(false)
+
   function openModelDetail(record: Model) {
     setVisibleModelDetail(true)
     getPolicy(record.policyId).then(res => {
       setCurrentModelDetail(res.data)
     }).catch(err => {
-      message.error('获取详情失败')
+      message.error('获取详情失败' + err.error)
     })
+  }
+
+  function addModel(model:AddModelType) {
+    saveModel({
+      storeId:props.currentSelectStore,
+      name:model.name,
+      description:model.description
+    }).then(r => {
+      if(r.msg === "success") {
+        message.success("添加模型成功")
+        props.updateModel()
+      } else {
+        message.error(r.msg)
+      }
+    }).catch(error => {
+      message.error("添加模型失败")
+    })
+    setIsShowAddModelModal(false)
   }
 
   const columns: TableProps<Model>['columns'] = [
@@ -88,8 +113,14 @@ const App: React.FC<PropsType> = (props) => {
       newModelDetail.definitions = newDefinitions
 
       updatePolicyById(newModelDetail).then(r => {
-        message.success("更新策略成功")
-
+        if(r.msg === "success") {
+          message.success("更新策略成功")
+        } else {
+          message.error(r.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        message.error("更新策略失败")
       })
     }
   }
@@ -133,6 +164,14 @@ const App: React.FC<PropsType> = (props) => {
     }
   }
 
+  function openAddModel() {
+    setIsShowAddModelModal(true)
+  }
+
+  function handleAddModelCancel() {
+    setIsShowAddModelModal(false)
+  }
+
   return (<div style={{ height: '100%', width: '100%' }}>
 
     <ModelDetail isModalOpen={visibleModelDetail}
@@ -142,7 +181,8 @@ const App: React.FC<PropsType> = (props) => {
                  addDefinition={addDefinition}
                  deleteDefinition={deleteDefinition}
                  data={currentModelDetail}></ModelDetail>
-    <Button type="primary"> 添加模型 </Button>
+    <Button type="primary" onClick={() => openAddModel()}> 添加模型 </Button>
+    <AddModelModal showModal={isShowAddModelModal} handleCancel={handleAddModelCancel} handleAddModel={addModel}></AddModelModal>
     <Table columns={columns} dataSource={props.data} />
   </div>)
 };

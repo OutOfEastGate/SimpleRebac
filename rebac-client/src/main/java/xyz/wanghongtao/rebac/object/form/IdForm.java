@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @author wanghongtao
- * @data 2023/7/23 15:22
+ * @date 2023/7/23 15:22
  */
 @Data
 public class IdForm {

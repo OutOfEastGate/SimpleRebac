@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import xyz.wanghongtao.rebac.graph.FrontGraphTransform;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
-import xyz.wanghongtao.rebac.object.form.AddRelationForm;
-import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
-import xyz.wanghongtao.rebac.object.form.GetRelationByModelIdForm;
+import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
+import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
+import xyz.wanghongtao.rebac.object.form.relation.GetRelationByModelIdForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 

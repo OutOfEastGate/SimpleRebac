@@ -1,8 +1,9 @@
-package xyz.wanghongtao.rebac.object.form;
+package xyz.wanghongtao.rebac.object.form.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
 
 /**
  * @author wanghongtao

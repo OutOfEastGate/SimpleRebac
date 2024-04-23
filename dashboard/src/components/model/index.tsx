@@ -33,8 +33,11 @@ function App() {
 
   //权限model
   const [models, setModels] = useState<Model[]>([])
+
   //存储模型
   const [stores, setStores] = useState<Store[]>([]);
+
+  const [currentSelectStore, setCurrentSelectStore] = useState<number>()
   //权限策略
   const [policy, setPolicy] = useState<Policy>();
 
@@ -50,7 +53,20 @@ function App() {
     }
   }, []);
   const handleSelectChange = (id:number) => {
+    setCurrentSelectStore(id)
     getAllModel(id).then(res => {
+      if (res.msg === "success") {
+        setModels(res.data)
+      }
+    })
+  }
+
+  const updateModel = () => {
+    if(!currentSelectStore) {
+      message.error("请先选择存储空间")
+      return
+    }
+    getAllModel(currentSelectStore).then(res => {
       if (res.msg === "success") {
         setModels(res.data)
       }
@@ -66,7 +82,7 @@ function App() {
             <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
           </Header>
           <Content style={contentStyle}>
-            <ModelTable data={models}></ModelTable>
+            <ModelTable data={models} updateModel={updateModel} currentSelectStore={currentSelectStore}></ModelTable>
           </Content>
           <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
         </Layout>

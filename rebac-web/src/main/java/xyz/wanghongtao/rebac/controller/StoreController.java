@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
-import xyz.wanghongtao.rebac.object.form.AddStoreForm;
+import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;

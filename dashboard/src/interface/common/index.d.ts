@@ -24,3 +24,9 @@ type AddDefinitionType = {
   description:string
   objectType:string
 }
+
+interface AddModelType {
+  storeId:number|undefined
+  name:string,
+  description:string
+}

@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.wanghongtao.rebac.object.form.CheckPermissionForm;
-import xyz.wanghongtao.rebac.object.form.CheckRelationForm;
+import xyz.wanghongtao.rebac.object.form.permission.CheckPermissionForm;
+import xyz.wanghongtao.rebac.object.form.relation.CheckRelationForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
-import xyz.wanghongtao.rebac.service.PermissionService;
 import xyz.wanghongtao.rebac.service.gateway.PermissionServiceGateway;
 
 /**

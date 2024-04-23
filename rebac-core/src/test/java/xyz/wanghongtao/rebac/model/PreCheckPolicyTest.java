@@ -5,8 +5,8 @@ import org.junit.Test;
 import xyz.wanghongtao.rebac.AbstractTest;
 import xyz.wanghongtao.rebac.engine.model.ModelEngine;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
-import xyz.wanghongtao.rebac.object.form.AddModelForm;
-import xyz.wanghongtao.rebac.object.form.PolicyForm;
+import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
 import xyz.wanghongtao.rebac.util.JacksonUtils;
 
 /**

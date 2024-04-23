@@ -1,7 +1,7 @@
 package xyz.wanghongtao.rebac.service.gateway;
 
-import xyz.wanghongtao.rebac.object.form.CheckPermissionForm;
-import xyz.wanghongtao.rebac.object.form.CheckRelationForm;
+import xyz.wanghongtao.rebac.object.form.permission.CheckPermissionForm;
+import xyz.wanghongtao.rebac.object.form.relation.CheckRelationForm;
 
 public interface PermissionServiceGateway {
 

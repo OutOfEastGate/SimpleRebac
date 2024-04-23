@@ -1,4 +1,4 @@
-package xyz.wanghongtao.rebac.object.form;
+package xyz.wanghongtao.rebac.object.form.policy;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;

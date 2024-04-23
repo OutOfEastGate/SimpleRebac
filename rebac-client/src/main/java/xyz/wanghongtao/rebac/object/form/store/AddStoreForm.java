@@ -1,4 +1,4 @@
-package xyz.wanghongtao.rebac.object.form;
+package xyz.wanghongtao.rebac.object.form.store;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

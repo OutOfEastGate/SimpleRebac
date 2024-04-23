@@ -11,12 +11,11 @@ import xyz.wanghongtao.rebac.object.dataObject.KeyDo;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
-import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
-import xyz.wanghongtao.rebac.object.form.AddModelForm;
-import xyz.wanghongtao.rebac.object.form.AddRelationForm;
-import xyz.wanghongtao.rebac.object.form.AddStoreForm;
-import xyz.wanghongtao.rebac.object.form.DeleteRelationForm;
+import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
+import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
+import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
@@ -27,8 +26,6 @@ import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 import xyz.wanghongtao.rebac.util.TripleParserUtil;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * gateway用于处理数据库查询出来的数据，可以与上层模块解耦合
@@ -85,6 +82,7 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
 
   @Override
   public void updatePolicy(UpdatePolicyForm updatePolicyForm) {
+      ModelEngine.preCheckPolicy(updatePolicyForm);
       modelService.updatePolicy(PolicyDo.builder()
           .id(updatePolicyForm.getId())
           .definitions(updatePolicyForm.getDefinitions())

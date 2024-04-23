@@ -8,8 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 import xyz.wanghongtao.rebac.object.dataObject.model.Permission;
 import xyz.wanghongtao.rebac.object.dataObject.model.Relation;
-import xyz.wanghongtao.rebac.object.form.AddModelForm;
-import xyz.wanghongtao.rebac.object.form.PolicyForm;
+import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
 import xyz.wanghongtao.rebac.service.StoreService;
 
 import java.util.List;
