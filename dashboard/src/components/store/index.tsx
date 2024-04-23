@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, message, Progress, Row, Space, Statistic, Table} from 'antd';
 import type { TableProps } from 'antd';
-import {getAllStore} from "../../request/api";
+import {getAllStore, saveStore} from "../../request/api";
 import Loading from "../common/Loading";
+import AddStoreModal from "./AddStoreModal";
 
 interface DataType {
   key: string;
@@ -44,13 +45,42 @@ const columns: TableProps<Store>['columns'] = [
 
 const App: React.FC = () => {
   const [data, setData] = useState<Store[]>([])
-  useEffect(()=> {
+  const [isShowAddStoreModal, setIsShowAddStoreModalOpen] = useState<boolean>(false)
+
+  function getStoreList() {
     getAllStore().then(r => {
       setData(r.data)
     }).catch(error => {
       message.error("获取存储空间失败")
     })
+  }
+
+  useEffect(()=> {
+    getStoreList();
   },[])
+
+  function openAddStore() {
+    setIsShowAddStoreModalOpen(true)
+  }
+
+  function handleCancel() {
+    setIsShowAddStoreModalOpen(false)
+  }
+
+  function handleAddStore(addStore:AddStoreType) {
+    saveStore(addStore).then(res => {
+      if(res.msg === "success") {
+        message.info("添加存储空间成功")
+        getStoreList()
+      } else {
+        message.error(res.msg)
+      }
+    }).catch(err => {
+      message.error("添加存储空间失败" + err.error)
+    })
+    setIsShowAddStoreModalOpen(false)
+  }
+
   return(
     <div style={{ height: '100%', width: '100%', lineHeight: '50px',}}>
 
@@ -70,7 +100,8 @@ const App: React.FC = () => {
           </Col>
         </Row>
       </Card>
-      <Button type={"primary"}>增加存储空间</Button>
+      <AddStoreModal showModal={isShowAddStoreModal} handleCancel={handleCancel} handleAddStore={handleAddStore}></AddStoreModal>
+      <Button type={"primary"} onClick={openAddStore}>增加存储空间</Button>
       {data.length === 0 ? <Loading></Loading> : <Table columns={columns} dataSource={data} />}
     </div>
   )

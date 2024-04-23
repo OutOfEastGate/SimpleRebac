@@ -1,5 +1,7 @@
 import request from "./index";
+import {add} from "husky";
 
+export const saveStore = (addStore:AddStoreType):Promise<BaseRes> => request.post("/store/add", addStore)
 export const getAllStore = ():Promise<getAllStoreRes> => request.get("/store/getAllByAppKey");
 
 export const getAllModel = (id:number):Promise<getAllModelRes> => request.get("/model/getAllByStoreId?storeId=" + id);

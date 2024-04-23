@@ -30,3 +30,8 @@ interface AddModelType {
   name:string,
   description:string
 }
+
+interface AddStoreType{
+  name:string,
+  description:string
+}

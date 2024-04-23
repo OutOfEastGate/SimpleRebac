@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
-import { Layout, message, Space, Tabs} from "antd";
+import {Layout, message, notification, Space, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import Selector from "../Selector";
 import Relation from "../Relation"
@@ -38,7 +38,7 @@ const siderStyle: React.CSSProperties = {
 
 
 function App() {
-
+    const [api, contextHolder] = notification.useNotification();
     //权限model
     const [models, setModels] = useState<Model[]>([])
     //存储模型
@@ -63,7 +63,16 @@ function App() {
         getAllModel(id).then(res => {
             if (res.msg === "success") {
                 setModels(res.data)
-                setSelectTab(res.data[0].id)
+                if(res.data.length > 0) {
+                  setSelectTab(res.data[0].id)
+                } else {
+                  api.open({
+                    message: '提示',
+                    description:
+                      '该存储空间未创建权限模型，请前往【模型管理】创建权限模型。',
+                    duration: 0,
+                  });
+                }
             }
         })
     }
@@ -74,6 +83,7 @@ function App() {
 
   return (
         <div>
+          {contextHolder}
             <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
                 <Layout>
                     <Header style={headerStyle}>
