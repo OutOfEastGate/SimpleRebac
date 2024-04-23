@@ -58,10 +58,9 @@ public class RelationServiceImpl implements RelationService {
         }
     }
 
-  @Override
-  public void deleteRelation(Long modelId) {
+  public int deleteRelation(Long modelId) {
     LambdaQueryWrapper<RelationDo> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(RelationDo::getModelId, modelId);
-    relationMapper.delete(queryWrapper);
+    return relationMapper.delete(queryWrapper);
   }
 }

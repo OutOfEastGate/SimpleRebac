@@ -51,4 +51,13 @@ public class ModelServiceImpl implements ModelService {
     public ModelDo getModelById(Long id) {
         return modelMapper.selectById(id);
     }
+
+  @Override
+  public void deleteModelById(Long id) {
+    ModelDo modelDo = modelMapper.selectById(id);
+    if(modelDo != null) {
+      modelMapper.deleteById(modelDo);
+      policyRepository.deleteById(modelDo.getPolicyId());
+    }
+  }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.model.DeleteModelForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
@@ -29,9 +30,9 @@ public class ModelController {
         return Result.success();
     }
   @PostMapping("/delete")
-  public Result<?> deleteModel(@Valid @RequestBody AddModelForm addModelForm, @RequestHeader("appKey") String appKey) {
-    addModelForm.setAppKey(appKey);
-    databaseGateway.addModel(addModelForm);
+  public Result<?> deleteModel(@Valid @RequestBody DeleteModelForm deleteModelForm, @RequestHeader("appKey") String appKey) {
+    deleteModelForm.setAppKey(appKey);
+    databaseGateway.deleteModel(deleteModelForm);
     return Result.success();
   }
 

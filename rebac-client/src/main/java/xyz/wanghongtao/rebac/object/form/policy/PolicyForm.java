@@ -3,8 +3,10 @@ package xyz.wanghongtao.rebac.object.form.policy;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
  * @author wanghongtao
  * @data 2023/7/17 22:49
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 public class PolicyForm {

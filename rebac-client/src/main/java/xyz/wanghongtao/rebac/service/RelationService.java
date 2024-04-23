@@ -16,5 +16,5 @@ public interface RelationService {
 
     void deleteRelation(Long modelId, Long id);
 
-    void deleteRelation(Long modelId);
+    int deleteRelation(Long modelId);
 }

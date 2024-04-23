@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Button, message, Space, Table} from 'antd';
+import {Button, message, Popconfirm, Space, Table} from 'antd';
 import type { TableProps } from 'antd';
-import {getPolicy, saveModel, updatePolicy as updatePolicyById} from "../../../request/api";
+import {deleteModelById, getPolicy, saveModel, updatePolicy as updatePolicyById} from "../../../request/api";
 import ModelDetail from "./ModelDetail";
 import AddModelModal from "../AddModelModal";
 import {Simulate} from "react-dom/test-utils";
@@ -52,6 +52,17 @@ const App: React.FC<PropsType> = (props) => {
     setIsShowAddModelModal(false)
   }
 
+  function deleteModel(id: string) {
+    deleteModelById(id).then(res => {
+      if(res.msg === "success") {
+        message.success("删除模型成功")
+        props.updateModel()
+      } else {
+        message.error(res.msg)
+      }
+    })
+  }
+
   const columns: TableProps<Model>['columns'] = [
     {
       title: '唯一标识',
@@ -83,7 +94,17 @@ const App: React.FC<PropsType> = (props) => {
       render: (_, record) => (
         <Space size="middle">
           <Button type={"primary"} onClick={() => {openModelDetail(record)}}>查看模型</Button>
-          <Button danger={true}>删除模型</Button>
+          <Popconfirm
+            title="删除模型"
+            description="确定要删除模型（关系也会一并删除）？"
+            onConfirm={() => {deleteModel(record.id)}}
+            onCancel={() => {}}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Button danger={true} >删除模型</Button>
+          </Popconfirm>
+
         </Space>
       ),
     },

@@ -6,6 +6,7 @@ import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.model.DeleteModelForm;
 import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public interface DatabaseGateway {
     void addModel(AddModelForm addModelForm);
+
+    void deleteModel(DeleteModelForm deleteModelForm);
 
     ModelDo getModelById(Long id);
 
@@ -57,4 +60,6 @@ public interface DatabaseGateway {
     List<RelationDo> getRelationByModelId(Long modelId);
 
     void deleteRelation(DeleteRelationForm deleteRelationForm);
+
+
 }

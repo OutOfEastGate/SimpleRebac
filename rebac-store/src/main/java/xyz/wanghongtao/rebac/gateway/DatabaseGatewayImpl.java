@@ -1,6 +1,7 @@
 package xyz.wanghongtao.rebac.gateway;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import xyz.wanghongtao.rebac.engine.model.ModelEngine;
 import xyz.wanghongtao.rebac.engine.relation.RelationEngine;
@@ -13,6 +14,7 @@ import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.StoreDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
+import xyz.wanghongtao.rebac.object.form.model.DeleteModelForm;
 import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
@@ -32,6 +34,7 @@ import java.util.List;
  * @author wanghongtao
  * @data 2023/7/18 22:19
  */
+@Slf4j
 @AllArgsConstructor
 @Component
 public class DatabaseGatewayImpl implements DatabaseGateway {
@@ -65,7 +68,15 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         modelService.addModel(policyDo, modelDo);
     }
 
-    @Override
+  @Override
+  public void deleteModel(DeleteModelForm deleteModelForm) {
+    modelService.deleteModelById(deleteModelForm.getId());
+    //删除关系
+    int deleteRelation = relationService.deleteRelation(deleteModelForm.getId());
+    log.info("模型：{}, 删除关系{}条", deleteModelForm.getId(), deleteRelation);
+  }
+
+  @Override
     public ModelDo getModelById(Long id) {
         return modelService.getModelById(id);
     }

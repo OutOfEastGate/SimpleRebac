@@ -20,4 +20,6 @@ public interface ModelService {
     PolicyDo getPolicyById(String id);
 
     ModelDo getModelById(Long id);
+
+  void deleteModelById(Long id);
 }
