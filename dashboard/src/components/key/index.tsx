@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
-import {Button, Layout, message, Space, Tabs} from "antd";
+import {Button, Card, Col, Layout, message, Row, Space, Statistic, Tabs} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import {getAllModel, getAllStore} from "../../request/api";
 import Selector from "../graph/Selector";
@@ -77,15 +77,23 @@ function App() {
   return (
     <div>
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
-          <Header style={headerStyle}>
-            <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
-          </Header>
-          <Content style={contentStyle}>
-           <Table></Table>
-          </Content>
-          <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
-        </Layout>
+        <Card>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Statistic title="应用数量" value={10} />
+            </Col>
+            <Col span={8}>
+              <Statistic title="当前应用实体数量" value={12}  />
+            </Col>
+            <Col span={8}>
+              <Statistic title="鉴权次数" value={12}  />
+            </Col>
+            <Col span={24} style={{ marginTop: 32 }}>
+              <Statistic title="鉴权成功次数" value={32} />
+            </Col>
+          </Row>
+        </Card>
+        <Table></Table>
 
       </Space>
     </div>

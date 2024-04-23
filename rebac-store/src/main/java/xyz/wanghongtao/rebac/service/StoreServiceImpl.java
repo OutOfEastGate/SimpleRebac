@@ -49,7 +49,12 @@ public class StoreServiceImpl implements StoreService {
         return keyMapper.selectOne(wrapper);
     }
 
-    @Override
+  @Override
+  public List<KeyDo> getKeyList() {
+    return keyMapper.selectList(new LambdaQueryWrapper<>());
+  }
+
+  @Override
     public AddStore addStore(StoreDo storeDo) {
         int insert = storeMapper.insert(storeDo);
         if (insert != 1) throw new CustomException(ErrorCode.Add_Store_Error);

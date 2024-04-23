@@ -50,6 +50,8 @@ public interface DatabaseGateway {
 
     StoreDo getStoreById(Long id);
 
+    List<KeyDo> getKeyList();
+
     /**
      * 关系
      */
@@ -60,6 +62,7 @@ public interface DatabaseGateway {
     List<RelationDo> getRelationByModelId(Long modelId);
 
     void deleteRelation(DeleteRelationForm deleteRelationForm);
+
 
 
 }

@@ -18,6 +18,7 @@ public interface StoreService {
     void deleteKey(String appKey);
 
     KeyDo getKey(String appKey);
+    List<KeyDo> getKeyList();
 
     /**
      * 存储模型
@@ -29,5 +30,6 @@ public interface StoreService {
     List<StoreDo> getAllByAppId(String appKey);
 
     StoreDo getStoreById(Long id);
+
 
 }

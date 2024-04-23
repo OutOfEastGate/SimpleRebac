@@ -8,11 +8,21 @@ interface getAllStoreRes extends BaseRes{
     data:Store[]
 }
 
+interface getAllAppRes extends BaseRes {
+  data:AppKey[]
+}
+
 interface Store {
     id: number,
     name: string,
     description: string,
     appKey: string
+}
+
+interface AppKey {
+  id:string,
+  appKey:string,
+  secretKey:string
 }
 
 interface getAllModelRes extends BaseRes {

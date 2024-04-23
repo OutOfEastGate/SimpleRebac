@@ -1,6 +1,7 @@
-import React from 'react';
-import { Space, Table } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {message, Space, Table} from 'antd';
 import type { TableProps } from 'antd';
+import {getAppList} from "../../../request/api";
 
 interface DataType {
   key: string;
@@ -10,18 +11,18 @@ interface DataType {
   tags: string[];
 }
 
-const columns: TableProps<DataType>['columns'] = [
+const columns: TableProps<AppKey>['columns'] = [
   {
     title: 'id',
     dataIndex: 'id',
     key: 'id',
-    render: (text) => <a>{text}</a>,
+    render: (text) => <p>{text}</p>,
   },
   {
     title: 'appKey',
     dataIndex: 'appKey',
     key: 'appKey',
-    render: (text) => <a>{text}</a>,
+    render: (text) => <p>{text}</p>,
   },
   {
     title: 'SecretKey',
@@ -41,30 +42,22 @@ const columns: TableProps<DataType>['columns'] = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
 
-const App: React.FC = () => <Table columns={columns} dataSource={data} />;
+const App: React.FC = () => {
+  const [appList, setAppList] = useState<AppKey[]>([])
+
+  useEffect(()=> {
+    getAppList().then(r => {
+      if(r.msg === "success") {
+        setAppList(r.data)
+      } else {
+        message.error(r.msg)
+      }
+    })
+  },[])
+  return (
+    <Table columns={columns} dataSource={appList} />
+  )
+};
 
 export default App;
