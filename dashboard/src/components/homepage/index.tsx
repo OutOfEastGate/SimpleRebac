@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Typography } from 'antd';
+import {Card, Col, Divider, Row, Statistic, Typography} from 'antd';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -8,6 +8,17 @@ const blockContent = `AntV 是蚂蚁集团全新一代数据可视化解决方�
 
 const App: React.FC = () => (
   <Typography>
+    <Card title="系统总览">
+      <Row gutter={16}>
+        <Col span={8}>
+          <Statistic title="应用数量" value={10} />
+        </Col>
+        <Col span={8}>
+          <Statistic title="鉴权次数" value={12}  />
+        </Col>
+
+      </Row>
+    </Card>
     <Title>Introduction</Title>
 
     <Paragraph>

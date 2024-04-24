@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import xyz.wanghongtao.rebac.object.runtime.LoginInterceptorRuntime;
 
 /**
  * @author wanghongtao
@@ -11,10 +12,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
+  private final LoginInterceptorRuntime interceptorRuntime;
 
-    @Override
+  public CorsConfig(LoginInterceptorRuntime interceptorRuntime) {
+    this.interceptorRuntime = interceptorRuntime;
+  }
+
+  @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor());
+        registry.addInterceptor(new LoginInterceptor(interceptorRuntime));
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 

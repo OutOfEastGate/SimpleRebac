@@ -7,7 +7,8 @@ const instance = axios.create({
     baseURL:"http://" + backPath,
     timeout:20000,
     headers: {
-        appKey : localStorage.getItem('appKey')
+        appKey : localStorage.getItem('appKey'),
+        token: localStorage.getItem("token")
     }
 })
 

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {message, Space, Table} from 'antd';
 import type { TableProps } from 'antd';
 import {getAppList} from "../../../request/api";
+import {DatabaseOutlined} from "@ant-design/icons";
 
 interface DataType {
   key: string;
@@ -19,16 +20,22 @@ const columns: TableProps<AppKey>['columns'] = [
     render: (text) => <p>{text}</p>,
   },
   {
-    title: 'appKey',
+    title: '应用Id',
     dataIndex: 'appKey',
     key: 'appKey',
     render: (text) => <p>{text}</p>,
   },
   {
-    title: 'SecretKey',
+    title: '密钥',
+    dataIndex: 'secretKey',
+    key: 'secretKey',
+    render: (text) => (text)
+  },
+  {
+    title: '图标',
     dataIndex: 'SecretKey',
     key: 'SecretKey',
-    render: (text) => (<p>***</p>)
+    render: (text) => (<DatabaseOutlined />)
   },
   {
     title: 'Action',

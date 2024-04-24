@@ -23,8 +23,6 @@ import java.util.List;
 public class RelationController {
     DatabaseGateway databaseGateway;
 
-    FrontGraphTransform frontGraphTransform;
-
     @PostMapping("/add")
     public Result<RelationDo> addRelation(@Valid @RequestBody AddRelationForm addRelationForm) {
         return Result.success(databaseGateway.addRelation(addRelationForm));
@@ -38,7 +36,7 @@ public class RelationController {
     @GetMapping("/getGraphRelation")
     public Result<?> getGraphRelation(@Valid GetRelationByModelIdForm getRelationByModelIdForm) {
         List<RelationDo> relationByModelId = databaseGateway.getRelationByModelId(getRelationByModelIdForm.getModelId());
-        return Result.success(frontGraphTransform.transform(relationByModelId));
+        return Result.success(FrontGraphTransform.transform(relationByModelId));
     }
 
     @PostMapping("/deleteById")

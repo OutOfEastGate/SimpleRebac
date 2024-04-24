@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import xyz.wanghongtao.rebac.engine.model.ModelEngine;
 import xyz.wanghongtao.rebac.engine.relation.RelationEngine;
+import xyz.wanghongtao.rebac.engine.user.UserLoginEngine;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.context.RelationContext;
@@ -19,8 +20,13 @@ import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
+import xyz.wanghongtao.rebac.object.form.user.LoginForm;
+import xyz.wanghongtao.rebac.object.form.user.RegisterForm;
+import xyz.wanghongtao.rebac.object.runtime.UserLoginRuntime;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
+import xyz.wanghongtao.rebac.object.viewObject.user.LoginResult;
+import xyz.wanghongtao.rebac.object.viewObject.user.RegisterResult;
 import xyz.wanghongtao.rebac.service.KeyService;
 import xyz.wanghongtao.rebac.service.ModelService;
 import xyz.wanghongtao.rebac.service.RelationService;
@@ -44,6 +50,8 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
     StoreService storeService;
 
     RelationService relationService;
+
+    UserLoginRuntime userLoginRuntime;
 
 
     @Override
@@ -197,5 +205,12 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         relationService.deleteRelation(deleteRelationForm.getModelId(), deleteRelationForm.getId());
     }
 
+  public LoginResult login(LoginForm loginForm) {
+    return UserLoginEngine.login(userLoginRuntime, loginForm);
+  }
 
+  @Override
+  public RegisterResult register(RegisterForm registerForm) {
+    return UserLoginEngine.register(userLoginRuntime, registerForm);
+  }
 }

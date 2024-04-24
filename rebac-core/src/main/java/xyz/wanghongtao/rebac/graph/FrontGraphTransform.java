@@ -12,7 +12,6 @@ import java.util.*;
  * @author wanghongtao
  * @data 2023/7/23 21:30
  */
-@Component
 public class FrontGraphTransform {
 
 
@@ -21,7 +20,7 @@ public class FrontGraphTransform {
      * @param relationByModelId 数据库查询数据
      * @return 展示数据
      */
-    public GraphVo transform(List<RelationDo> relationByModelId) {
+    public static GraphVo transform(List<RelationDo> relationByModelId) {
         GraphVo graphVo = new GraphVo();
 
         Map<String, NodeVo> objects = new HashMap<>();
@@ -58,7 +57,7 @@ public class FrontGraphTransform {
         return graphVo;
     }
 
-  private Map<String, Object> getEdgeAttrs() {
+  private static Map<String, Object> getEdgeAttrs() {
     Map<String, Object> attrs = new HashMap<>();
     Map<String, Object> line = new HashMap<>();
     line.put("stroke", "#8f8f8f");
@@ -67,7 +66,7 @@ public class FrontGraphTransform {
     return attrs;
   }
 
-  private Map<String, Object> getNodeAttrs() {
+  private static Map<String, Object> getNodeAttrs() {
     Map<String, Object> attrs = new HashMap<>();
     Map<String, Object> body = new HashMap<>();
     body.put("stroke", "#8f8f8f");

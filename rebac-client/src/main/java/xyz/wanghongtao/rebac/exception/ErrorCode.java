@@ -4,6 +4,8 @@ public enum ErrorCode {
     PARAM_ERROR("400", "参数不合法"),
     USER_LOGIN_ERROR("401", "未登录"),
     IP_LIMIT("403","访问频繁"),
+
+    PASSWORD_ERROR("406", "账号或密码错误"),
     ERROR("500", "服务器繁忙"),
     Model_NOT_EXIST("501","Model不存在"),
     PERMISSION_DENY("503","没有权限"),
@@ -13,12 +15,14 @@ public enum ErrorCode {
     Policy_NOT_EXISTED("507","权限策略不存在"),
     MAIL_ERROR("508","邮件发送失败"),
     USER_NOT_EXISTED("509", "用户不存在"),
+    USER_EXISTED("510", "用户名已存在"),
     TIME_EXISTED("510", "结束时间不可早于当前时间"),
     Key_Generate_Error("511","密钥生成失败"),
     Add_Store_Error("511","密钥生成失败"),
     Delete_ERROR("512", "删除失败"),
     OBJECT_OR_SUBJECT_NOT_EXIST("513","Object或Subject不存在"),
-    Relation_NOT_EXIST("514","Relation不存在");
+    Relation_NOT_EXIST("514","Relation不存在"),
+    TOKEN_ERROR("401", "未登录");
 
 
     private final String code;

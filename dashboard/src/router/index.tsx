@@ -8,9 +8,14 @@ import Key from "../components/key";
 import Model from "../components/model";
 import Store from "../components/store";
 import Relation from "../components/relation";
+import LoginPage from "../page/LoginPage";
 
 
 const routes = [
+  {
+    path: "/login",
+    element: <LoginPage></LoginPage>
+  },
   {
     path: "/",
     element:<Navigate to="/homepage"/>

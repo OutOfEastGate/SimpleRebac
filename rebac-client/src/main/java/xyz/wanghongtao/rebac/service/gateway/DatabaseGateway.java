@@ -11,8 +11,12 @@ import xyz.wanghongtao.rebac.object.form.relation.AddRelationForm;
 import xyz.wanghongtao.rebac.object.form.store.AddStoreForm;
 import xyz.wanghongtao.rebac.object.form.relation.DeleteRelationForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
+import xyz.wanghongtao.rebac.object.form.user.LoginForm;
+import xyz.wanghongtao.rebac.object.form.user.RegisterForm;
 import xyz.wanghongtao.rebac.object.viewObject.key.GenerateKey;
 import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
+import xyz.wanghongtao.rebac.object.viewObject.user.LoginResult;
+import xyz.wanghongtao.rebac.object.viewObject.user.RegisterResult;
 
 import java.util.List;
 
@@ -64,5 +68,7 @@ public interface DatabaseGateway {
     void deleteRelation(DeleteRelationForm deleteRelationForm);
 
 
+    LoginResult login(LoginForm loginForm);
 
+  RegisterResult register(RegisterForm registerForm);
 }

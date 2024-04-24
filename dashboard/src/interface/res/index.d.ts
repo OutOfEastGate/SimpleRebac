@@ -3,7 +3,17 @@ interface BaseRes {
     code: string,
     msg: string
 }
-
+interface LoginRes extends BaseRes {
+  data: {
+    token:string
+  }
+}
+interface RegisterRes extends BaseRes {
+  data: {
+    username:string
+    token:string
+  }
+}
 interface getAllStoreRes extends BaseRes{
     data:Store[]
 }
@@ -106,5 +116,8 @@ interface GraphNode extends d3.SimulationNodeDatum {
 }
 
 interface checkPermissionRes extends BaseRes{
+  data:Boolean
+}
+interface checkRelationRes extends BaseRes{
   data:Boolean
 }

@@ -1,0 +1,7 @@
+spring:
+  data:
+    redis:
+      host: ${wht.back.wifiMachine}
+      password: 1946066280Tao
+      port: 6379
+      database: 0

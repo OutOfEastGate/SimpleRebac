@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Form, FormProps, Input, Layout, message, notification, Select, Space, Tabs, Tooltip} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
-import {checkPermission, getAllModel, getAllStore, getPolicy} from "../../request/api";
+import {checkPermission, checkRelation, getAllModel, getAllStore, getPolicy} from "../../request/api";
 import Selector from "../graph/Selector";
 import Relation from "../graph/Relation";
 import {SmileOutlined} from "@ant-design/icons";
@@ -72,6 +72,7 @@ function App() {
       });
       return
     }
+
     if("permission" in values && values.permission) {
       checkPermission({
         modelId:selectTab,
@@ -89,7 +90,23 @@ function App() {
         }
       })
     } else if ("relation" in values && values.relation) {
-      console.log("relation", values)
+      checkRelation({
+        modelId:selectTab,
+        triple: `${values.objectType}:${values.objectName}#${values.relation}@${values.subjectType}:${values.subjectName}`
+      }).then(res => {
+        if(res.msg === "success") {
+          api.open({
+            message: '关系校验结果',
+            description:
+              res.data.toString(),
+            duration: 0,
+          });
+        } else {
+          message.error(res.msg)
+        }
+      })
+    } else {
+      message.error("请选择权限或者关系")
     }
   };
 
@@ -109,10 +126,12 @@ function App() {
   }))
 
   let permissions:PermissionDefinition[] = []
+  let relations:RelationDefinition[] = []
 
   const permissionItems = currentSelectSubjectType === undefined || policy === undefined ? [] : policy.definitions.map(def => {
     if(def.objectType === currentSelectSubjectType) {
       permissions = def.permissions
+      relations = def.relations
     }
   })
 
@@ -120,6 +139,12 @@ function App() {
     value: item.permission,
     label: item.permission,
     desc: item.permission,
+  }))
+
+  const relationOps = relations.map(item => ({
+    value: item.relation,
+    label: item.relation,
+    desc: item.relation
   }))
 
 
@@ -243,20 +268,20 @@ function App() {
           onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型" name="objectType">
+          <Form.Item label="主体类型" name="objectType" rules={[{ required: true, message: '请选择主体类型!' }]}>
             <Select options={ops}></Select>
           </Form.Item>
-          <Form.Item label="主体" name={"objectName"}>
+          <Form.Item label="主体" name={"objectName"} rules={[{ required: true, message: '请输入主体名称!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="客体类型" name={"subjectType"}>
-            <Select options={ops}></Select>
+          <Form.Item label="客体类型" name={"subjectType"} rules={[{ required: true, message: '请选择客体类型!' }]}>
+            <Select options={ops} onChange={onSubjectTypeChange}></Select>
           </Form.Item>
-          <Form.Item label="客体" name={"subjectName"}>
+          <Form.Item label="客体" name={"subjectName"} rules={[{ required: true, message: '请输入客体名称!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="关系" name={"relation"}>
-            <Input />
+          <Form.Item label="关系" name={"relation"} rules={[{ required: true, message: '请输入关系!' }]}>
+            <Select options={relationOps}></Select>
           </Form.Item>
           <Form.Item label="操作">
             <Button type={"primary"} htmlType="submit"> 校验 </Button>
@@ -271,19 +296,19 @@ function App() {
           onFinish={onFinish}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item label="主体类型" name={"objectType"}>
+          <Form.Item label="主体类型" name={"objectType"} rules={[{ required: true, message: '请选择主体类型!' }]}>
             <Select options={ops}></Select>
           </Form.Item>
-          <Form.Item label="主体" name={"objectName"}>
+          <Form.Item label="主体" name={"objectName"} rules={[{ required: true, message: '请输入主体!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="客体类型" name={"subjectType"}>
+          <Form.Item label="客体类型" name={"subjectType"} rules={[{ required: true, message: '请选择客体类型!' }]}>
             <Select options={ops} onChange={onSubjectTypeChange}></Select>
           </Form.Item>
-          <Form.Item label="客体" name={"subjectName"}>
+          <Form.Item label="客体" name={"subjectName"} rules={[{ required: true, message: '请输入客体!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="权限" name={"permission"}>
+          <Form.Item label="权限" name={"permission"} rules={[{ required: true, message: '请输入要校验的权限!' }]}>
             <Select options={permissionOps}></Select>
           </Form.Item>
           <Form.Item label="操作">

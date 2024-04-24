@@ -2,8 +2,12 @@ package xyz.wanghongtao.rebac.util;
 
 
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import xyz.wanghongtao.rebac.exception.CustomException;
+import xyz.wanghongtao.rebac.exception.ErrorCode;
 
 import java.util.Date;
 import java.util.Objects;
@@ -11,7 +15,7 @@ import java.util.Objects;
 @Slf4j
 public class JwtUtil {
 
-    private static String secret = "kktuyhocrjhlndcv";
+    private static String secret = "kktuyhocrjhlndcvasdasdasdsadsadaskktuyhocrjhlndcvasdasdasdsadsadas";
 
     private static Long expiration = 86400L;
 
@@ -21,7 +25,7 @@ public class JwtUtil {
      * @param username 用户名
      * @return
      */
-    public static String generateToken(String username,Integer id) {
+    public static String generateToken(String username,Long id) {
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS384, secret)
                 .claim("username", username)
@@ -58,7 +62,7 @@ public class JwtUtil {
                     .getBody();
         } catch (Exception e) {
             log.error("解析异常:{}", e.getMessage());
-            throw new CustomException(ResultEnum.TOKEN_ERROR);
+            throw new CustomException(ErrorCode.TOKEN_ERROR);
         }
     }
 
@@ -71,7 +75,7 @@ public class JwtUtil {
                     .get("username");
         } catch (Exception e) {
             log.error("解析异常:{}", e.getMessage());
-            throw new CustomException(ResultEnum.TOKEN_ERROR);
+            throw new CustomException(ErrorCode.TOKEN_ERROR);
         }
     }
 
