@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 
-import {Layout, Menu, MenuProps, Space, Tabs, theme} from "antd";
+import {Layout, Menu} from "antd";
 import {Outlet, useNavigate} from "react-router-dom"
 
 
@@ -40,10 +40,13 @@ const items = [
 const App: React.FC = () => {
 
   const navigateTo = useNavigate()
+  const [selectedKeys, setSelectedKeys] = useState<[string]>(["/homepage"])
 
   const selectMenu = (params: {key:string}) => {
-    navigateTo(params.key)
-  }
+
+    setSelectedKeys(["/system"])
+      navigateTo(params.key)
+    }
 
   return (
     <Layout hasSider={true}>
@@ -51,7 +54,7 @@ const App: React.FC = () => {
         style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
       >
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={items} onSelect={selectMenu} />
+        <Menu theme="dark" mode="inline" items={items} onSelect={selectMenu} />
       </Sider>
       <Layout style={{ marginLeft: 200 }}>
         <Outlet></Outlet>

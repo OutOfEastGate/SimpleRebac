@@ -23,6 +23,7 @@ public class JacksonUtils {
   }
 
   public static ObjectMapper getObjectMapper() {
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     return objectMapper;
   }
 
@@ -43,11 +44,10 @@ public class JacksonUtils {
     }
     ObjectMapper objectMapper = getObjectMapper();
     try {
-      objectMapper.writeValueAsString(obj);
+      return objectMapper.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
-    throw new RuntimeException("Json序列化失败");
   }
 
   public static <T> T fromJsonStr(String json, Class<T> tClass) {

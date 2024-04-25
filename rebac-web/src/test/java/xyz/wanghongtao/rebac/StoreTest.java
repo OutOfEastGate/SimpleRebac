@@ -2,9 +2,6 @@ package xyz.wanghongtao.rebac;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -37,16 +34,6 @@ public class StoreTest {
         String retrieveDataQuery = "MATCH (n:Person)-[:FRIENDS]->(m:Person)\n" +
                 "RETURN n, m";
 
-        Driver driver = neo4jConnectFactory.getConnection();
-
-        driver.session().run(selectDatabaseQuery);
-        Result result = driver.session().run(retrieveDataQuery);
-        while (result.hasNext()) {
-            Record record = result.next();
-            System.out.println(record.get("n").get("name").asString() + " is friends with " +
-                    record.get("m").get("name").asString());
-        }
-        driver.close();
     }
 
     /**
@@ -57,15 +44,15 @@ public class StoreTest {
         String retrieveDataQuery = "MATCH (n:Person)-[:FRIENDS]->(m:Person)\n" +
                 "RETURN n, m";
 
-        Driver driver = neo4jConnectFactory.getConnection();
-
-        Result result = driver.session().run(retrieveDataQuery);
-        while (result.hasNext()) {
-            Record record = result.next();
-            System.out.println(record.get("n").get("name").asString() + " is friends with " +
-                    record.get("m").get("name").asString());
-        }
-        driver.close();
+//        Driver driver = neo4jConnectFactory.getConnection();
+//
+//        Result result = driver.session().run(retrieveDataQuery);
+//        while (result.hasNext()) {
+//            Record record = result.next();
+//            System.out.println(record.get("n").get("name").asString() + " is friends with " +
+//                    record.get("m").get("name").asString());
+//        }
+//        driver.close();
     }
 
     /**
@@ -73,15 +60,15 @@ public class StoreTest {
      */
     @Test
     public void testQueryEntityNeo4j() {
-        Driver driver = neo4jConnectFactory.getConnection();
-        String retrieveDataQuery2 = "MATCH (n)\n" +
-                "RETURN n";
-        Result result2 = driver.session().run(retrieveDataQuery2);
-        while (result2.hasNext()) {
-            Record record = result2.next();
-            System.out.println(record.get("n").get("name"));
-        }
-        driver.close();
+//        Driver driver = neo4jConnectFactory.getConnection();
+//        String retrieveDataQuery2 = "MATCH (n)\n" +
+//                "RETURN n";
+//        Result result2 = driver.session().run(retrieveDataQuery2);
+//        while (result2.hasNext()) {
+//            Record record = result2.next();
+//            System.out.println(record.get("n").get("name"));
+//        }
+//        driver.close();
     }
 
     /**
@@ -89,13 +76,13 @@ public class StoreTest {
      */
     @Test
     public void testCreateNodeNeo4j() {
-        String createQuery = "CREATE (n:Person {name: 'wanghongtao05'})";
-        Driver driver = neo4jConnectFactory.getConnection();
-        Result result = driver.session().run(createQuery);
-        while (result.hasNext()) {
-            Record next = result.next();
-            System.out.println(next);
-        }
+//        String createQuery = "CREATE (n:Person {name: 'wanghongtao05'})";
+//        Driver driver = neo4jConnectFactory.getConnection();
+//        Result result = driver.session().run(createQuery);
+//        while (result.hasNext()) {
+//            Record next = result.next();
+//            System.out.println(next);
+//        }
     }
 
     /**
@@ -103,15 +90,15 @@ public class StoreTest {
      */
     @Test
     public void testCreateRelationNeo4j() {
-        Driver driver = neo4jConnectFactory.getConnection();
-        String createRelationshipQuery = "MATCH (n:Person {name: 'wanghongtao05'})\n" +
-                "MATCH (m:Person {name: 'wht'})\n" +
-                "CREATE (n)-[:FRIENDS]->(m)";
-        Result result = driver.session().run(createRelationshipQuery);
-        while (result.hasNext()) {
-            Record next = result.next();
-            System.out.println(next);
-        }
+//        Driver driver = neo4jConnectFactory.getConnection();
+//        String createRelationshipQuery = "MATCH (n:Person {name: 'wanghongtao05'})\n" +
+//                "MATCH (m:Person {name: 'wht'})\n" +
+//                "CREATE (n)-[:FRIENDS]->(m)";
+//        Result result = driver.session().run(createRelationshipQuery);
+//        while (result.hasNext()) {
+//            Record next = result.next();
+//            System.out.println(next);
+//        }
     }
 
 }

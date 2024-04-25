@@ -42,12 +42,13 @@ public class UserLoginEngine {
     if(user != null) {
       throw new CustomException(ErrorCode.USER_EXISTED);
     }
+    String password = registerForm.getPassword();
     String digest = DigestUtils.md5DigestAsHex((registerForm.getPassword() + userLoginRuntime.getSalt()).getBytes(StandardCharsets.UTF_8));
     registerForm.setPassword(digest);
     userLoginRuntime.saveUser(registerForm);
     LoginResult loginResult = login(userLoginRuntime, LoginForm.builder()
       .username(registerForm.getUsername())
-      .password(registerForm.getPassword())
+      .password(password)
       .build());
     return RegisterResult.builder()
       .username(registerForm.getUsername())

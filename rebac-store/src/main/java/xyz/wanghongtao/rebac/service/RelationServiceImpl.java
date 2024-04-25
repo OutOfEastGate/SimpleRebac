@@ -2,18 +2,22 @@ package xyz.wanghongtao.rebac.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.repository.RelationMapper;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
  * @author wanghongtao
  * @data 2023/7/18 22:36
  */
+@ConditionalOnProperty(name = "wht.back.mockDatabase", havingValue = "false", matchIfMissing = true)
 @AllArgsConstructor
 @Service
 public class RelationServiceImpl implements RelationService {

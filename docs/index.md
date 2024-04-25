@@ -4,6 +4,8 @@ hero:
   title: SimpleRebac
   description: SimpleRebac 文档
   actions:
+    - text: 介绍
+      link: /introduce
     - text: 开发文档
       link: /process
     - text: 使用文档

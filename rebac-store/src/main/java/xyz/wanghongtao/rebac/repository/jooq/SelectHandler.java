@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class SelectHandler {
-  private final DSLContext dslContext;
-
-  public Object select() {
-    Result<Record> rebacKey = dslContext.select().from("rebac_key").fetch();
-    return rebacKey.getValue(0, "id");
-  }
-
-  public Object insert() {
-    return null;
-  }
+//  private final DSLContext dslContext;
+//
+//  public Object select() {
+//    Result<Record> rebacKey = dslContext.select().from("rebac_key").fetch();
+//    return rebacKey.getValue(0, "id");
+//  }
+//
+//  public Object insert() {
+//    return null;
+//  }
 }

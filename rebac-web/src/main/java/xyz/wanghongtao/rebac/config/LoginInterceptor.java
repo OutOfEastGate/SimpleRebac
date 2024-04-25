@@ -28,6 +28,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
       log.info("#处理请求：{}", request.getRequestURI());
+      if (request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/register")) {
+        return true;
+      }
       String token = request.getHeader("token");
       String method = request.getMethod();
       if(method.equals(HttpMethod.OPTIONS.name())) {

@@ -2,7 +2,7 @@ import request from "./index";
 
 
 export const login = (loginForm:{username:string, password:string}):Promise<LoginRes> => request.post("/user/login", loginForm)
-export const register = (register:{username:string, password:string}):Promise<LoginRes> => request.post("/user/register", register)
+export const register = (registerForm:{username:string, password:string}):Promise<LoginRes> => request.post("/user/register", registerForm)
 export const getAppList = ():Promise<getAllAppRes> => request.get("/key/getList")
 export const saveStore = (addStore:AddStoreType):Promise<BaseRes> => request.post("/store/add", addStore)
 export const getAllStore = ():Promise<getAllStoreRes> => request.get("/store/getAllByAppKey");

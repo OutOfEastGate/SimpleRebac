@@ -1,44 +1,53 @@
-package xyz.wanghongtao.rebac.service;
+package xyz.wanghongtao.rebac.service.mockService;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import xyz.wanghongtao.rebac.engine.relation.GraphPreviewToRelationEngine;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.graph.GraphBase;
 import xyz.wanghongtao.rebac.object.dataObject.graph.GraphDo;
 import xyz.wanghongtao.rebac.object.runtime.GraphPreviewConvertToRelationRuntime;
-import xyz.wanghongtao.rebac.repository.GraphRepository;
-import xyz.wanghongtao.rebac.service.mockService.GraphServiceMockImpl;
+import xyz.wanghongtao.rebac.service.GraphService;
+import xyz.wanghongtao.rebac.util.JacksonUtils;
 
-import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 /**
- * @author wanghongtao
- * @data 2024/3/27 22:38
+ * @author wanghongtao <wanghongtao05@kuaishou.com>
+ * Created on 2024-04-24
  */
 @Slf4j
-@AllArgsConstructor
-@ConditionalOnProperty(name = "wht.back.mockDatabase", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(name = "wht.back.mockDatabase", havingValue = "true", matchIfMissing = true)
 @Service
-public class GraphServiceImpl implements GraphService {
-  private final GraphRepository graphRepository;
-  private final RelationService relationService;
+public class GraphServiceMockImpl extends AbstractMockService implements GraphService {
+  Map<String, GraphDo> graphDoMap = new HashMap<>();
+  private final RelationServiceMockImpl relationService;
+
+  private final String mockDataUrl = "/mockDatabase/mockGraphDatabase.json";
+
+  {
+    graphDoMap = JacksonUtils.fromJsonStr(readFileToString(mockDataUrl), new TypeReference<>() {});
+  }
+
+  private void updateDatabase() {
+    writeStringToFile(JacksonUtils.toJson(graphDoMap), mockDataUrl);
+  }
+
+  public GraphServiceMockImpl(RelationServiceMockImpl relationServiceMock) {
+    this.relationService = relationServiceMock;
+  }
 
 
   @Override
   public GraphDo getGraph(String id) {
-    Optional<GraphDo> byId = graphRepository.findById(id);
-    return byId.orElse(null);
+    return graphDoMap.get(id);
   }
 
   @Override
-  @Transactional
   public void saveGraph(GraphDo graphDo) {
     List<GraphBase> graphBaseList = graphDo.getCells();
     GraphPreviewConvertToRelationRuntime graphPreviewConvertToRelationRuntime = GraphPreviewConvertToRelationRuntime.builder()
@@ -51,7 +60,8 @@ public class GraphServiceImpl implements GraphService {
     relationService.deleteRelation(Long.valueOf(graphDo.getId()));
     relationService.batchAddRelation(relationDos);
     log.info("#存储关系-结束");
-    graphRepository.save(graphDo);
+    graphDoMap.put(graphDo.getId(), graphDo);
     log.info("#存储图-结束");
+    updateDatabase();
   }
 }

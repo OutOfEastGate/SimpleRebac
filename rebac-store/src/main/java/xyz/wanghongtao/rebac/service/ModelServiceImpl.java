@@ -2,12 +2,15 @@ package xyz.wanghongtao.rebac.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.repository.ModelMapper;
 import xyz.wanghongtao.rebac.repository.PolicyRepository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +19,7 @@ import java.util.Optional;
  * @data 2023/7/18 22:21
  */
 @AllArgsConstructor
+@ConditionalOnProperty(name = "wht.back.mockDatabase", havingValue = "false", matchIfMissing = true)
 @Service
 public class ModelServiceImpl implements ModelService {
 

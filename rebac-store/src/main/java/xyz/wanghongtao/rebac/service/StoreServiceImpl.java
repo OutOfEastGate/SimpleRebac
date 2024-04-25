@@ -2,6 +2,8 @@ package xyz.wanghongtao.rebac.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
@@ -12,12 +14,14 @@ import xyz.wanghongtao.rebac.object.viewObject.store.AddStore;
 import xyz.wanghongtao.rebac.repository.KeyMapper;
 import xyz.wanghongtao.rebac.repository.StoreMapper;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
  * @author wanghongtao
  * @data 2023/7/16 16:59
  */
+@ConditionalOnProperty(name = "wht.back.mockDatabase", havingValue = "false", matchIfMissing = true)
 @AllArgsConstructor
 @Service
 public class StoreServiceImpl implements StoreService {
