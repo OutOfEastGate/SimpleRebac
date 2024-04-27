@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
+import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 /**
  * @author wanghongtao
@@ -23,4 +24,8 @@ public class CheckPermissionContext {
     String triple;
 
     PermissionContext permissionContext;
+
+    String relationHasPermission;
+
+    Expression expressionComputed;
 }

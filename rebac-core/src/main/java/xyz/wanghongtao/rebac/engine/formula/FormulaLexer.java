@@ -22,7 +22,7 @@ public class FormulaLexer {
                     + "|(?<Whitespace>(?:\t| |\r)+)"
                     + "|(?<Number>-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[Ee][+-]?\\d+)?)"
                     + "|(?<String>\"(?:[^\"\\\\]*|\\\\(?:[\"\\\\bfnrt\\/]|u[0-9A-Fa-f]{4}))*\")"
-                    + "|(?<Identifier>(?:(?:[a-zA-Z_])(?:[a-zA-Z0-9_])*)|\\+|\\-[>]?|\\*|\\/|>[=]?|<[=]?|\\.|@)"
+                    + "|(?<Identifier>(?:(?:[a-zA-Z_])(?:[a-zA-Z0-9_])*)|\\+|\\-[>]?|\\*|\\/|>[=]?|<[=]?|\\.|@|&&|\\|\\||.)"
                     + "|(?<SyntaxSymbol>(?:\\$([a-zA-Z_][a-zA-Z0-9_]*)?))"
     );
 
@@ -31,8 +31,10 @@ public class FormulaLexer {
         keywordMapping.put("+", TokenType.Plus);
         keywordMapping.put("-", TokenType.Minus);
         keywordMapping.put("*", TokenType.Multiply);
-        keywordMapping.put("/", TokenType.Divide);
+        keywordMapping.put(".", TokenType.Dot);
         keywordMapping.put("AND", TokenType.LogicAnd);
+        keywordMapping.put("&&", TokenType.LogicAnd);
+        keywordMapping.put("||", TokenType.LogicOr);
         keywordMapping.put("and", TokenType.LogicAnd);
         keywordMapping.put("OR", TokenType.LogicOr);
         keywordMapping.put("or", TokenType.LogicOr);

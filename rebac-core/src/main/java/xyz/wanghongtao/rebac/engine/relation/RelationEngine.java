@@ -2,11 +2,19 @@ package xyz.wanghongtao.rebac.engine.relation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryDotExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOrExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.IdentifierExpression;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
+import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
 import xyz.wanghongtao.rebac.object.context.RelationContext;
+import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
+import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
+import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -19,6 +27,29 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class RelationEngine {
 
+  //直接关系搜索
+  public static Boolean checkPermissionDirect(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime) {
+    String relationHasPermission = checkPermissionContext.getRelationHasPermission();
+    String stringBuilder = checkPermissionContext.getPermissionContext().getObjectType() +
+      ":" +
+      checkPermissionContext.getPermissionContext().getObject() +
+      "#" +
+      relationHasPermission +
+      "@" +
+      checkPermissionContext.getPermissionContext().getSubjectType() +
+      ":" +
+      checkPermissionContext.getPermissionContext().getSubject();
+    System.out.println(stringBuilder);
+    List<RelationDo> relationByTriple = permissionRuntime.getRelationByTriple(stringBuilder);
+    return relationByTriple.size() > 0;
+  }
+
+  //推导关系
+  public static Boolean checkPermissionCompute(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime) {
+    //TODO 推导关系
+    Expression expressionComputed = checkPermissionContext.getExpressionComputed();
+    return recursionExpression(checkPermissionContext, permissionRuntime, expressionComputed);
+  }
 
     /**
      * 虚拟线程预检验relation
@@ -80,5 +111,26 @@ public class RelationEngine {
         if (!isRelationExist.get()) {
             throw new CustomException(ErrorCode.Relation_NOT_EXIST);
         }
+    }
+
+    public static Boolean recursionExpression(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime, Expression expression) {
+        if (expression instanceof BinaryOrExpression binaryOrExpression) {
+          Expression left = binaryOrExpression.getLeft();
+          Expression right = binaryOrExpression.getRight();
+          return recursionExpression(checkPermissionContext, permissionRuntime, left) || recursionExpression(checkPermissionContext, permissionRuntime, right);
+        } else if(expression instanceof BinaryAndExpression binaryAndExpression) {
+          Expression left = binaryAndExpression.getLeft();
+          Expression right = binaryAndExpression.getRight();
+          return recursionExpression(checkPermissionContext, permissionRuntime, left) && recursionExpression(checkPermissionContext, permissionRuntime, right);
+        } else if (expression instanceof BinaryDotExpression binaryDotExpression) {
+          //TODO 借助图数据库
+          Expression left = binaryDotExpression.getLeft();
+          Expression right = binaryDotExpression.getRight();
+        } else if(expression instanceof IdentifierExpression identifierExpression) {
+          String relation = identifierExpression.getValue();
+          checkPermissionContext.setRelationHasPermission(relation);
+          return checkPermissionDirect(checkPermissionContext, permissionRuntime);
+        }
+        return false;
     }
 }

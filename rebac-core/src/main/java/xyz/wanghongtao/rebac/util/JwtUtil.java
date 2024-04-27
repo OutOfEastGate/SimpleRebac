@@ -15,9 +15,9 @@ import java.util.Objects;
 @Slf4j
 public class JwtUtil {
 
-    private static String secret = "kktuyhocrjhlndcvasdasdasdsadsadaskktuyhocrjhlndcvasdasdasdsadsadas";
+    private static final String secret = "kktuyhocrjhlndcvasdasdasdsadsadaskktuyhocrjhlndcvasdasdasdsadsadas";
 
-    private static Long expiration = 86400L;
+    private static final Long expiration = 86400L;
 
     /**
      * 创建token

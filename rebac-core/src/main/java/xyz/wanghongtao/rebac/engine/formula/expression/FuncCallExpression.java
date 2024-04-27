@@ -1,4 +1,4 @@
-package xyz.wanghongtao.rebac.engine.formula.token;
+package xyz.wanghongtao.rebac.engine.formula.expression;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import java.util.List;
 import xyz.wanghongtao.rebac.object.engine.formula.Token;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
-public class FuncCallExpr implements Expression {
-    private Token token;
-    private Expression function;
+public class FuncCallExpression implements Expression {
+    private final Token token;
+    private final Expression function;
     private List<Expression> arguments;
 
     public Token getToken() {
@@ -23,7 +23,7 @@ public class FuncCallExpr implements Expression {
         return arguments;
     }
 
-    public FuncCallExpr(Token token, Expression function) {
+    public FuncCallExpression(Token token, Expression function) {
         this.token = token;
         this.function = function;
     }

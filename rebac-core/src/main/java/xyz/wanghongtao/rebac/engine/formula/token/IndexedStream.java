@@ -11,11 +11,15 @@ import java.util.function.BiFunction;
 public class IndexedStream<TElement, TElementType> {
     protected BiFunction<TElement, TElementType, Boolean> constraintChecker;
     private int index;
-    private List<TElement> input;
+    private final List<TElement> input;
 
     public IndexedStream(Collection<TElement> input, BiFunction<TElement, TElementType, Boolean> constraintChecker) {
         this.input = new ArrayList<>(input);
         this.constraintChecker = constraintChecker;
+    }
+
+    public List<TElement> getInput() {
+      return input;
     }
 
     public Optional<TElement> peek()  {

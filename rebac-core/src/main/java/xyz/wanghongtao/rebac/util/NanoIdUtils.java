@@ -29,7 +29,7 @@ public final class NanoIdUtils {
             if (size <= 0) {
                 throw new IllegalArgumentException("size must be greater than zero.");
             } else {
-                int mask = (2 << (int)Math.floor(Math.log((double)(alphabet.length - 1)) / Math.log(2.0))) - 1;
+                int mask = (2 << (int)Math.floor(Math.log(alphabet.length - 1) / Math.log(2.0))) - 1;
                 int step = (int)Math.ceil(1.6 * (double)mask * (double)size / (double)alphabet.length);
                 StringBuilder idBuilder = new StringBuilder();
 

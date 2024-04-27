@@ -2,10 +2,16 @@ package xyz.wanghongtao.rebac.engine.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
+import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryDotExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOrExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.IdentifierExpression;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
+import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 import java.util.*;
 
@@ -116,8 +122,8 @@ public class ModelEngine {
     //检验relation
     relationMap.forEach((objectType, relation_subjectType) -> {
         relation_subjectType.forEach((relation, subjectType) -> {
-            if (!relationMap.containsKey(subjectType)) {
-                errorInfo.append("Relation定义错误: ").append(subjectType).append("不存在; ");
+          if (!relationMap.containsKey(subjectType)) {
+                errorInfo.append("Relation定义错误: 对象类型[").append(subjectType).append("]不存在; ");
             }
         });
     });
@@ -126,13 +132,43 @@ public class ModelEngine {
         if (permissionMaps !=null && permissionMaps.size() > 0) {
             permissionMaps.forEach((permission, relationsCanAccess) -> {
                 relationsCanAccess.forEach(relationCanAccess -> {
-                    if (!relationMap.get(objectType).containsKey(relationCanAccess)) {
-                        errorInfo.append("Permission定义错误: ").append(relationCanAccess).append("不存在; ");
-                    }
+                  //解析表达式
+                  FormulaParser formulaParser = new FormulaParser(relationCanAccess);
+                  Expression expression = formulaParser.parseExpression();
+                  Map<String, String> relationObjectTypeMap = relationMap.get(objectType);
+                  recursionExpression(expression, relationObjectTypeMap, errorInfo);
+//                  if (!relationMap.get(objectType).containsKey(relationCanAccess)) {
+//                    errorInfo.append("Permission定义错误: ").append(relationCanAccess).append("不存在; ");
+//                  }
                 });
             });
         }
     });
     return errorInfo;
+  }
+
+  public static String recursionExpression(Expression expression, Map<String, String> relationObjectTypeMap , StringBuilder errorInfo) {
+    if (expression instanceof BinaryAndExpression binaryAndExpression) {
+      log.info("[login and]");
+      recursionExpression(binaryAndExpression.getLeft(), relationObjectTypeMap, errorInfo);
+      recursionExpression(binaryAndExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else if (expression instanceof BinaryOrExpression binaryOrExpression) {
+      log.info("[login or]");
+      recursionExpression(binaryOrExpression.getLeft(), relationObjectTypeMap, errorInfo);
+      recursionExpression(binaryOrExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else if (expression instanceof BinaryDotExpression binaryDotExpression) {
+      log.info("[login dot]");
+      recursionExpression(binaryDotExpression.getLeft(), relationObjectTypeMap, errorInfo);
+      recursionExpression(binaryDotExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else {
+      IdentifierExpression identifier = (IdentifierExpression) expression;
+      String relationCanAccess = identifier.getValue();
+      log.info(identifier.getValue());
+      if (!relationObjectTypeMap.containsKey(relationCanAccess)) {
+        errorInfo.append("Permission定义错误: 关系[").append(relationCanAccess).append("]不存在; ");
+      }
+      return identifier.getValue();
+    }
+    return null;
   }
 }

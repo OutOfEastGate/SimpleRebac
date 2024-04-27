@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
-
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOperatorExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOrExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.*;
 import xyz.wanghongtao.rebac.engine.formula.token.*;
 import xyz.wanghongtao.rebac.object.engine.formula.Precedence;
 import xyz.wanghongtao.rebac.object.engine.formula.Token;
@@ -37,10 +32,15 @@ public class FormulaParser {
         .build());
 
 
-        parseRuleMap.put(TokenType.Plus, ParseRule.builder()
-                .precedence(Precedence.PREC_TERM)
-                .infixParser(new BinaryExpressionParselet())
-                .build());
+      parseRuleMap.put(TokenType.Plus, ParseRule.builder()
+        .precedence(Precedence.PREC_TERM)
+        .infixParser(new BinaryExpressionParselet())
+        .build());
+
+      parseRuleMap.put(TokenType.Dot, ParseRule.builder()
+        .precedence(Precedence.PREC_DOT)
+        .infixParser(new LogicDotInfixParselet())
+        .build());
 
 
         parseRuleMap.put(TokenType.Divide, ParseRule.builder()
@@ -67,7 +67,7 @@ public class FormulaParser {
 
     }
 
-    private TokenStream tokenStream;
+    private final TokenStream tokenStream;
     public FormulaParser(String input) {
         List<Token> allTokens = FormulaLexer.lex(input);
         List<Token> notBlankTokens = allTokens.stream()
@@ -83,6 +83,10 @@ public class FormulaParser {
     public Expression parseExpression() {
         return parsePrecedence(Precedence.PREC_ASSIGNMENT);
     }
+
+  public Integer getTokenLength() {
+    return this.tokenStream.getTokenList().stream().filter(token -> token.type.equals(TokenType.Identifier)).toList().size();
+  }
 
     protected Precedence currentPrecedence() {
         ParseRule parseRule = parseRuleMap.get(this.tokenStream.current().getType());
@@ -148,7 +152,7 @@ public class FormulaParser {
     @Override
     public Expression apply(FormulaParser parser, Token token, boolean canAssign) {
       parser.tokenStream.consume();
-      return new Identifier(token, token.getValue());
+      return new IdentifierExpression(token, token.getValue());
     }
   }
 
@@ -189,6 +193,17 @@ public class FormulaParser {
         }
     }
 
+  private static class LogicDotInfixParselet implements InfixParser {
+    @Override
+    public Expression apply(FormulaParser parser, Expression left, Token token, boolean canAssign) {
+      var expression = new BinaryDotExpression(token, left);
+      parser.tokenStream.consume();
+      var rightExpr = parser.parsePrecedence(Precedence.PREC_DOT);
+      expression.setRight(rightExpr);
+      return expression;
+    }
+  }
+
 
     private static class GroupedExpressionParselet implements PrefixParser {
 
@@ -205,7 +220,7 @@ public class FormulaParser {
     @Override
     public Expression apply(FormulaParser parser, Expression left, Token token, boolean canAssign) {
 
-      var call = new FuncCallExpr(token, left);
+      var call = new FuncCallExpression(token, left);
       call.setArguments(parser.parseExpressionList(TokenType.RightParen));
       return call;
     }

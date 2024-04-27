@@ -2,12 +2,15 @@ package xyz.wanghongtao.rebac.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
+import xyz.wanghongtao.rebac.engine.relation.RelationEngine;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
 import xyz.wanghongtao.rebac.object.context.CheckRelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.Permission;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
+import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 
 import java.util.ArrayList;
@@ -47,20 +50,24 @@ public class PermissionServiceImpl implements PermissionService {
         CountDownLatch countDownLatch = new CountDownLatch(relationsHasPermission.size());
         //根据关系查询出relation
         relationsHasPermission.forEach(relationHasPermission -> Thread.startVirtualThread(() -> {
-            String stringBuilder = checkPermissionContext.getPermissionContext().getObjectType() +
-                    ":" +
-                    checkPermissionContext.getPermissionContext().getObject() +
-                    "#" +
-                    relationHasPermission +
-                    "@" +
-                    checkPermissionContext.getPermissionContext().getSubjectType() +
-                    ":" +
-                    checkPermissionContext.getPermissionContext().getSubject();
-            System.out.println(stringBuilder);
-            List<RelationDo> relationByTriple = permissionRuntime.getRelationByTriple(stringBuilder);
-            if (relationByTriple.size() > 0) {
-                result.set(true);
+          //解析表达式
+          checkPermissionContext.setRelationHasPermission(relationHasPermission);
+          FormulaParser formulaParser = new FormulaParser(relationHasPermission);
+          //是否有关系推导
+          if(formulaParser.getTokenLength() == 1) {
+            //检查直接关系
+            Boolean isHasDirectRelation = RelationEngine.checkPermissionDirect(checkPermissionContext, permissionRuntime);
+            if (isHasDirectRelation) {
+              result.set(true);
             }
+          } else {
+            Expression expression = formulaParser.parseExpression();
+            checkPermissionContext.setExpressionComputed(expression);
+            Boolean isHasComputedRelation = RelationEngine.checkPermissionCompute(checkPermissionContext, permissionRuntime);
+            if (isHasComputedRelation) {
+              result.set(true);
+            }
+          }
             countDownLatch.countDown();
         }));
         try {
