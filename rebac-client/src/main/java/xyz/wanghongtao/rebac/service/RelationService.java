@@ -17,4 +17,6 @@ public interface RelationService {
     void deleteRelation(Long modelId, Long id);
 
     int deleteRelation(Long modelId);
+
+    List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String objectType, String object, String relation);
 }

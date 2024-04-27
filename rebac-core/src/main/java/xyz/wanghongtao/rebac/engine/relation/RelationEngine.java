@@ -9,6 +9,7 @@ import xyz.wanghongtao.rebac.engine.formula.expression.IdentifierExpression;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
+import xyz.wanghongtao.rebac.object.context.PermissionContext;
 import xyz.wanghongtao.rebac.object.context.RelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.Definition;
@@ -16,6 +17,7 @@ import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,10 +46,12 @@ public class RelationEngine {
     return relationByTriple.size() > 0;
   }
 
+
   //推导关系
   public static Boolean checkPermissionCompute(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime) {
     //TODO 推导关系
     Expression expressionComputed = checkPermissionContext.getExpressionComputed();
+    checkPermissionContext.setOriginPermissionContext(checkPermissionContext.getPermissionContext());
     return recursionExpression(checkPermissionContext, permissionRuntime, expressionComputed);
   }
 
@@ -126,6 +130,51 @@ public class RelationEngine {
           //TODO 借助图数据库
           Expression left = binaryDotExpression.getLeft();
           Expression right = binaryDotExpression.getRight();
+          PermissionContext permissionContext = checkPermissionContext.getPermissionContext();
+
+          List<RelationDo> relationDoListFromLeft = new ArrayList<>();
+          if (left instanceof IdentifierExpression identifierExpression) {
+            relationDoListFromLeft = permissionRuntime
+              .getRelationBySubjectAndRelation(checkPermissionContext.getModel().getId(), RelationContext.builder()
+                .subject(permissionContext.getSubject())
+                .subjectType(permissionContext.getSubjectType())
+                .relation(identifierExpression.getValue())
+                .build());
+          } else {
+            Boolean isTrue = recursionExpression(checkPermissionContext, permissionRuntime, left);
+            if (isTrue) {
+              return true;
+            }
+          }
+
+          if(right instanceof IdentifierExpression identifierExpression) {
+            for (RelationDo relationDo : relationDoListFromLeft) {
+              List<RelationDo> relationDoList = permissionRuntime
+                .getRelationBySubjectAndRelation(checkPermissionContext.getModel().getId(), RelationContext.builder()
+                  .subject(relationDo.getObject())
+                  .subjectType(relationDo.getObjectType())
+                  .relation(identifierExpression.getValue())
+                  .build());
+              for (RelationDo aDo : relationDoList) {
+                if(aDo.getObject().equals(checkPermissionContext.getOriginPermissionContext().getObject()) &&
+                    aDo.getObjectType().equals(checkPermissionContext.getOriginPermissionContext().getObjectType())) {
+                  return true;
+                }
+              }
+            }
+          } else {
+            CheckPermissionContext clone = checkPermissionContext.clone();
+            for (RelationDo relationDo : relationDoListFromLeft) {
+              clone.setPermissionContext(PermissionContext.builder()
+                .subject(relationDo.getObject())
+                .subjectType(relationDo.getObjectType())
+                .build());
+              Boolean isTrue = recursionExpression(clone, permissionRuntime, right);
+              if (isTrue) {
+                return true;
+              }
+            }
+          }
         } else if(expression instanceof IdentifierExpression identifierExpression) {
           String relation = identifierExpression.getValue();
           checkPermissionContext.setRelationHasPermission(relation);

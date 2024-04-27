@@ -91,4 +91,18 @@ public class RelationServiceMockImpl extends AbstractMockService implements Rela
     updateDatabase();
     return 0;
   }
+
+  @Override
+  public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation) {
+    List<RelationDo> relationDoList = new ArrayList<>();
+    relationDoMap.values().forEach(relationDo -> {
+      if (Objects.equals(relationDo.getModelId(), modelId) &&
+        Objects.equals(relationDo.getSubjectType(), subjectType) &&
+        Objects.equals(relationDo.getSubject(), subject) &&
+        Objects.equals(relationDo.getRelation(), relation)) {
+        relationDoList.add(relationDo);
+      }
+    });
+    return relationDoList;
+  }
 }

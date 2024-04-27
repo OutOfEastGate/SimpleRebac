@@ -17,4 +17,14 @@ public class RelationContext {
     String subjectType;
 
     String triple;
+
+  public RelationContext clone() {
+    return RelationContext.builder()
+      .objectType(this.getObjectType())
+      .object(this.getObject())
+      .subjectType(this.getSubjectType())
+      .subject(this.getSubject())
+      .relation(this.getRelation())
+      .build();
+  }
 }

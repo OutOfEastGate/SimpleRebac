@@ -2,6 +2,8 @@ package xyz.wanghongtao.rebac.object.runtime;
 
 import lombok.Builder;
 import lombok.Data;
+import xyz.wanghongtao.rebac.object.context.PermissionContext;
+import xyz.wanghongtao.rebac.object.context.RelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
 
@@ -21,5 +23,9 @@ public class PermissionRuntime {
 
   public List<RelationDo> getRelationByTriple(String triple) {
     return databaseGateway.getRelationByTriple(triple);
+  }
+
+  public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, RelationContext relationContext) {
+    return databaseGateway.getRelationBySubjectAndRelation(modelId, relationContext.getSubjectType(), relationContext.getSubject(), relationContext.getRelation());
   }
 }

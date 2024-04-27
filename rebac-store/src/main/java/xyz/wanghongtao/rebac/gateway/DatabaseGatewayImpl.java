@@ -213,4 +213,9 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
   public RegisterResult register(RegisterForm registerForm) {
     return UserLoginEngine.register(userLoginRuntime, registerForm);
   }
+
+  @Override
+  public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation) {
+    return relationService.getRelationBySubjectAndRelation(modelId, subjectType, subject, relation);
+  }
 }

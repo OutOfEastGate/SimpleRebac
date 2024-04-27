@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
 import xyz.wanghongtao.rebac.engine.model.ModelEngine;
+import xyz.wanghongtao.rebac.object.context.PermissionContext;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 import java.util.HashMap;
@@ -45,5 +46,10 @@ public class FormulaTest {
     String express = "a and b";
     FormulaParser formulaParser = new FormulaParser(express);
     log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testClone() {
+    PermissionContext context = new PermissionContext();
   }
 }

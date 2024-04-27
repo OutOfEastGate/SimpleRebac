@@ -24,8 +24,19 @@ public class CheckPermissionContext {
     String triple;
 
     PermissionContext permissionContext;
+    PermissionContext originPermissionContext;
 
     String relationHasPermission;
 
     Expression expressionComputed;
+
+  public CheckPermissionContext clone()  {
+    return CheckPermissionContext.builder()
+      .model(this.model)
+      .policy(this.policy)
+      .originPermissionContext(originPermissionContext)
+      .relationHasPermission(relationHasPermission)
+      .expressionComputed(expressionComputed)
+      .build();
+  }
 }

@@ -71,4 +71,6 @@ public interface DatabaseGateway {
     LoginResult login(LoginForm loginForm);
 
   RegisterResult register(RegisterForm registerForm);
+
+    List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation);
 }
