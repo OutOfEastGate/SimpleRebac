@@ -94,11 +94,11 @@
                 <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.neo4j.driver</groupId>-->
-<!--                <artifactId>neo4j-java-driver</artifactId>-->
-<!--                <version>${neo4j.driver.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.neo4j.driver</groupId>
+                <artifactId>neo4j-java-driver</artifactId>
+                <version>${neo4j.driver.version}</version>
+            </dependency>
           <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>

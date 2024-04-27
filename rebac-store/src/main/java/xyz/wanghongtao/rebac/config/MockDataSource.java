@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class MockDataSource implements DataSource {
   @Override
-  public Connection getConnection() throws SQLException {
+  public Connection getConnection() {
     InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
     try {
       return new MockConnection(new MockFileDatabase(resourceAsStream));
@@ -28,7 +28,7 @@ public class MockDataSource implements DataSource {
   }
 
   @Override
-  public Connection getConnection(String username, String password) throws SQLException {
+  public Connection getConnection(String username, String password) {
     InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
     try {
       return new MockConnection(new MockFileDatabase(resourceAsStream));

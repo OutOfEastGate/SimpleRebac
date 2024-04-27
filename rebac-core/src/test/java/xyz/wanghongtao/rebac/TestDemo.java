@@ -25,4 +25,10 @@ public class TestDemo extends AbstractTest {
     log.info(String.valueOf(graphBase instanceof Node));
     log.info(String.valueOf(graphBase1 instanceof Edge));
   }
+
+  @Test
+  public void test() {
+    String template = "";
+    System.out.printf("%s %n", "a");
+  }
 }
