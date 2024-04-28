@@ -158,8 +158,9 @@ public class ModelEngine {
       recursionExpression(binaryOrExpression.getRight(), relationObjectTypeMap, errorInfo);
     } else if (expression instanceof BinaryDotExpression binaryDotExpression) {
       log.info("[login dot]");
-      recursionExpression(binaryDotExpression.getLeft(), relationObjectTypeMap, errorInfo);
-      recursionExpression(binaryDotExpression.getRight(), relationObjectTypeMap, errorInfo);
+      //TODO 关系运算符 . 检查需要特殊处理
+//      recursionExpression(binaryDotExpression.getLeft(), relationObjectTypeMap, errorInfo);
+//      recursionExpression(binaryDotExpression.getRight(), relationObjectTypeMap, errorInfo);
     } else {
       IdentifierExpression identifier = (IdentifierExpression) expression;
       String relationCanAccess = identifier.getValue();

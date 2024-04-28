@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class CheckPermissionForm {
+  String appKey;
 
     @NotNull(message = "model的id不可为空")
     Long modelId;

@@ -10,6 +10,7 @@ import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.form.permission.CheckPermissionForm;
 import xyz.wanghongtao.rebac.object.form.relation.CheckRelationForm;
+import xyz.wanghongtao.rebac.object.result.CheckPermissionResult;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.PermissionService;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
@@ -29,10 +30,11 @@ public class PermissionGatewayImpl implements PermissionServiceGateway {
 
 
     @Override
-    public Boolean checkPermission(CheckPermissionForm checkPermission) {
+    public CheckPermissionResult checkPermission(CheckPermissionForm checkPermission) {
         Result result = preCheck(checkPermission.getModelId());
 
         CheckPermissionContext checkPermissionContext = CheckPermissionContext.builder()
+                .appKey(checkPermission.getAppKey())
                 .triple(checkPermission.getTriple())
                 .model(result.modelById())
                 .policy(result.policyById())

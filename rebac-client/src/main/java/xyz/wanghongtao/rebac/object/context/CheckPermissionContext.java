@@ -8,6 +8,8 @@ import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
+import java.util.Map;
+
 /**
  * @author wanghongtao
  * @data 2023/7/19 23:19
@@ -17,6 +19,8 @@ import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 @Builder
 @Data
 public class CheckPermissionContext {
+    String appKey;
+
     ModelDo model;
 
     PolicyDo policy;
@@ -29,6 +33,8 @@ public class CheckPermissionContext {
     String relationHasPermission;
 
     Expression expressionComputed;
+
+    Map<String, Object> checkPermissionParam;
 
   public CheckPermissionContext clone()  {
     return CheckPermissionContext.builder()

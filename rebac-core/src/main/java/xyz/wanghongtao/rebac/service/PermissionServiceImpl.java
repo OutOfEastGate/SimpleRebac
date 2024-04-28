@@ -1,7 +1,9 @@
 package xyz.wanghongtao.rebac.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
 import xyz.wanghongtao.rebac.engine.relation.RelationEngine;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
@@ -9,9 +11,11 @@ import xyz.wanghongtao.rebac.object.context.CheckRelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.Permission;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
+import xyz.wanghongtao.rebac.object.result.CheckPermissionResult;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
+import xyz.wanghongtao.rebac.service.gateway.DatabaseGatewaySync;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,13 +28,17 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author wanghongtao
  * @data 2023/7/19 22:18
  */
+@Slf4j
 @AllArgsConstructor
 @Service
 public class PermissionServiceImpl implements PermissionService {
     private final DatabaseGateway databaseGateway;
+    private final DatabaseGatewaySync databaseGatewaySync;
     @Override
-    public Boolean checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
+    public CheckPermissionResult checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
         //TODO 实现图关联模型查询
+      StopWatch stopWatch = new StopWatch();
+      stopWatch.start();
         Set<String> relationsHasPermission = new HashSet<>();
         AtomicReference<List<Permission>> permissions = new AtomicReference<>(new ArrayList<>());
         //查询出具有该权限的关系
@@ -75,7 +83,15 @@ public class PermissionServiceImpl implements PermissionService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return result.get();
+      stopWatch.stop();
+
+        log.info("权限校验用时：{}秒",stopWatch.getTotalTimeSeconds());
+      CheckPermissionResult checkPermissionResult = CheckPermissionResult.builder()
+        .hasPermission(result.get())
+        .useTime(stopWatch.getTotalTimeSeconds())
+        .build();
+      databaseGatewaySync.saveCheckPermissionRecord(checkPermissionResult, checkPermissionContext);
+      return checkPermissionResult;
     }
 
     @Override

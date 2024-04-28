@@ -79,10 +79,10 @@ function App() {
         triple: `${values.objectType}:${values.objectName}#${values.permission}@${values.subjectType}:${values.subjectName}`
       }).then(res => {
         if(res.msg === "success") {
+          let msg = `是否有权限：${res.data.hasPermission.toString()}\n 鉴权耗时：${res.data.useTime}秒`
           api.open({
             message: '权限校验结果',
-            description:
-              res.data.toString(),
+            description:msg,
             duration: 0,
           });
         } else {

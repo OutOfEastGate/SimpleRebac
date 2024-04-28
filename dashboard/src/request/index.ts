@@ -22,8 +22,9 @@ instance.interceptors.request.use((config)=>{
 
 //响应拦截器
 instance.interceptors.response.use(res=>{
-    if (res.status === 401) {
+    if (res.data.code === "401") {
         localStorage.removeItem("token")
+        window.location.href = "/login"
     }
     return res.data;
 },err=>{

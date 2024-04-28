@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wanghongtao.rebac.object.form.permission.CheckPermissionForm;
 import xyz.wanghongtao.rebac.object.form.relation.CheckRelationForm;
+import xyz.wanghongtao.rebac.object.result.CheckPermissionResult;
 import xyz.wanghongtao.rebac.object.viewObject.Result;
 import xyz.wanghongtao.rebac.service.gateway.PermissionServiceGateway;
 
@@ -25,8 +27,9 @@ public class PermissionController {
      * @return 是否有权限
      */
     @PostMapping("/checkPermission")
-    public Result<Boolean> checkPermission(@Valid @RequestBody CheckPermissionForm checkPermission) {
-        return Result.success(permissionServiceGateway.checkPermission(checkPermission));
+    public Result<CheckPermissionResult> checkPermission(@Valid @RequestBody CheckPermissionForm checkPermission, @RequestHeader("appKey")String appKey) {
+      checkPermission.setAppKey(appKey);
+      return Result.success(permissionServiceGateway.checkPermission(checkPermission));
     }
 
     /**

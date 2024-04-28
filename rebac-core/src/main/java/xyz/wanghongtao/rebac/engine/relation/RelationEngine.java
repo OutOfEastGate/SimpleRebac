@@ -41,7 +41,6 @@ public class RelationEngine {
       checkPermissionContext.getPermissionContext().getSubjectType() +
       ":" +
       checkPermissionContext.getPermissionContext().getSubject();
-    System.out.println(stringBuilder);
     List<RelationDo> relationByTriple = permissionRuntime.getRelationByTriple(stringBuilder);
     return relationByTriple.size() > 0;
   }

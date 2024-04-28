@@ -116,7 +116,10 @@ interface GraphNode extends d3.SimulationNodeDatum {
 }
 
 interface checkPermissionRes extends BaseRes{
-  data:Boolean
+  data:{
+    hasPermission: Boolean,
+    useTime: number
+  }
 }
 interface checkRelationRes extends BaseRes{
   data:Boolean
