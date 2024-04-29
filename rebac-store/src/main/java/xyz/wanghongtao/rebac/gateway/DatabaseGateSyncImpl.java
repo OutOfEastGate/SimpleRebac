@@ -24,7 +24,7 @@ public class DatabaseGateSyncImpl implements DatabaseGatewaySync {
   @Override
   public void saveCheckPermissionRecord(CheckPermissionResult checkPermissionResult, CheckPermissionContext checkPermissionContext) {
     Thread.startVirtualThread(() -> databaseGatewaySyncRuntime.saveCheckPermissionRecord(CheckPermissionRecordDo.builder()
-        .appKey(checkPermissionContext.getAppKey())
+      .appKey(checkPermissionContext.getAppKey())
       .modelId(checkPermissionContext.getModel().getId())
       .policyId(checkPermissionContext.getPolicy().getId())
       .triple(checkPermissionContext.getTriple())

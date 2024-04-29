@@ -1,20 +1,12 @@
 package xyz.wanghongtao.rebac.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import xyz.wanghongtao.rebac.object.dataObject.UserDo;
 import xyz.wanghongtao.rebac.object.form.user.RegisterForm;
 import xyz.wanghongtao.rebac.repository.UserMapper;
-import xyz.wanghongtao.rebac.service.mockService.UserServiceMockImpl;
-
-import javax.sql.DataSource;
 
 /**
  * @author wanghongtao <wanghongtao05@kuaishou.com>

@@ -13,9 +13,8 @@ import xyz.wanghongtao.rebac.object.dataObject.model.Permission;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.result.CheckPermissionResult;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
+import xyz.wanghongtao.rebac.runtime.PermissionServiceRuntime;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
-import xyz.wanghongtao.rebac.service.gateway.DatabaseGateway;
-import xyz.wanghongtao.rebac.service.gateway.DatabaseGatewaySync;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,11 +31,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 @Service
 public class PermissionServiceImpl implements PermissionService {
-    private final DatabaseGateway databaseGateway;
-    private final DatabaseGatewaySync databaseGatewaySync;
+    private final PermissionServiceRuntime permissionServiceRuntime;
     @Override
     public CheckPermissionResult checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
-        //TODO 实现图关联模型查询
       StopWatch stopWatch = new StopWatch();
       stopWatch.start();
         Set<String> relationsHasPermission = new HashSet<>();
@@ -90,7 +87,7 @@ public class PermissionServiceImpl implements PermissionService {
         .hasPermission(result.get())
         .useTime(stopWatch.getTotalTimeSeconds())
         .build();
-      databaseGatewaySync.saveCheckPermissionRecord(checkPermissionResult, checkPermissionContext);
+      permissionServiceRuntime.saveCheckPermissionRecord(checkPermissionResult, checkPermissionContext);
       return checkPermissionResult;
     }
 
@@ -100,7 +97,7 @@ public class PermissionServiceImpl implements PermissionService {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         //检查数据库是否有该条关系
         Thread.startVirtualThread(() -> {
-            relationByTriple.set(databaseGateway.getRelationByTriple(checkRelationContext.getTriple()));
+            relationByTriple.set(permissionServiceRuntime.getRelationByTriple(checkRelationContext.getTriple()));
             countDownLatch.countDown();
         });
         try {

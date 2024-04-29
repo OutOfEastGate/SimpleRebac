@@ -51,7 +51,7 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
 
     RelationService relationService;
 
-    UserLoginRuntime userLoginRuntime;
+
 
 
     @Override
@@ -205,14 +205,7 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
         relationService.deleteRelation(deleteRelationForm.getModelId(), deleteRelationForm.getId());
     }
 
-  public LoginResult login(LoginForm loginForm) {
-    return UserLoginEngine.login(userLoginRuntime, loginForm);
-  }
 
-  @Override
-  public RegisterResult register(RegisterForm registerForm) {
-    return UserLoginEngine.register(userLoginRuntime, registerForm);
-  }
 
   @Override
   public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation) {

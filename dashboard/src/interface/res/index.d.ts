@@ -31,6 +31,8 @@ interface Store {
 
 interface AppKey {
   id:string,
+  appName:string,
+  appIcon:string,
   appKey:string,
   secretKey:string
 }

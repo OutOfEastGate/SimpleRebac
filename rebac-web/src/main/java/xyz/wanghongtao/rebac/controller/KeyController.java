@@ -25,8 +25,6 @@ public class KeyController {
 
     KeyGeneratorFactory keyGeneratorFactory;
 
-//    SelectHandler selectHandler;
-
     DatabaseGateway databaseGateway;
 
     @GetMapping("/generate")
@@ -38,9 +36,4 @@ public class KeyController {
     public Result<List<KeyDo>> getList() {
       return Result.success(databaseGateway.getKeyList());
     }
-
-//    @GetMapping("/test")
-//  public Result<Object> test() {
-//      return Result.success(selectHandler.select());
-//    }
 }

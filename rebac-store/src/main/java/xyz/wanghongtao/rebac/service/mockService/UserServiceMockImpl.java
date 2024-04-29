@@ -1,11 +1,8 @@
 package xyz.wanghongtao.rebac.service.mockService;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import xyz.wanghongtao.rebac.config.MockDataSource;
 import xyz.wanghongtao.rebac.object.dataObject.UserDo;
 import xyz.wanghongtao.rebac.object.form.user.RegisterForm;
 import xyz.wanghongtao.rebac.service.UserService;

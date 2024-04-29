@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="rebac-secure" />
         <module name="rebac-web" />
+        <module name="rebac-app" />
         <module name="rebac-store" />
         <module name="rebac-client" />
         <module name="rebac-core" />
@@ -22,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="--enable-preview" />
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SimpleRebac" options="" />
+      <module name="rebac-app" options="-parameters" />
       <module name="rebac-client" options="-parameters" />
       <module name="rebac-core" options="-parameters" />
       <module name="rebac-main" options="-parameters" />

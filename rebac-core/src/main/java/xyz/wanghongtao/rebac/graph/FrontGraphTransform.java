@@ -1,6 +1,5 @@
 package xyz.wanghongtao.rebac.graph;
 
-import org.springframework.stereotype.Component;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.viewObject.graph.GraphVo;
 import xyz.wanghongtao.rebac.object.viewObject.graph.LinkVo;

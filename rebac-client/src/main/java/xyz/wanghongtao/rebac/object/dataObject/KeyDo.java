@@ -15,6 +15,10 @@ public class KeyDo {
     @TableId(type = IdType.AUTO)
     Long id;
 
+    String appName;
+
+    String appIcon;
+
     String appKey;
 
     String secretKey;

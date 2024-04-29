@@ -2,7 +2,6 @@ package xyz.wanghongtao.rebac.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +11,7 @@ import xyz.wanghongtao.rebac.object.dataObject.graph.GraphBase;
 import xyz.wanghongtao.rebac.object.dataObject.graph.GraphDo;
 import xyz.wanghongtao.rebac.object.runtime.GraphPreviewConvertToRelationRuntime;
 import xyz.wanghongtao.rebac.repository.GraphRepository;
-import xyz.wanghongtao.rebac.service.mockService.GraphServiceMockImpl;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 

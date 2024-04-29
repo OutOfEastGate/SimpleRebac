@@ -9,12 +9,17 @@ import Model from "../components/model";
 import Store from "../components/store";
 import Relation from "../components/relation";
 import LoginPage from "../page/LoginPage";
+import AppSelect from "../page/AppSelect";
 
 
 const routes = [
   {
     path: "/login",
     element: <LoginPage></LoginPage>
+  },
+  {
+    path: "/appSelect",
+    element: <AppSelect></AppSelect>
   },
   {
     path: "/",

@@ -24,6 +24,7 @@
         <module>rebac-client</module>
         <module>rebac-web</module>
         <module>rebac-core</module>
+        <module>rebac-app</module>
     </modules>
 
     <parent>
