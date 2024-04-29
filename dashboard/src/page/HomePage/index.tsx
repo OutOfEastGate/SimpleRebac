@@ -1,5 +1,4 @@
 import {
-  CommentOutlined,
   CrownOutlined, CustomerServiceOutlined,
   TabletOutlined,
   UserOutlined,
@@ -11,7 +10,13 @@ import {Outlet, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 
 export default () => {
-  const [isDark, setIsDark] = useState<boolean>(false)
+  let isDarkFromStore = localStorage.getItem("isDark");
+  if(isDarkFromStore === null) {
+    console.log("sss")
+    isDarkFromStore = "false"
+  }
+  console.log(isDarkFromStore)
+  const [isDark, setIsDark] = useState<boolean>(Boolean(isDarkFromStore))
   const navigateTo = useNavigate();
 
   const path = {
@@ -83,11 +88,15 @@ export default () => {
         style={{ right: 94 }}
         icon={<CustomerServiceOutlined />}
       >
-        <FloatButton tooltip={<div>设置为黑暗模式</div>}  onClick={() => setIsDark(!isDark)}/>
+        <FloatButton tooltip={<div>设置为黑暗模式</div>}  onClick={() => {
+          const newIsDark = !isDark
+          localStorage.setItem("isDark", String(newIsDark))
+          setIsDark(newIsDark)
+        }}/>
       </FloatButton.Group>
-      <ProConfigProvider dark={isDark}>
+      <ProConfigProvider dark={localStorage.getItem("isDark") === "true"}>
         <ProLayout
-          menuHeaderRender={() => {return <></>}}
+          menuHeaderRender={() => {return <>当前应用：{localStorage.getItem("appName")} <br/> 当前存储空间：{localStorage.getItem("storeName")}</>}}
           fixSiderbar
           route={ path }
           avatarProps={{

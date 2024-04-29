@@ -19,6 +19,7 @@ const App: React.FC = () => {
 
   function selectApp(item:AppKey) {
     localStorage.setItem("appKey", item.appKey)
+    localStorage.setItem("appName", item.appName)
     api.open({
       key: "login",
       message: '提示',

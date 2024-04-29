@@ -45,6 +45,7 @@ const App: React.FC = () => {
           <Button type={"primary"} onClick={() => {
             function selectModel(record: Store) {
               localStorage.setItem("storeId", record.id.toString())
+              localStorage.setItem("storeName", record.name.toString())
               api.open({
                 key: "store",
                 message: '提示',
