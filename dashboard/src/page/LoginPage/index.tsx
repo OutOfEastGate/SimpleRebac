@@ -49,7 +49,7 @@ const App: React.FC = () => {
             </div>,
           });
           setTimeout(() => {
-            window.location.href = "/homepage"
+            window.location.href = "/admin/homepage"
           }, 2000);
         } else {
           api.open({
@@ -83,7 +83,7 @@ const App: React.FC = () => {
           });
           localStorage.setItem("token", r.data.token)
           setTimeout(() => {
-            window.location.href = "/homepage"
+            window.location.href = "/admin/homepage"
           }, 1000);
         } else {
           api.open({

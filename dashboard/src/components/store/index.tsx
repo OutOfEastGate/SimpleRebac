@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, message, Progress, Row, Space, Statistic, Table} from 'antd';
+import {Button, Card, Col, message, notification, Progress, Row, Space, Statistic, Table} from 'antd';
 import type { TableProps } from 'antd';
 import {getAllStore, saveStore} from "../../request/api";
 import Loading from "../common/Loading";
@@ -12,41 +12,54 @@ interface DataType {
   appKey:string
 }
 
-const columns: TableProps<Store>['columns'] = [
-  {
-    title: 'id',
-    dataIndex: 'id',
-    key: 'id',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: '存储空间名称',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: '存储空间描述',
-    dataIndex: 'description',
-    key: 'description',
-    render: (text) => (<p>{text}</p>)
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <Button type={"primary"}> 编辑 </Button>
-        <Button danger> 删除 </Button>
-      </Space>
-    ),
-  },
-];
+
 
 const App: React.FC = () => {
   const [data, setData] = useState<Store[]>([])
   const [isShowAddStoreModal, setIsShowAddStoreModalOpen] = useState<boolean>(false)
+  const [api, contextHolder] = notification.useNotification();
+  const columns: TableProps<Store>['columns'] = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      key: 'id',
+      render: (text) => <p>{text}</p>,
+    },
+    {
+      title: '存储空间名称',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text) => <p>{text}</p>,
+    },
+    {
+      title: '存储空间描述',
+      dataIndex: 'description',
+      key: 'description',
+      render: (text) => (<p>{text}</p>)
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type={"primary"} onClick={() => {
+            function selectModel(record: Store) {
+              localStorage.setItem("storeId", record.id.toString())
+              api.open({
+                key: "store",
+                message: '提示',
+                description: <div>
+                  <p>存储空间已切换，当前存储空间：{record.name}</p>
+                </div>,
+              });
+            }
 
+            selectModel(record)}}> 选择存储空间 </Button>
+          <Button danger> 删除 </Button>
+        </Space>
+      ),
+    },
+  ];
   function getStoreList() {
     getAllStore().then(r => {
       setData(r.data)
@@ -83,7 +96,7 @@ const App: React.FC = () => {
 
   return(
     <div style={{ height: '100%', width: '100%', lineHeight: '50px',}}>
-
+      {contextHolder}
       <Card>
         <Row gutter={16}>
           <Col span={8}>

@@ -17,10 +17,7 @@ const routes = [
     path: "/login",
     element: <LoginPage></LoginPage>
   },
-  {
-    path: "/appSelect",
-    element: <AppSelect></AppSelect>
-  },
+
   {
     path: "/",
     element:<Navigate to="/homepage"/>
@@ -30,23 +27,27 @@ const routes = [
     element:<HomePage/>,
     children: [
       {
-        path: "/homepage",
+        path: "/admin/appSelect",
+        element: <AppSelect></AppSelect>
+      },
+      {
+        path: "/admin/homepage",
         element: <FirstPage/>
       },
       {
-        path: "/space",
+        path: "/admin/space",
         element: <Store/>
       },
       {
-        path: "/permission",
+        path: "/show/permission",
         element: <Relation></Relation>
       },
       {
-        path: "/relation",
+        path: "/show/relation",
         element: <GraphHome/>
       },
       {
-        path: "/system",
+        path: "/admin/system",
         element: <System/>
       },
       {
@@ -54,7 +55,7 @@ const routes = [
         element: <Key></Key>
       },
       {
-        path: "/model",
+        path: "/admin/model",
         element: <Model></Model>
       }
     ]

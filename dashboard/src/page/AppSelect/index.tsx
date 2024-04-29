@@ -28,7 +28,7 @@ const App: React.FC = () => {
       </div>,
     });
     setTimeout(() => {
-      window.location.href = "/homepage"
+      window.location.href = "/admin/homepage"
     }, 2000);
   }
 

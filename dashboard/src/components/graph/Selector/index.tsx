@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Select, Space, Tooltip} from 'antd';
 
 interface propsType {
@@ -11,6 +11,13 @@ interface selector{
     desc: string
 }
 function App(props:propsType){
+
+  useEffect(()=> {
+    let storeId = localStorage.getItem("storeId")
+    if(storeId !== null) {
+      props.handleOpsChange(Number(storeId))
+    }
+  },[])
 
     const handleChange = (value: number) => {
         props.handleOpsChange(value)

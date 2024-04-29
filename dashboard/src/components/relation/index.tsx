@@ -182,6 +182,10 @@ function App() {
   };
 
   useEffect(() => {
+    const storeId = localStorage.getItem("storeId")
+    if(storeId != null) {
+      handleSelectChange(Number(storeId))
+    }
     if(currentSelectModel !== undefined && currentSelectModel.policyId !== undefined) {
       getPolicy(currentSelectModel.policyId).then(r => {
         setPolicy(r.data)
@@ -323,18 +327,10 @@ function App() {
     <div>
       {contextHolder}
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
-          <Header style={headerStyle}>
-            <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
-          </Header>
-          <Content style={contentStyle}>
-            {models.length == 0 ? getDemo() :
-              <Tabs defaultActiveKey="1"
-                    items={models.map(item => ({key: item.id, label: item.name, children:  getChildren(item)}))}
-                    onChange={onTabChange} />}
-          </Content>
-          <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
-        </Layout>
+        {models.length == 0 ? getDemo() :
+          <Tabs defaultActiveKey="1"
+                items={models.map(item => ({key: item.id, label: item.name, children:  getChildren(item)}))}
+                onChange={onTabChange} />}
 
       </Space>
     </div>

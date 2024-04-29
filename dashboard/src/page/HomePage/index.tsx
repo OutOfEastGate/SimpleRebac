@@ -1,66 +1,118 @@
-import React, { useState} from 'react';
+import {
+  CommentOutlined,
+  CrownOutlined, CustomerServiceOutlined,
+  TabletOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import {PageContainer, ProConfigProvider, ProLayout} from '@ant-design/pro-components';
+import { FloatButton } from 'antd';
 
-import {Layout, Menu} from "antd";
-import {Outlet, useNavigate} from "react-router-dom"
+import {Outlet, useNavigate} from "react-router-dom";
+import React, {useState} from "react";
 
+export default () => {
+  const [isDark, setIsDark] = useState<boolean>(false)
+  const navigateTo = useNavigate();
 
-const { Header, Content, Footer, Sider } = Layout;
-
-const items = [
-  {
-    key: "/homepage",
-    label: "首页"
-  },
-  {
-    key: "/space",
-    label: "存储空间管理"
-  },
-  {
-    key: "/relation",
-    label: "关系演示中台"
-  },
-  {
-    key: "/permission",
-    label: "权限演示中台"
-  },
-  {
-    key: "/model",
-    label: "存储模型管理"
-  },
-  {
-    key: "/key",
-    label: "密钥管理"
-  },
-  {
-    key: "/system",
-    label: "系统监控"
+  const path = {
+    path: '/',
+    routes: [
+      {
+        path: '/admin',
+        name: '管理',
+        icon: <CrownOutlined />,
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/admin/homepage',
+            name: '首页',
+            icon: <CrownOutlined />,
+          },
+          {
+            path: '/admin/appSelect',
+            name: '应用列表',
+            icon: <CrownOutlined />,
+          },
+          {
+            path: '/admin/space',
+            name: '存储空间管理',
+            icon: <CrownOutlined />,
+          },
+          {
+            path: '/admin/model',
+            name: '模型管理',
+            icon: <CrownOutlined />,
+          },
+          {
+            path: '/admin/system',
+            name: '系统运行',
+            icon: <CrownOutlined />,
+          },
+        ],
+      },
+      {
+        name: '权限演示中台',
+        icon: <TabletOutlined />,
+        path: '/show',
+        routes: [
+          {
+            path: '/show/relation',
+            name: '关系演示',
+            icon: <CrownOutlined />,
+          },
+          {
+            path: '/show/permission',
+            name: '权限演示',
+            icon: <CrownOutlined />,
+          },
+        ],
+      },
+    ],
   }
-]
-
-const App: React.FC = () => {
-
-  const navigateTo = useNavigate()
-  const [selectedKeys, setSelectedKeys] = useState<[string]>(["/homepage"])
-
-  const selectMenu = (params: {key:string}) => {
-
-    setSelectedKeys(["/system"])
-      navigateTo(params.key)
-    }
 
   return (
-    <Layout hasSider={true}>
-      <Sider
-        style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
+    <div
+      id="test-pro-layout"
+      style={{
+        height: '100vh',
+      }}
+    >
+      <FloatButton.Group
+        trigger="hover"
+        type="primary"
+        style={{ right: 94 }}
+        icon={<CustomerServiceOutlined />}
       >
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" mode="inline" items={items} onSelect={selectMenu} />
-      </Sider>
-      <Layout style={{ marginLeft: 200 }}>
-        <Outlet></Outlet>
-      </Layout>
-    </Layout>
+        <FloatButton tooltip={<div>设置为黑暗模式</div>}  onClick={() => setIsDark(!isDark)}/>
+      </FloatButton.Group>
+      <ProConfigProvider dark={isDark}>
+        <ProLayout
+          menuHeaderRender={() => {return <></>}}
+          fixSiderbar
+          route={ path }
+          avatarProps={{
+            icon: <UserOutlined />,
+            size: 'small',
+            title: 'root',
+          }}
+          menu={{ defaultOpenAll: true }}
+          menuItemRender={(item, dom) => (
+            <a
+              onClick={() => {
+                if(item.path !== undefined) {
+                  navigateTo(item.path)
+                }
+              }}
+            >
+              {dom}
+            </a>
+          )}
+        >
+          <PageContainer>
+            <Outlet></Outlet>
+          </PageContainer>
+        </ProLayout>
+      </ProConfigProvider>
+    </div>
   );
 };
-
-export default App;
