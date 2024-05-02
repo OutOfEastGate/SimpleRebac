@@ -38,32 +38,32 @@ public class Config {
   String password;
 
 
-//  @Bean
-//  public Connection getConnection() {
-//    String url = "jdbc:mysql://" + wifiMachine +":3306/SimpleRebac";
-//    String username = "root";
-//    String password = "19460";
-//    Connection connection;
-//    try {
-//      connection = DriverManager.getConnection(url, username, password);
-//    } catch (SQLException e) {
-//      log.error("jooq连接异常");
-//      InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
-//
-//      try {
-//        return new MockConnection(new MockFileDatabase(resourceAsStream));
-//      } catch (IOException ex) {
-//        throw new RuntimeException(ex);
-//      }
-//    }
-//
-//    return connection;
-//  }
+  @Bean
+  public Connection getConnection() {
+    String url = "jdbc:mysql://" + wifiMachine +":3306/SimpleRebac";
+    String username = "root";
+    String password = "19460";
+    Connection connection;
+    try {
+      connection = DriverManager.getConnection(url, username, password);
+    } catch (SQLException e) {
+      log.error("jooq连接异常");
+      InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
 
-//  @Bean
-//  public DSLContext getContext(Connection connection) {
-//    DSLContext dslContext = DSL.using(connection, SQLDialect.MYSQL);
-//    return dslContext;
-//  }
+      try {
+        return new MockConnection(new MockFileDatabase(resourceAsStream));
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+    }
+
+    return connection;
+  }
+
+  @Bean
+  public DSLContext getContext(Connection connection) {
+    DSLContext dslContext = DSL.using(connection, SQLDialect.MYSQL);
+    return dslContext;
+  }
 
 }

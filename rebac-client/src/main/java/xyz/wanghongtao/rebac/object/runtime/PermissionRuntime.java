@@ -28,4 +28,12 @@ public class PermissionRuntime {
   public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, RelationContext relationContext) {
     return databaseGateway.getRelationBySubjectAndRelation(modelId, relationContext.getSubjectType(), relationContext.getSubject(), relationContext.getRelation());
   }
+
+  public List<RelationDo> getRelationBySubject(Long modelId, RelationContext relationContext) {
+    return databaseGateway.getRelationBySubject(modelId, relationContext.getSubjectType(), relationContext.getSubject());
+  }
+
+  public List<RelationDo> getRelationByObject(Long modelId, RelationContext relationContext) {
+    return databaseGateway.getRelationByObject(modelId, relationContext.getObjectType(), relationContext.getObject());
+  }
 }

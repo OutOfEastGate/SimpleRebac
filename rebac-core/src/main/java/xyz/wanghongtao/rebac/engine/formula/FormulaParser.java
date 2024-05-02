@@ -25,6 +25,10 @@ public class FormulaParser {
                 .precedence(Precedence.PREC_NONE)
                 .prefixParser(new StringParselet())
                 .build());
+        parseRuleMap.put(TokenType.SyntaxSymbol, ParseRule.builder()
+            .precedence(Precedence.PREC_CALL)
+            .prefixParser(new SyntaxSymbolParselet())
+          .build());
 
       parseRuleMap.put(TokenType.Identifier, ParseRule.builder()
         .precedence(Precedence.PREC_NONE)
@@ -35,6 +39,20 @@ public class FormulaParser {
       parseRuleMap.put(TokenType.Plus, ParseRule.builder()
         .precedence(Precedence.PREC_TERM)
         .infixParser(new BinaryExpressionParselet())
+        .build());
+      parseRuleMap.put(TokenType.Bang, ParseRule.builder()
+        .precedence(Precedence.PREC_NONE)
+          .prefixParser(new BangParselet())
+        .build());
+
+      parseRuleMap.put(TokenType.EqualEqual, ParseRule.builder()
+        .precedence(Precedence.PREC_EQUALITY)
+        .infixParser(new EqualEqualInfixParselet())
+        .build());
+
+      parseRuleMap.put(TokenType.NotEqual, ParseRule.builder()
+        .precedence(Precedence.PREC_EQUALITY)
+        .infixParser(new NotEqualInfixParselet())
         .build());
 
       parseRuleMap.put(TokenType.Dot, ParseRule.builder()
@@ -85,7 +103,7 @@ public class FormulaParser {
     }
 
   public Integer getTokenLength() {
-    return this.tokenStream.getTokenList().stream().filter(token -> token.type.equals(TokenType.Identifier)).toList().size();
+    return this.tokenStream.getTokenList().size();
   }
 
     protected Precedence currentPrecedence() {
@@ -147,6 +165,14 @@ public class FormulaParser {
         }
     }
 
+  private static class SyntaxSymbolParselet implements PrefixParser {
+    @Override
+    public Expression apply(FormulaParser parser, Token token, boolean canAssign) {
+      parser.tokenStream.consume();
+      return new SyntaxSymbolLiteral(token, token.getValue());
+    }
+  }
+
   private static class IdentifierParselet implements PrefixParser {
 
     @Override
@@ -170,6 +196,28 @@ public class FormulaParser {
             return expression;
         }
     }
+
+  private static class EqualEqualInfixParselet implements InfixParser {
+    @Override
+    public Expression apply(FormulaParser parser, Expression left, Token token, boolean canAssign) {
+      var expression = new EqualEqualExpression(token, left);
+      parser.tokenStream.consume();
+      var rightExpr = parser.parsePrecedence(Precedence.PREC_EQUALITY);
+      expression.setRight(rightExpr);
+      return expression;
+    }
+  }
+
+  private static class NotEqualInfixParselet implements InfixParser {
+    @Override
+    public Expression apply(FormulaParser parser, Expression left, Token token, boolean canAssign) {
+      var expression = new NotEqualExpression(token, left);
+      parser.tokenStream.consume();
+      var rightExpr = parser.parsePrecedence(Precedence.PREC_EQUALITY);
+      expression.setRight(rightExpr);
+      return expression;
+    }
+  }
 
     private static class LogicAndInfixParselet implements InfixParser {
         @Override
@@ -201,6 +249,17 @@ public class FormulaParser {
       var rightExpr = parser.parsePrecedence(Precedence.PREC_DOT);
       expression.setRight(rightExpr);
       return expression;
+    }
+  }
+
+  private static class BangParselet implements PrefixParser {
+
+    @Override
+    public Expression apply(FormulaParser parser, Token token, boolean canAssign) {
+      TokenType type = token.getType();
+      parser.getTokenStream().consume();
+      Expression right = parser.parsePrecedence(Precedence.PREC_UNARY);
+      return new NotExpression(token, right);
     }
   }
 

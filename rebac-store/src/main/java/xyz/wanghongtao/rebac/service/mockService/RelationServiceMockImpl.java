@@ -105,4 +105,30 @@ public class RelationServiceMockImpl extends AbstractMockService implements Rela
     });
     return relationDoList;
   }
+
+  @Override
+  public List<RelationDo> getRelationBySubject(Long modelId, String subjectType, String subject) {
+    List<RelationDo> relationDoList = new ArrayList<>();
+    relationDoMap.values().forEach(relationDo -> {
+      if (Objects.equals(relationDo.getModelId(), modelId) &&
+        Objects.equals(relationDo.getSubjectType(), subjectType) &&
+        Objects.equals(relationDo.getSubject(), subject)) {
+        relationDoList.add(relationDo);
+      }
+    });
+    return relationDoList;
+  }
+
+  @Override
+  public List<RelationDo> getRelationByObject(Long modelId, String objectType, String object) {
+    List<RelationDo> relationDoList = new ArrayList<>();
+    relationDoMap.values().forEach(relationDo -> {
+      if (Objects.equals(relationDo.getModelId(), modelId) &&
+        Objects.equals(relationDo.getObjectType(), objectType) &&
+        Objects.equals(relationDo.getObject(), object)) {
+        relationDoList.add(relationDo);
+      }
+    });
+    return relationDoList;
+  }
 }

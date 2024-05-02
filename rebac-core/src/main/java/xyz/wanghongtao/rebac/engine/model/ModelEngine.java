@@ -3,10 +3,7 @@ package xyz.wanghongtao.rebac.engine.model;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryDotExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOrExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.IdentifierExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.*;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
@@ -161,14 +158,34 @@ public class ModelEngine {
       //TODO 关系运算符 . 检查需要特殊处理
 //      recursionExpression(binaryDotExpression.getLeft(), relationObjectTypeMap, errorInfo);
 //      recursionExpression(binaryDotExpression.getRight(), relationObjectTypeMap, errorInfo);
-    } else {
-      IdentifierExpression identifier = (IdentifierExpression) expression;
+    } else if(expression instanceof NotExpression notExpression) {
+      log.info("[logic not]");
+      recursionExpression(notExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else if(expression instanceof EqualEqualExpression equalEqualExpression) {
+      log.info("[logic equal equal]");
+      recursionExpression(equalEqualExpression.getLeft(), relationObjectTypeMap, errorInfo);
+      recursionExpression(equalEqualExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else if(expression instanceof NotEqualExpression notEqualExpression) {
+      log.info("[logic not equal]");
+      recursionExpression(notEqualExpression.getLeft(), relationObjectTypeMap, errorInfo);
+      recursionExpression(notEqualExpression.getRight(), relationObjectTypeMap, errorInfo);
+    } else if(expression instanceof IdentifierExpression identifier) {
       String relationCanAccess = identifier.getValue();
       log.info(identifier.getValue());
       if (!relationObjectTypeMap.containsKey(relationCanAccess)) {
         errorInfo.append("Permission定义错误: 关系[").append(relationCanAccess).append("]不存在; ");
       }
       return identifier.getValue();
+    } else if(expression instanceof SyntaxSymbolLiteral syntaxSymbolLiteral) {
+      String symbolLiteralValue = syntaxSymbolLiteral.getValue();
+      log.info("[syntaxSymbolLiteral] {}", symbolLiteralValue);
+      if (symbolLiteralValue.equals("$Object") || symbolLiteralValue.equals("$Subject")) {
+
+      } else {
+        errorInfo.append("[").append(symbolLiteralValue).append("]").append("不存在");
+      }
+    }else {
+      log.error("UnKnow Expression");
     }
     return null;
   }

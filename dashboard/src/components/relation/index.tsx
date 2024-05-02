@@ -150,6 +150,10 @@ function App() {
 
 
   useEffect(() => {
+    const storeId = localStorage.getItem("storeId")
+    if(storeId != null) {
+      handleSelectChange(Number(storeId))
+    }
     if (stores.length === 0) {
       getAllStore().then((res) => {
         if (res.msg === 'success' && res.data != null) {
@@ -159,7 +163,7 @@ function App() {
         message.error(error.message)
       });
     }
-  }, []);
+  }, [stores.length]);
   const handleSelectChange = (id:number) => {
     getAllModel(id).then(res => {
       if (res.msg === "success") {
@@ -182,10 +186,7 @@ function App() {
   };
 
   useEffect(() => {
-    const storeId = localStorage.getItem("storeId")
-    if(storeId != null) {
-      handleSelectChange(Number(storeId))
-    }
+
     if(currentSelectModel !== undefined && currentSelectModel.policyId !== undefined) {
       getPolicy(currentSelectModel.policyId).then(r => {
         setPolicy(r.data)

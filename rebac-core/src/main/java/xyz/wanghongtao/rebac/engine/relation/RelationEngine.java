@@ -2,10 +2,9 @@ package xyz.wanghongtao.rebac.engine.relation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryDotExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.BinaryOrExpression;
-import xyz.wanghongtao.rebac.engine.formula.expression.IdentifierExpression;
+import xyz.wanghongtao.rebac.engine.formula.expression.*;
+import xyz.wanghongtao.rebac.engine.formula.expression.StringLiteral;
+import xyz.wanghongtao.rebac.engine.relation.PermissionCheckHandler.*;
 import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.exception.ErrorCode;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
@@ -18,7 +17,9 @@ import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,6 +29,28 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 public class RelationEngine {
+  static PermissionCheckHandler notHandler = new NotHandler();
+  static PermissionCheckHandler notEqualHandler = new NotEqualHandler();
+  static PermissionCheckHandler equalEqualHandler = new EqualEqualHandler();
+  static PermissionCheckHandler binaryDotHandler = new BinaryDotHandler();
+  static PermissionCheckHandler binaryOrHandler = new BinaryOrHandler();
+  static PermissionCheckHandler binaryAndHandler = new BinaryAndHandler();
+  static PermissionCheckHandler syntaxSymbolHandler = new SyntaxSymbolHandler();
+  static PermissionCheckHandler identifierHandler = new IdentifierHandler();
+
+  private static Map<Class<? extends Expression>, PermissionCheckHandler> permissionHandlerMap = new HashMap<>();
+
+  static {
+    permissionHandlerMap.put(IdentifierExpression.class, identifierHandler);
+    permissionHandlerMap.put(SyntaxSymbolLiteral.class, syntaxSymbolHandler);
+    permissionHandlerMap.put(BinaryAndExpression.class, binaryAndHandler);
+    permissionHandlerMap.put(BinaryOrExpression.class, binaryOrHandler);
+    permissionHandlerMap.put(BinaryDotExpression.class, binaryDotHandler);
+    permissionHandlerMap.put(EqualEqualExpression.class, equalEqualHandler);
+    permissionHandlerMap.put(NotEqualExpression.class, notEqualHandler);
+    permissionHandlerMap.put(NotExpression.class, notHandler);
+  }
+
 
   //直接关系搜索
   public static Boolean checkPermissionDirect(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime) {
@@ -42,6 +65,7 @@ public class RelationEngine {
       ":" +
       checkPermissionContext.getPermissionContext().getSubject();
     List<RelationDo> relationByTriple = permissionRuntime.getRelationByTriple(stringBuilder);
+    checkPermissionContext.pushRelationFromExpression(relationByTriple);
     return relationByTriple.size() > 0;
   }
 
@@ -117,68 +141,8 @@ public class RelationEngine {
     }
 
     public static Boolean recursionExpression(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime, Expression expression) {
-        if (expression instanceof BinaryOrExpression binaryOrExpression) {
-          Expression left = binaryOrExpression.getLeft();
-          Expression right = binaryOrExpression.getRight();
-          return recursionExpression(checkPermissionContext, permissionRuntime, left) || recursionExpression(checkPermissionContext, permissionRuntime, right);
-        } else if(expression instanceof BinaryAndExpression binaryAndExpression) {
-          Expression left = binaryAndExpression.getLeft();
-          Expression right = binaryAndExpression.getRight();
-          return recursionExpression(checkPermissionContext, permissionRuntime, left) && recursionExpression(checkPermissionContext, permissionRuntime, right);
-        } else if (expression instanceof BinaryDotExpression binaryDotExpression) {
-          //TODO 借助图数据库
-          Expression left = binaryDotExpression.getLeft();
-          Expression right = binaryDotExpression.getRight();
-          PermissionContext permissionContext = checkPermissionContext.getPermissionContext();
-
-          List<RelationDo> relationDoListFromLeft = new ArrayList<>();
-          if (left instanceof IdentifierExpression identifierExpression) {
-            relationDoListFromLeft = permissionRuntime
-              .getRelationBySubjectAndRelation(checkPermissionContext.getModel().getId(), RelationContext.builder()
-                .subject(permissionContext.getSubject())
-                .subjectType(permissionContext.getSubjectType())
-                .relation(identifierExpression.getValue())
-                .build());
-          } else {
-            Boolean isTrue = recursionExpression(checkPermissionContext, permissionRuntime, left);
-            if (isTrue) {
-              return true;
-            }
-          }
-
-          if(right instanceof IdentifierExpression identifierExpression) {
-            for (RelationDo relationDo : relationDoListFromLeft) {
-              List<RelationDo> relationDoList = permissionRuntime
-                .getRelationBySubjectAndRelation(checkPermissionContext.getModel().getId(), RelationContext.builder()
-                  .subject(relationDo.getObject())
-                  .subjectType(relationDo.getObjectType())
-                  .relation(identifierExpression.getValue())
-                  .build());
-              for (RelationDo aDo : relationDoList) {
-                if(aDo.getObject().equals(checkPermissionContext.getOriginPermissionContext().getObject()) &&
-                    aDo.getObjectType().equals(checkPermissionContext.getOriginPermissionContext().getObjectType())) {
-                  return true;
-                }
-              }
-            }
-          } else {
-            CheckPermissionContext clone = checkPermissionContext.clone();
-            for (RelationDo relationDo : relationDoListFromLeft) {
-              clone.setPermissionContext(PermissionContext.builder()
-                .subject(relationDo.getObject())
-                .subjectType(relationDo.getObjectType())
-                .build());
-              Boolean isTrue = recursionExpression(clone, permissionRuntime, right);
-              if (isTrue) {
-                return true;
-              }
-            }
-          }
-        } else if(expression instanceof IdentifierExpression identifierExpression) {
-          String relation = identifierExpression.getValue();
-          checkPermissionContext.setRelationHasPermission(relation);
-          return checkPermissionDirect(checkPermissionContext, permissionRuntime);
-        }
-        return false;
+      PermissionCheckHandler permissionCheckHandler = permissionHandlerMap.get(expression.getClass());
+      return permissionCheckHandler.handle(checkPermissionContext, permissionRuntime, expression);
     }
+
 }

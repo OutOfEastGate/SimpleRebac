@@ -15,9 +15,7 @@
         <module name="rebac-core" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="20">
-      <module name="rebac-main" target="20" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="20" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="--enable-preview" />
@@ -26,7 +24,6 @@
       <module name="rebac-app" options="-parameters" />
       <module name="rebac-client" options="-parameters" />
       <module name="rebac-core" options="-parameters" />
-      <module name="rebac-main" options="-parameters" />
       <module name="rebac-secure" options="-parameters" />
       <module name="rebac-store" options="-parameters" />
       <module name="rebac-web" options="-parameters" />

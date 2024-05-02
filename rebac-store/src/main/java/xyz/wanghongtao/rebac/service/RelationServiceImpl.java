@@ -77,4 +77,22 @@ public class RelationServiceImpl implements RelationService {
     queryWrapper.eq(RelationDo::getRelation, relation);
     return relationMapper.selectList(queryWrapper);
   }
+
+  @Override
+  public List<RelationDo> getRelationBySubject(Long modelId, String subjectType, String subject) {
+    LambdaQueryWrapper<RelationDo> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(RelationDo::getModelId, modelId);
+    queryWrapper.eq(RelationDo::getSubject, subject);
+    queryWrapper.eq(RelationDo::getSubjectType, subjectType);
+    return relationMapper.selectList(queryWrapper);
+  }
+
+  @Override
+  public List<RelationDo> getRelationByObject(Long modelId, String objectType, String object) {
+    LambdaQueryWrapper<RelationDo> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(RelationDo::getModelId, modelId);
+    queryWrapper.eq(RelationDo::getObject, object);
+    queryWrapper.eq(RelationDo::getObjectType, objectType);
+    return relationMapper.selectList(queryWrapper);
+  }
 }

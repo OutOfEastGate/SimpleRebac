@@ -1,6 +1,5 @@
-package xyz.wanghongtao.rebac.engine.formula.token;
+package xyz.wanghongtao.rebac.engine.formula.expression;
 
-import xyz.wanghongtao.rebac.engine.formula.expression.AbstractExpression;
 import xyz.wanghongtao.rebac.object.engine.formula.Token;
 
 public class StringLiteral extends AbstractExpression {

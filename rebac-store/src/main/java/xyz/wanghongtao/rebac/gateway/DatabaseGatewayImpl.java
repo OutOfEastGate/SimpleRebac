@@ -211,4 +211,13 @@ public class DatabaseGatewayImpl implements DatabaseGateway {
   public List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation) {
     return relationService.getRelationBySubjectAndRelation(modelId, subjectType, subject, relation);
   }
+
+  @Override
+  public List<RelationDo> getRelationBySubject(Long modelId, String subjectType, String subject) {
+    return relationService.getRelationBySubject(modelId, subjectType, subject);
+  }
+  @Override
+  public List<RelationDo> getRelationByObject(Long modelId, String objectType, String object) {
+    return relationService.getRelationByObject(modelId, objectType, object);
+  }
 }

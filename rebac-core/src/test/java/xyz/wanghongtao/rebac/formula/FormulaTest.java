@@ -45,6 +45,47 @@ public class FormulaTest {
   public void testTokenSize() {
     String express = "a and b";
     FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testNot() {
+    String express = "!a";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testEqualEqual() {
+    String express = "a == b";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testNotEqual() {
+    String express = "a != b";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testString() {
+    String express = "a == \"部门\"";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
+  public void testSyntaxSymbol() {
+    String express = "$User.a.b";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
     log.info("token size {}", formulaParser.getTokenLength());
   }
 

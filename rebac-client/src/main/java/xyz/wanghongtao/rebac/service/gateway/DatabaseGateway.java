@@ -68,4 +68,8 @@ public interface DatabaseGateway {
     void deleteRelation(DeleteRelationForm deleteRelationForm);
 
     List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String subjectType, String subject, String relation);
+
+  List<RelationDo> getRelationBySubject(Long modelId, String subjectType, String subject);
+
+  List<RelationDo> getRelationByObject(Long modelId, String objectType, String object);
 }

@@ -18,7 +18,7 @@ public enum Precedence {
     PREC_FACTOR(7),    // * /
     PREC_UNARY(8),     // ! -
     PREC_CALL(9),
-    PREC_DOT(4),
+    PREC_DOT(5),
 
     ;
 

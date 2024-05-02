@@ -17,13 +17,14 @@ public class FormulaLexer {
     private static final Pattern REG = Pattern.compile(
             "(?<LeftCurly>\\{)|(?<RightCurly>\\})|(?<LeftBracket>\\[)|(?<RightBracket>\\])|(?<LeftParen>\\()|(?<RightParen>\\))"
                     + "|(?<Colon>:)|(?<Comma>,)|(?<Semicolon>;)"
-                    + "|(?<Bang>!)|(?<Percentage>%)"
                     + "|(?<NewLine>\\n)"
                     + "|(?<Whitespace>(?:\t| |\r)+)"
                     + "|(?<Number>-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[Ee][+-]?\\d+)?)"
                     + "|(?<String>\"(?:[^\"\\\\]*|\\\\(?:[\"\\\\bfnrt\\/]|u[0-9A-Fa-f]{4}))*\")"
-                    + "|(?<Identifier>(?:(?:[a-zA-Z_])(?:[a-zA-Z0-9_])*)|\\+|\\-[>]?|\\*|\\/|>[=]?|<[=]?|\\.|@|&&|\\|\\||.)"
                     + "|(?<SyntaxSymbol>(?:\\$([a-zA-Z_][a-zA-Z0-9_]*)?))"
+                    + "|(?<Identifier>(?:(?:[a-zA-Z_])(?:[a-zA-Z0-9_])*)|==|!=|\\/|\\.|@|&&|\\|\\||.|!)"
+
+                    + "|(?<Bang>!)|(?<Percentage>%)"
     );
 
     public static Map<String, TokenType> keywordMapping = new HashMap<>();
@@ -38,6 +39,9 @@ public class FormulaLexer {
         keywordMapping.put("and", TokenType.LogicAnd);
         keywordMapping.put("OR", TokenType.LogicOr);
         keywordMapping.put("or", TokenType.LogicOr);
+        keywordMapping.put("!", TokenType.Bang);
+        keywordMapping.put("==", TokenType.EqualEqual);
+        keywordMapping.put("!=", TokenType.NotEqual);
     }
 
     public static List<Token> lex(String input) throws CustomException {

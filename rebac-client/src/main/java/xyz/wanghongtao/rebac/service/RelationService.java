@@ -19,4 +19,8 @@ public interface RelationService {
     int deleteRelation(Long modelId);
 
     List<RelationDo> getRelationBySubjectAndRelation(Long modelId, String objectType, String object, String relation);
+
+  List<RelationDo> getRelationBySubject(Long modelId, String subjectType, String subject);
+
+  List<RelationDo> getRelationByObject(Long modelId, String objectType, String object);
 }
