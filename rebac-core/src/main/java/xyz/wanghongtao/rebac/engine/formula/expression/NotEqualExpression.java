@@ -1,13 +1,19 @@
 package xyz.wanghongtao.rebac.engine.formula.expression;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 import xyz.wanghongtao.rebac.object.engine.formula.Token;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
 /**
  * @author wanghongtao
  * @date 2024/5/2 15:47
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class NotEqualExpression implements Expression {
   private Token token;

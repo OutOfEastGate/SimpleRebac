@@ -7,6 +7,10 @@ public class StringLiteral extends AbstractExpression {
         super(token, value);
     }
 
+  public StringLiteral() {
+    super();
+  }
+
     public String toString() {
         return getValue();
     }

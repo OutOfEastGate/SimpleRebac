@@ -3,7 +3,7 @@ package xyz.wanghongtao.rebac.engine.relation.PermissionCheckHandler;
 import xyz.wanghongtao.rebac.engine.formula.expression.BinaryAndExpression;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import static xyz.wanghongtao.rebac.engine.relation.RelationEngine.recursionExpression;
 

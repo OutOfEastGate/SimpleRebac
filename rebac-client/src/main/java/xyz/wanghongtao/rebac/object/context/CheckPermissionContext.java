@@ -7,7 +7,7 @@ import lombok.Setter;
 import xyz.wanghongtao.rebac.object.dataObject.ModelDo;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +45,9 @@ public class CheckPermissionContext {
 
   public CheckPermissionContext clone()  {
     return CheckPermissionContext.builder()
-      .model(this.model)
-      .policy(this.policy)
+      .model(this.model.clone())
+      .policy(this.policy.clone())
+      .permissionContext(permissionContext.clone())
       .originPermissionContext(originPermissionContext)
       .relationHasPermission(relationHasPermission)
       .expressionComputed(expressionComputed)

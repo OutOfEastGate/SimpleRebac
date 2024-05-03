@@ -7,7 +7,7 @@ import xyz.wanghongtao.rebac.object.context.PermissionContext;
 import xyz.wanghongtao.rebac.object.context.RelationContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import java.util.ArrayList;
 import java.util.List;

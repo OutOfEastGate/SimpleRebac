@@ -14,7 +14,7 @@ import xyz.wanghongtao.rebac.object.dataObject.model.PolicyDo;
 import xyz.wanghongtao.rebac.object.result.CheckPermissionResult;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
 import xyz.wanghongtao.rebac.runtime.PermissionServiceRuntime;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import java.util.ArrayList;
 import java.util.HashSet;

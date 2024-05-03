@@ -1,9 +1,13 @@
 package xyz.wanghongtao.rebac.engine.formula.expression;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 import xyz.wanghongtao.rebac.object.engine.formula.Token;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
 
+@AllArgsConstructor
+@Builder
 public class BinaryOperatorExpression implements Expression {
     private final Token token;
     private final Expression left;

@@ -28,4 +28,14 @@ public class ModelDo {
     String description;
 
     String policyId;
+
+  public ModelDo clone() {
+    return ModelDo.builder()
+      .id(id)
+      .storeId(storeId)
+      .name(name)
+      .description(description)
+      .policyId(policyId)
+      .build();
+  }
 }

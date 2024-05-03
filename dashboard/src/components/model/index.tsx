@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
-import { Layout, message, Space } from "antd";
+import {Card, Layout, message, Space} from "antd";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import {getAllModel, getAllStore} from "../../request/api";
 import Selector from "../graph/Selector";
@@ -77,16 +77,10 @@ function App() {
   return (
     <div>
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
-          <Header style={headerStyle}>
-            <Selector handleOpsChange={handleSelectChange} ops={stores.map(item => ({value: item.id.toString(), label: item.name, desc: item.description}))}></Selector>
-          </Header>
-          <Content style={contentStyle}>
-            <ModelTable data={models} updateModel={updateModel} currentSelectStore={currentSelectStore}></ModelTable>
-          </Content>
-          <Footer style={footerStyle}>SimpleReBac权限演示中台</Footer>
-        </Layout>
+        <Card>
+          <ModelTable data={models} updateModel={updateModel} currentSelectStore={currentSelectStore}></ModelTable>
 
+        </Card>
       </Space>
     </div>
   );

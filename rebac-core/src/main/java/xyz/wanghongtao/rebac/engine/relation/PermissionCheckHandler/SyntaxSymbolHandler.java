@@ -4,7 +4,7 @@ import xyz.wanghongtao.rebac.engine.formula.expression.SyntaxSymbolLiteral;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 /**
  * @author wanghongtao

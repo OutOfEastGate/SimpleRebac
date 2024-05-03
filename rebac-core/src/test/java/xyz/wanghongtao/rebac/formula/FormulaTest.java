@@ -5,7 +5,7 @@ import org.junit.Test;
 import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
 import xyz.wanghongtao.rebac.engine.model.ModelEngine;
 import xyz.wanghongtao.rebac.object.context.PermissionContext;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import java.util.HashMap;
 import java.util.Map;

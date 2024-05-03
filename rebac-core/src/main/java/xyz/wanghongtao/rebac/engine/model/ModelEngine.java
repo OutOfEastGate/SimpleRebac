@@ -8,7 +8,7 @@ import xyz.wanghongtao.rebac.exception.CustomException;
 import xyz.wanghongtao.rebac.object.form.model.AddModelForm;
 import xyz.wanghongtao.rebac.object.form.policy.PolicyForm;
 import xyz.wanghongtao.rebac.object.form.policy.UpdatePolicyForm;
-import xyz.wanghongtao.rebac.service.engine.formula.Expression;
+import xyz.wanghongtao.rebac.object.engine.formula.Expression;
 
 import java.util.*;
 
