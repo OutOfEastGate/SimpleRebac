@@ -8,9 +8,12 @@ import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.software.os.NetworkParams;
 import oshi.software.os.OperatingSystem;
+import xyz.wanghongtao.rebac.object.dataObject.CheckPermissionRecordDo;
 import xyz.wanghongtao.rebac.object.viewObject.system.SystemInfoDto;
+import xyz.wanghongtao.rebac.service.gateway.DatabaseLogGateway;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * @author wanghongtao
@@ -20,6 +23,8 @@ import java.text.DecimalFormat;
 @Component
 public class SystemServiceRuntime {
   private final SystemInfo systemInfo = new SystemInfo();
+
+  private final DatabaseLogGateway databaseLogGateway;
 
   public SystemInfoDto getSystemRunInfo() {
     SystemInfoDto systemInfoDto = new SystemInfoDto();
@@ -54,6 +59,23 @@ public class SystemServiceRuntime {
     return systemInfoDto;
   }
 
+  public SystemInfoDto getPermissionRunInfo(SystemInfoDto systemInfoDto) {
+    List<CheckPermissionRecordDo> checkPermissionLogList = databaseLogGateway.getCheckPermissionLogList();
+    //统计鉴权次数
+    Integer times = checkPermissionLogList.size();
+
+    Long successTimes = checkPermissionLogList.stream().filter(CheckPermissionRecordDo::getHasPermission).count();
+    Long failTimes = times - successTimes;
+
+    SystemInfoDto.PermissionInfo permissionInfo = SystemInfoDto.PermissionInfo.builder()
+      .times(times)
+      .successTimes(successTimes)
+      .failTimes(failTimes)
+      .build();
+    systemInfoDto.setPermissionInfo(permissionInfo);
+    return systemInfoDto;
+  }
+
   private static String formatByte(long byteNumber) {
     //换算单位
     double FORMAT = 1024.0;
@@ -72,4 +94,6 @@ public class SystemServiceRuntime {
     double tbNumber = gbNumber / FORMAT;
     return new DecimalFormat("#.##TB").format(tbNumber);
   }
+
+
 }

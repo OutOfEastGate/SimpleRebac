@@ -28,6 +28,7 @@ public class SystemServiceImpl implements SystemService {
 
 
     SystemInfoDto systemInfoDto = systemServiceRuntime.getSystemRunInfo();
+    systemServiceRuntime.getPermissionRunInfo(systemInfoDto);
     return systemInfoDto;
   }
 

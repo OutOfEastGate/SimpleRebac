@@ -1,5 +1,6 @@
 package xyz.wanghongtao.rebac.object.viewObject.system;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -33,4 +34,14 @@ public class SystemInfoDto {
      * jvm内存使用率
      */
     Double jvmMemoryUsage;
+
+    PermissionInfo permissionInfo;
+
+    @Builder
+    @Data
+    public static class PermissionInfo {
+      Integer times;
+      Long successTimes;
+      Long failTimes;
+    }
 }

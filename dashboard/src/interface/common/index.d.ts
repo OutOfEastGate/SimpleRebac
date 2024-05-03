@@ -6,7 +6,12 @@ interface SystemInfo {
   cpuThreadNum: string,
   totalMemory:string,
   memoryUsage:number,
-  jvmMemoryUsage:number
+  jvmMemoryUsage:number,
+  permissionInfo:{
+    times:number,
+    successTimes:number,
+    failTimes:number
+  }
 }
 
 

@@ -49,6 +49,16 @@ class App extends React.Component<any, stateType>{
             <Col span={8}>
               <Statistic title="CPU线程数数" value={this.state.systemInfo.cpuThreadNum}  />
             </Col>
+            <Col span={8}>
+              <Statistic title="鉴权次数" value={this.state.systemInfo.permissionInfo.times}  />
+            </Col>
+            <Col span={8}>
+              <Statistic title="鉴权成功次数" value={this.state.systemInfo.permissionInfo.successTimes}  />
+            </Col>
+            <Col span={8}>
+              <Statistic title="鉴权失败次数" value={this.state.systemInfo.permissionInfo.failTimes}  />
+            </Col>
+
             <Col span={24} style={{ marginTop: 32 }}>
               <Statistic title="系统总内存" value={this.state.systemInfo.totalMemory} />
             </Col>
