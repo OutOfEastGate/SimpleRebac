@@ -27,7 +27,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
+      String requestURI = request.getRequestURI();
       log.info("#处理请求：{}", request.getRequestURI());
+      if (requestURI.equals("/") || requestURI.equals("/favicon.ico") || requestURI.equals("/index.html") || requestURI.startsWith("/static/") || requestURI.startsWith("/admin/")) {
+        return true;
+      }
+      if (requestURI.equals("/login") || requestURI.equals("/registry") || requestURI.equals("/manifest.json")) {
+        return true;
+      }
       if (request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/register")) {
         return true;
       }

@@ -43,19 +43,19 @@ public class Config {
     String url = "jdbc:mysql://" + wifiMachine +":3306/SimpleRebac";
     String username = "root";
     String password = "19460";
-    Connection connection;
-    try {
-      connection = DriverManager.getConnection(url, username, password);
-    } catch (SQLException e) {
-      log.error("jooq连接异常");
-      InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
-
-      try {
-        return new MockConnection(new MockFileDatabase(resourceAsStream));
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
-    }
+    Connection connection = null;
+//    try {
+//      connection = DriverManager.getConnection(url, username, password);
+//    } catch (SQLException e) {
+//      log.error("jooq连接异常");
+//      InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
+//
+//      try {
+//        return new MockConnection(new MockFileDatabase(resourceAsStream));
+//      } catch (IOException ex) {
+//        throw new RuntimeException(ex);
+//      }
+//    }
 
     return connection;
   }
