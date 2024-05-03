@@ -2,15 +2,11 @@ package xyz.wanghongtao.rebac.object.runtime;
 
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import xyz.wanghongtao.rebac.object.config.RuntimeConfigParam;
 import xyz.wanghongtao.rebac.object.dataObject.UserDo;
 import xyz.wanghongtao.rebac.object.form.user.RegisterForm;
 import xyz.wanghongtao.rebac.service.UserService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author wanghongtao <wanghongtao05@kuaishou.com>
@@ -19,21 +15,17 @@ import java.util.Map;
 @Data
 @Component
 public class UserLoginRuntime {
-  @Value("${wht.back.salt}")
-  private String salt;
 
-  @Value("${wht.back.mockDatabase}")
-  private Boolean mockDatabase;
+  private final RuntimeConfigParam configParam;
 
   private final UserService userService;
 
-  private final RedisTemplate<String, Object> redisTemplate;
+  private final CacheRuntime cacheRuntime;
 
-  public static Map<String, Object> cache = new HashMap<>();
-
-  public UserLoginRuntime(UserService userService, RedisTemplate<String, Object> redisTemplate) {
+  public UserLoginRuntime(RuntimeConfigParam configParam, UserService userService, CacheRuntime cacheRuntime) {
+    this.configParam = configParam;
     this.userService = userService;
-    this.redisTemplate = redisTemplate;
+    this.cacheRuntime = cacheRuntime;
   }
 
   public UserDo getUserByUsername(String username) {
@@ -45,10 +37,10 @@ public class UserLoginRuntime {
   }
 
   public void saveToken(String username, String token) {
-    if(mockDatabase) {
-      cache.put(username, token);
-      return;
-    }
-    redisTemplate.opsForValue().set(username, token);
+    cacheRuntime.saveCache(username, token);
+  }
+
+  public String getSalt() {
+    return configParam.getSalt();
   }
 }

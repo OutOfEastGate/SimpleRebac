@@ -2,8 +2,8 @@ package xyz.wanghongtao.rebac.object.runtime;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import xyz.wanghongtao.rebac.object.config.RuntimeConfigParam;
 import xyz.wanghongtao.rebac.service.RelationComputeService;
 
 /**
@@ -13,17 +13,17 @@ import xyz.wanghongtao.rebac.service.RelationComputeService;
 @Slf4j
 @Component
 public class RelationComputeRuntime {
-  @Value("${wht.back.startGraphCompute}")
-  Boolean startGraphCompute;
+  private final RuntimeConfigParam configParam;
   private final RelationComputeService relationComputeService;
 
-  public RelationComputeRuntime(RelationComputeService relationComputeService) {
+  public RelationComputeRuntime(RuntimeConfigParam configParam, RelationComputeService relationComputeService) {
+    this.configParam = configParam;
     this.relationComputeService = relationComputeService;
   }
 
   @PostConstruct
   public void init() {
-    if(startGraphCompute) {
+    if(configParam.getStartGraphCompute()) {
       log.info("开启图数据库");
     }
   }

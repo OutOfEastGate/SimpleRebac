@@ -21,12 +21,12 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="--enable-preview" />
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SimpleRebac" options="" />
-      <module name="rebac-app" options="-parameters" />
-      <module name="rebac-client" options="-parameters" />
-      <module name="rebac-core" options="-parameters" />
-      <module name="rebac-secure" options="-parameters" />
-      <module name="rebac-store" options="-parameters" />
-      <module name="rebac-web" options="-parameters" />
+      <module name="rebac-app" options="-parameters --enable-preview" />
+      <module name="rebac-client" options="-parameters --enable-preview" />
+      <module name="rebac-core" options="-parameters --enable-preview" />
+      <module name="rebac-secure" options="-parameters --enable-preview" />
+      <module name="rebac-store" options="-parameters --enable-preview" />
+      <module name="rebac-web" options="-parameters --enable-preview" />
     </option>
   </component>
 </project>

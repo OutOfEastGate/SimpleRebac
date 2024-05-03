@@ -2,6 +2,9 @@ package xyz.wanghongtao.rebac.object.viewObject.system;
 
 import lombok.Builder;
 import lombok.Data;
+import xyz.wanghongtao.rebac.object.dataObject.CheckPermissionRecordDo;
+
+import java.util.List;
 
 @Data
 public class SystemInfoDto {
@@ -36,6 +39,8 @@ public class SystemInfoDto {
     Double jvmMemoryUsage;
 
     PermissionInfo permissionInfo;
+
+    List<CheckPermissionRecordDo> logList;
 
     @Builder
     @Data

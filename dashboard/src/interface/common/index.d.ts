@@ -11,7 +11,8 @@ interface SystemInfo {
     times:number,
     successTimes:number,
     failTimes:number
-  }
+  },
+  logList:any[]
 }
 
 

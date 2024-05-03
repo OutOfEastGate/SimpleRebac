@@ -26,6 +26,11 @@ public class DatabaseLogGatewayImpl implements DatabaseLogGateway {
   }
 
   @Override
+  public List<CheckPermissionRecordDo> getTop20CheckPermissionLogList() {
+    return checkPermissionRecordService.getTop20CheckPermissionLogList();
+  }
+
+  @Override
   public List<CheckPermissionRecordDo> getCheckPermissionLogListByAppKey(String appKey) {
     return null;
   }

@@ -1,10 +1,34 @@
 import React from "react";
-import {Card, Col, CountdownProps, message, Progress, Row, Statistic} from "antd";
+import {Card, Col, CountdownProps, message, Progress, Row, Space, Statistic, Table, Tag} from "antd";
 import {getSystemInfo} from "../../request/api";
 import Loading from "../common/Loading";
+import Column from "antd/es/table/Column";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 const { Countdown } = Statistic;
+interface DataType {
+  key: React.Key;
+  appKey: string;
+  modelId: string;
+  policyId: string;
+  triple: string;
+  hasPermission: boolean;
+  useTimeSeconds: string,
+  createTimestamp:string
+}
 
+const data: DataType[] = [
+  {
+    key: '1',
+    appKey: 'John',
+    modelId: 'Brown',
+    policyId: "32",
+    triple: 'New York No. 1 Lake Park',
+    hasPermission: false,
+    useTimeSeconds: "1.2",
+    createTimestamp: "2024-4-22"
+  },
+];
 interface stateType{
   systemInfo: SystemInfo | null
 }
@@ -71,7 +95,36 @@ class App extends React.Component<any, stateType>{
               <Progress type="circle" percent={this.state.systemInfo.jvmMemoryUsage * 100} />
             </Col>
           </Row>
+
         </Card>
+        <Card title={"请求日志"}>
+          <Table dataSource={this.state.systemInfo.logList}>
+            <ColumnGroup title="应用信息">
+              <Column title="应用ID" dataIndex="appKey" key="appKey" />
+              <Column title="模型ID" dataIndex="modelId" key="modelId" />
+              <Column title="策略ID" dataIndex="policyId" key="policyId" />
+            </ColumnGroup>
+            <Column title="三元组" dataIndex="triple" key="triple" />
+            <Column title="使用时间" dataIndex="useTimeSeconds" key="useTimeSeconds" />
+            <Column
+              title="是否成功"
+              dataIndex="hasPermission"
+              key="hasPermission"
+              render={(hasPermission: boolean) => (
+                <>
+                  {hasPermission ? <Tag color='green'>true</Tag> : <Tag color = 'volcano'>false</Tag>}
+                </>
+              )}
+            />
+            <Column title="请求时间" dataIndex="createTimestamp" key="createTimestamp" render={(createTimestamp:string) => {
+              const date = new Date(createTimestamp)
+              return(<div>
+                {`${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`}
+              </div>)
+            }}/>
+          </Table>
+        </Card>
+
       </>;
   }
 }

@@ -26,4 +26,9 @@ public class CheckPermissionRecordServiceImpl implements CheckPermissionRecordSe
   public void save(CheckPermissionRecordDo checkPermissionRecordDo) {
     checkPermissionRecordRepository.save(checkPermissionRecordDo);
   }
+
+  @Override
+  public List<CheckPermissionRecordDo> getTop20CheckPermissionLogList() {
+    return checkPermissionRecordRepository.findTop20ByOrderByCreateTimestampDesc();
+  }
 }

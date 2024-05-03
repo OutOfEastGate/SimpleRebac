@@ -42,4 +42,9 @@ public class CheckPermissionRecordServiceMockImpl extends AbstractMockService im
     checkPermissionRecordDoMap.put(id, checkPermissionRecordDo);
     updateDatabase();
   }
+
+  @Override
+  public List<CheckPermissionRecordDo> getTop20CheckPermissionLogList() {
+    return checkPermissionRecordDoMap.values().stream().toList();
+  }
 }

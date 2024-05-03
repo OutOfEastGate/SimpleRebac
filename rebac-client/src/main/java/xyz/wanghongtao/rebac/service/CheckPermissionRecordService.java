@@ -13,4 +13,6 @@ public interface CheckPermissionRecordService {
   List<CheckPermissionRecordDo> findAll();
 
   void save(CheckPermissionRecordDo checkPermissionRecordDo);
+
+  List<CheckPermissionRecordDo> getTop20CheckPermissionLogList();
 }

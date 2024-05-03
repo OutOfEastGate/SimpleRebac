@@ -61,6 +61,8 @@ public class SystemServiceRuntime {
 
   public SystemInfoDto getPermissionRunInfo(SystemInfoDto systemInfoDto) {
     List<CheckPermissionRecordDo> checkPermissionLogList = databaseLogGateway.getCheckPermissionLogList();
+    List<CheckPermissionRecordDo> top20Log = databaseLogGateway.getTop20CheckPermissionLogList();
+    systemInfoDto.setLogList(top20Log);
     //统计鉴权次数
     Integer times = checkPermissionLogList.size();
 
