@@ -38,7 +38,7 @@ public class RelationEngine {
   static PermissionCheckHandler syntaxSymbolHandler = new SyntaxSymbolHandler();
   static PermissionCheckHandler identifierHandler = new IdentifierHandler();
 
-  private static Map<Class<? extends Expression>, PermissionCheckHandler> permissionHandlerMap = new HashMap<>();
+  private static final Map<Class<? extends Expression>, PermissionCheckHandler> permissionHandlerMap = new HashMap<>();
 
   static {
     permissionHandlerMap.put(IdentifierExpression.class, identifierHandler);

@@ -29,10 +29,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
       String requestURI = request.getRequestURI();
       log.info("#处理请求：{}", request.getRequestURI());
-      if (requestURI.equals("/") || requestURI.equals("/favicon.ico") || requestURI.equals("/index.html") || requestURI.startsWith("/static/") || requestURI.startsWith("/admin/")) {
+      if (requestURI.equals("/") || requestURI.equals("/favicon.ico") || requestURI.equals("/index.html") || requestURI.startsWith("/static/") || requestURI.startsWith("/admin/")|| requestURI.startsWith("/show/")) {
         return true;
       }
-      if (requestURI.equals("/login") || requestURI.equals("/registry") || requestURI.equals("/manifest.json")) {
+      if (requestURI.equals("/login") || requestURI.equals("/registry") || requestURI.equals("/manifest.json") || requestURI.equals("/logo192.png")) {
         return true;
       }
       if (request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/register")) {

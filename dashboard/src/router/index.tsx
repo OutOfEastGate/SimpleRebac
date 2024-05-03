@@ -20,7 +20,7 @@ const routes = [
 
   {
     path: "/",
-    element:<Navigate to="/homepage"/>
+    element:<Navigate to="/admin/homepage"/>
   },
   {
     path: "/",
