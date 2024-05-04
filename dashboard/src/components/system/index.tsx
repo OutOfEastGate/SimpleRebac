@@ -42,6 +42,13 @@ class App extends React.Component<any, stateType>{
   }
 
   UNSAFE_componentWillMount() {
+    getSystemInfo().then(res => {
+      this.setState({
+        systemInfo: res.data
+      })
+    }).catch(error => {
+      message.error(error.message)
+    })
     this.timerId  = setInterval(() => {
       getSystemInfo().then(res => {
         this.setState({
@@ -57,6 +64,7 @@ class App extends React.Component<any, stateType>{
       clearInterval(this.timerId);
     }
   }
+
 
   render() {
 

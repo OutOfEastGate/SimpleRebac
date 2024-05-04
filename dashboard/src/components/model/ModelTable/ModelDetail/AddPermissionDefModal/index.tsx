@@ -47,7 +47,7 @@ const App: React.FC<PropsType> = (props:PropsType) => {
 
   return (
     <>
-      <Modal title="增加权限" open={props.isModalOpen} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} >
+      <Modal title="增加权限定义" open={props.isModalOpen} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} >
         <Form
           labelCol={{ flex: '110px' }}
           labelAlign="left"

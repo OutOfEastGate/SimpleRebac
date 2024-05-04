@@ -46,7 +46,7 @@ public class ModelTest {
 
         Relation relation = Relation.builder()
                 .relation("reader")
-                .subjectType("document")
+                .subjectType("static/document")
                 .build();
 
         Definition userDefinition = Definition.builder()
@@ -56,7 +56,7 @@ public class ModelTest {
 
         Definition documentDefinition = Definition.builder()
                 .description("文档实体")
-                .objectType("document")
+                .objectType("static/document")
                 .permissions(List.of(permission))
                 .relations(List.of(relation))
                 .build();

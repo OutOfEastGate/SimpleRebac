@@ -16,6 +16,9 @@ public class WebConfig implements WebMvcConfigurer {
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry.addResourceHandler("/static/static/**")
       .addResourceLocations("classpath/static/static/**").resourceChain(true);
+
+    registry.addResourceHandler("/static/document/**")
+      .addResourceLocations("classpath/static/document/**").resourceChain(true);
   }
 
   @Override
@@ -24,5 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addViewController("/login").setViewName("forward:/index.html");
     registry.addViewController("/admin/**").setViewName("forward:/index.html");
     registry.addViewController("/show/**").setViewName("forward:/index.html");
+    registry.addViewController("/document").setViewName("forward:/document/index.html");
   }
 }

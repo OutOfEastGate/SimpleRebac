@@ -42,6 +42,15 @@ function App() {
   const [policy, setPolicy] = useState<Policy>();
 
   useEffect(() => {
+    let storeId = localStorage.getItem("storeId")
+    if(storeId != null) {
+      setCurrentSelectStore(Number(storeId))
+      getAllModel(Number(storeId)).then(res => {
+        if (res.msg === "success") {
+          setModels(res.data)
+        }
+      })
+    }
     if (stores.length === 0) {
       getAllStore().then((res) => {
         if (res.msg === 'success' && res.data != null) {

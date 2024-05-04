@@ -10,8 +10,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import xyz.wanghongtao.rebac.object.runtime.LoginInterceptorRuntime;
 import xyz.wanghongtao.rebac.util.JwtUtil;
 
-import java.util.Enumeration;
-
 /**
  * @author wanghongtao
  * @data 2023/7/23 18:08
@@ -29,10 +27,16 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
       String requestURI = request.getRequestURI();
       log.info("#处理请求：{}", request.getRequestURI());
+      if (requestURI.startsWith("/document")) {
+        return true;
+      }
+      if (requestURI.contains(".css") || requestURI.contains(".js") || requestURI.contains("/json")) {
+        return true;
+      }
       if (requestURI.equals("/") || requestURI.equals("/favicon.ico") || requestURI.equals("/index.html") || requestURI.startsWith("/static/") || requestURI.startsWith("/admin/")|| requestURI.startsWith("/show/")) {
         return true;
       }
-      if (requestURI.equals("/login") || requestURI.equals("/registry") || requestURI.equals("/manifest.json") || requestURI.equals("/logo192.png")) {
+      if (requestURI.equals("/login") || requestURI.equals("/logo192.png")) {
         return true;
       }
       if (request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/register")) {

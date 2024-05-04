@@ -25,14 +25,24 @@ public class CacheRuntime {
       cache.put(key, value);
       return;
     }
-    redisTemplate.opsForValue().set(key, value);
+    try {
+      redisTemplate.opsForValue().set(key, value);
+    } catch (Exception e) {
+      cache.put(key, value);
+    }
   }
 
   public Object getCache(String key) {
     if (configParam.getMockDatabase()) {
       return cache.get(key);
     }
-    return redisTemplate.opsForValue().get(key);
+
+    try {
+      return redisTemplate.opsForValue().get(key);
+    } catch (Exception e) {
+      return cache.get(key);
+    }
+
   }
 
   public void deleteCache(String key) {
@@ -40,6 +50,10 @@ public class CacheRuntime {
       cache.remove(key);
       return;
     }
-    redisTemplate.delete(key);
+     try {
+       redisTemplate.delete(key);
+     } catch (Exception e) {
+       cache.remove(key);
+     }
   }
 }

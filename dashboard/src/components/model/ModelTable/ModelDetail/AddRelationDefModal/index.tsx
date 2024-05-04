@@ -40,7 +40,7 @@ const App: React.FC<PropsType> = (props:PropsType) => {
 
   return (
     <>
-      <Modal title="Basic Modal" open={props.isModalOpen} onOk={props.handleOk} onCancel={props.handleCancel} footer={null}>
+      <Modal title="添加关系定义" open={props.isModalOpen} onOk={props.handleOk} onCancel={props.handleCancel} footer={null}>
         <Form
           labelCol={{ flex: '110px' }}
           labelAlign="left"
