@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class MockDataSource implements DataSource {
   @Override
   public Connection getConnection() {
-    InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
+    InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase/mockDatabase");
     try {
       return new MockConnection(new MockFileDatabase(resourceAsStream));
     } catch (IOException e) {
@@ -29,7 +29,7 @@ public class MockDataSource implements DataSource {
 
   @Override
   public Connection getConnection(String username, String password) {
-    InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase");
+    InputStream resourceAsStream = getClass().getResourceAsStream("/mockDatabase/mockDatabase");
     try {
       return new MockConnection(new MockFileDatabase(resourceAsStream));
     } catch (IOException e) {

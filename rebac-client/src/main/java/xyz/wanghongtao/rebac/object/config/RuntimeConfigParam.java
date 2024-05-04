@@ -16,6 +16,8 @@ public class RuntimeConfigParam {
 
   Boolean mockDatabase;
 
+  Boolean createDatabase;
+
   String domain;
 
   String qq;

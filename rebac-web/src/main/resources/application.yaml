@@ -5,6 +5,7 @@ wht:
   back:
     startGraphCompute: true
     mockDatabase: false #false/true
+    createDatabase: false
     domain: www.wanghongtao.xyz
     qq: 1946066280
     endpoint: 114.116.9.68

@@ -23,7 +23,6 @@ public class FormulaLexer {
                     + "|(?<String>\"(?:[^\"\\\\]*|\\\\(?:[\"\\\\bfnrt\\/]|u[0-9A-Fa-f]{4}))*\")"
                     + "|(?<SyntaxSymbol>(?:\\$([a-zA-Z_][a-zA-Z0-9_]*)?))"
                     + "|(?<Identifier>(?:(?:[a-zA-Z_])(?:[a-zA-Z0-9_])*)|==|!=|\\/|\\.|@|&&|\\|\\||.|!)"
-
                     + "|(?<Bang>!)|(?<Percentage>%)"
     );
 

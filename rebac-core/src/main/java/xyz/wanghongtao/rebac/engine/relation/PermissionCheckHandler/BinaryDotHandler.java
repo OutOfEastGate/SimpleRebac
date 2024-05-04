@@ -22,7 +22,6 @@ public class BinaryDotHandler implements PermissionCheckHandler {
   @Override
   public Boolean handle(CheckPermissionContext checkPermissionContext, PermissionRuntime permissionRuntime, Expression expression) {
     BinaryDotExpression binaryDotExpression = (BinaryDotExpression) expression;
-    //TODO 借助图数据库
     Expression left = binaryDotExpression.getLeft();
     Expression right = binaryDotExpression.getRight();
     PermissionContext permissionContext = checkPermissionContext.getPermissionContext();
@@ -67,9 +66,7 @@ public class BinaryDotHandler implements PermissionCheckHandler {
           .build());
         Boolean isTrue = recursionExpression(clone, permissionRuntime, right);
         checkPermissionContext.pushRelationFromExpression(clone.getRelatiosFromExpression());
-        if (isTrue) {
-          return true;
-        }
+        return isTrue;
       }
     }
     return false;
