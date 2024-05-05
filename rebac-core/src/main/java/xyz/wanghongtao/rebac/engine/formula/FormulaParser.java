@@ -28,7 +28,7 @@ public class FormulaParser {
         parseRuleMap.put(TokenType.SyntaxSymbol, ParseRule.builder()
             .precedence(Precedence.PREC_CALL)
             .prefixParser(new SyntaxSymbolParselet())
-          .build());
+            .build());
 
       parseRuleMap.put(TokenType.Identifier, ParseRule.builder()
         .precedence(Precedence.PREC_NONE)

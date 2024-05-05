@@ -37,6 +37,10 @@
         <groupId>com.github.oshi</groupId>
         <artifactId>oshi-core</artifactId>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+      </dependency>
 
       <dependency>
         <groupId>io.jsonwebtoken</groupId>

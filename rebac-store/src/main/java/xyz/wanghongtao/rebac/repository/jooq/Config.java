@@ -37,63 +37,63 @@ public class Config {
   }
 
 
-  @Bean
-  public DSLContext getContext() {
-    if(runtimeConfigParam.getMockDatabase()) {
-      return DSL.using((new MockDataSource()).getConnection());
-    }
-    String url = "jdbc:mysql://" + runtimeConfigParam.getWifiMachine() +":3306/SimpleRebac";
-    Connection connection = null;
-    try {
-      connection = DriverManager.getConnection(url, username, password);
-    } catch (SQLException e) {
-      log.error("jooq连接异常");
-    }
-    DSLContext dslContext = DSL.using(connection, SQLDialect.MYSQL);
-    if (runtimeConfigParam.getCreateDatabase()) {
-     dslContext.createTableIfNotExists("rebac_user")
-        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
-        .column("username", SQLDataType.VARCHAR)
-        .column("password", SQLDataType.VARCHAR)
-        .constraint(DSL.constraint().primaryKey("id"))
-        .execute();
-      dslContext.createTableIfNotExists("rebac_key")
-        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
-        .column("app_name", SQLDataType.VARCHAR)
-        .column("app_icon", SQLDataType.VARCHAR)
-        .column("app_key", SQLDataType.VARCHAR)
-        .column("secret_key", SQLDataType.VARCHAR)
-        .constraint(DSL.constraint().primaryKey("id"))
-        .execute();
-      dslContext.createTableIfNotExists("rebac_model")
-        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
-        .column("store_id", SQLDataType.BIGINT)
-        .column("name", SQLDataType.VARCHAR)
-        .column("description", SQLDataType.VARCHAR)
-        .column("policy_id", SQLDataType.VARCHAR)
-        .constraint(DSL.constraint().primaryKey("id"))
-        .execute();
-      dslContext.createTableIfNotExists("rebac_relation")
-        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
-        .column("model_id", SQLDataType.BIGINT)
-        .column("object_type", SQLDataType.VARCHAR)
-        .column("object", SQLDataType.VARCHAR)
-        .column("relation", SQLDataType.VARCHAR)
-        .column("is_penetrate", SQLDataType.TINYINT)
-        .column("subject_type", SQLDataType.VARCHAR)
-        .column("subject", SQLDataType.VARCHAR)
-        .column("triple", SQLDataType.VARCHAR)
-        .constraint(DSL.constraint().primaryKey("id"))
-        .execute();
-      dslContext.createTableIfNotExists("rebac_store")
-        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
-        .column("name", SQLDataType.VARCHAR)
-        .column("description", SQLDataType.VARCHAR)
-        .column("app_key", SQLDataType.VARCHAR)
-        .constraint(DSL.constraint().primaryKey("id"))
-        .execute();
-    }
-    return dslContext;
-  }
+//  @Bean
+//  public DSLContext getContext() {
+//    if(runtimeConfigParam.getMockDatabase()) {
+//      return DSL.using((new MockDataSource()).getConnection());
+//    }
+//    String url = "jdbc:mysql://" + runtimeConfigParam.getWifiMachine() +":3306/SimpleRebac";
+//    Connection connection = null;
+//    try {
+//      connection = DriverManager.getConnection(url, username, password);
+//    } catch (SQLException e) {
+//      log.error("jooq连接异常");
+//    }
+//    DSLContext dslContext = DSL.using(connection, SQLDialect.MYSQL);
+//    if (runtimeConfigParam.getCreateDatabase()) {
+//     dslContext.createTableIfNotExists("rebac_user")
+//        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
+//        .column("username", SQLDataType.VARCHAR)
+//        .column("password", SQLDataType.VARCHAR)
+//        .constraint(DSL.constraint().primaryKey("id"))
+//        .execute();
+//      dslContext.createTableIfNotExists("rebac_key")
+//        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
+//        .column("app_name", SQLDataType.VARCHAR)
+//        .column("app_icon", SQLDataType.VARCHAR)
+//        .column("app_key", SQLDataType.VARCHAR)
+//        .column("secret_key", SQLDataType.VARCHAR)
+//        .constraint(DSL.constraint().primaryKey("id"))
+//        .execute();
+//      dslContext.createTableIfNotExists("rebac_model")
+//        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
+//        .column("store_id", SQLDataType.BIGINT)
+//        .column("name", SQLDataType.VARCHAR)
+//        .column("description", SQLDataType.VARCHAR)
+//        .column("policy_id", SQLDataType.VARCHAR)
+//        .constraint(DSL.constraint().primaryKey("id"))
+//        .execute();
+//      dslContext.createTableIfNotExists("rebac_relation")
+//        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
+//        .column("model_id", SQLDataType.BIGINT)
+//        .column("object_type", SQLDataType.VARCHAR)
+//        .column("object", SQLDataType.VARCHAR)
+//        .column("relation", SQLDataType.VARCHAR)
+//        .column("is_penetrate", SQLDataType.TINYINT)
+//        .column("subject_type", SQLDataType.VARCHAR)
+//        .column("subject", SQLDataType.VARCHAR)
+//        .column("triple", SQLDataType.VARCHAR)
+//        .constraint(DSL.constraint().primaryKey("id"))
+//        .execute();
+//      dslContext.createTableIfNotExists("rebac_store")
+//        .column(DSL.field("id", SQLDataType.BIGINT.identity(true)))
+//        .column("name", SQLDataType.VARCHAR)
+//        .column("description", SQLDataType.VARCHAR)
+//        .column("app_key", SQLDataType.VARCHAR)
+//        .constraint(DSL.constraint().primaryKey("id"))
+//        .execute();
+//    }
+//    return dslContext;
+//  }
 
 }

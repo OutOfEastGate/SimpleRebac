@@ -10,7 +10,7 @@ wht:
     qq: 1946066280
     endpoint: 114.116.9.68
     virtualMachine: 192.168.240.128
-    wifiMachine: localhost #172.30.206.167
+    wifiMachine: host.docker.internal #172.30.206.167
     salt: "salt_wht"
 spring:
   profiles:
