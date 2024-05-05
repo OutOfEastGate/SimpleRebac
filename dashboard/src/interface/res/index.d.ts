@@ -126,3 +126,11 @@ interface checkPermissionRes extends BaseRes{
 interface checkRelationRes extends BaseRes{
   data:Boolean
 }
+
+interface getFileListRes extends BaseRes{
+  data:FileInfo[]
+}
+
+interface uploadFileRes extends BaseRes{
+  data:string
+}

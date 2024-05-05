@@ -12,8 +12,13 @@ wht:
     virtualMachine: 192.168.240.128
     wifiMachine: host.docker.internal #172.30.206.167
     salt: "salt_wht"
+    runningInDocker: false
 spring:
   profiles:
     active: data
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
 
 

@@ -10,6 +10,7 @@ import Store from "../components/store";
 import Relation from "../components/relation";
 import LoginPage from "../page/LoginPage";
 import AppSelect from "../page/AppSelect";
+import File from "../components/file";
 
 
 const routes = [
@@ -45,6 +46,10 @@ const routes = [
       {
         path: "/show/relation",
         element: <GraphHome/>
+      },
+      {
+        path: "/admin/file",
+        element: <File/>
       },
       {
         path: "/admin/system",

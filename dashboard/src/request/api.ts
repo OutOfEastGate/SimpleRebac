@@ -30,3 +30,7 @@ export const saveGraphPreview = (graphDo:any):Promise<getGraphPreviewRes> => req
 export const checkPermission = (checkPermission:{modelId:string, triple:string}):Promise<checkPermissionRes> => request.post("/checkPermission", checkPermission)
 
 export const checkRelation= (checkRelation:{modelId:string, triple:string}):Promise<checkRelationRes> => request.post("/checkRelation", checkRelation)
+
+export const getFileList = () :Promise<getFileListRes> => request.get("/store/file/list");
+
+export const deleteFile= (deleteFileForm:{objectId:string}) :Promise<BaseRes> => request.post("/store/file/delete", deleteFileForm);

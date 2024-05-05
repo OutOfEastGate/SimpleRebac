@@ -41,3 +41,14 @@ interface AddStoreType{
   name:string,
   description:string
 }
+
+interface FileInfo {
+  id:string;
+  appId: string;
+  url:string;
+  filename:string;
+  ext:string;
+  objectId:string;
+  createTime:string;
+  attr:object
+}

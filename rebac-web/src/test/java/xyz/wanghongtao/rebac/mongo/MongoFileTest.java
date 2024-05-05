@@ -1,11 +1,15 @@
 package xyz.wanghongtao.rebac.mongo;
 
+import com.mongodb.client.gridfs.GridFSFindIterable;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,9 +37,21 @@ public class MongoFileTest extends AbstractTest {
   }
 
   @Test
-  public void getFile() {
-    GridFsResource test = gridFsTemplate.getResource("test");
-    System.out.println(test.getFilename());
+  public void deleteFile() {
+    Query query = new Query();
+    query.addCriteria(Criteria.where("_id").is("663776a24f09900adc20f454"));
+    gridFsTemplate.delete(query);
+  }
+
+  @Test
+  public void getList() {
+    org.springframework.data.mongodb.core.query.Query query = new org.springframework.data.mongodb.core.query.Query();
+    GridFSFindIterable gridFSFiles = gridFsTemplate.find(query);
+    for (GridFSFile gridFSFile : gridFSFiles) {
+      System.out.println(gridFSFile.getFilename());
+      System.out.println(gridFSFile);
+    }
+    System.out.println(gridFSFiles);
   }
 
 }

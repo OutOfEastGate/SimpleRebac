@@ -49,6 +49,11 @@ export default () => {
             icon: <CrownOutlined />,
           },
           {
+            path: '/admin/file',
+            name: '文件管理',
+            icon: <CrownOutlined />,
+          },
+          {
             path: '/admin/system',
             name: '系统运行',
             icon: <CrownOutlined />,

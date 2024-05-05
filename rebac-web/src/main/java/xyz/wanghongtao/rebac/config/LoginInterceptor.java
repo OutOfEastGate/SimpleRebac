@@ -27,6 +27,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
       String requestURI = request.getRequestURI();
       log.info("#处理请求：{}", request.getRequestURI());
+      if (requestURI.startsWith("/store/image")) {
+        return true;
+      }
       if (requestURI.startsWith("/document")) {
         return true;
       }
@@ -49,7 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
       }
       String usernameByToken = JwtUtil.getUsernameByToken(token);
       log.info("#登陆用户：{}", usernameByToken);
-      String tokenFromCache = interceptorRuntime.getTokenByUsername(usernameByToken);
+//      String tokenFromCache = interceptorRuntime.getTokenByUsername(usernameByToken);
       return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }
