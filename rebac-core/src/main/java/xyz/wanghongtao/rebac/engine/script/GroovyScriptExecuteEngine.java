@@ -18,7 +18,8 @@ public class GroovyScriptExecuteEngine {
     try {
       Class<GroovyObject> groovyClass = classLoader.parseClass(groovyScript);
       GroovyObject taskScript = groovyClass.getDeclaredConstructor().newInstance();
-      return taskScript.invokeMethod("fn", new HashMap<>());
+      Object res = taskScript.invokeMethod("fn", null);
+      return res;
     } catch (Exception e) {
       e.printStackTrace();
       return null;
