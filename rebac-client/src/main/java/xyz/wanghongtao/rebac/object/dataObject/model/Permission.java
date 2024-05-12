@@ -23,4 +23,9 @@ public class Permission {
      * 定义哪种关系可以授权该权限
      */
     String relationCanAccess;
+
+    /**
+     * 脚本
+     */
+    String script;
 }

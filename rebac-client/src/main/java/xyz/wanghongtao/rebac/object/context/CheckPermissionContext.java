@@ -35,6 +35,8 @@ public class CheckPermissionContext {
 
     String relationHasPermission;
 
+    String groovyScript;
+
     Expression expressionComputed;
 
     Map<String, Object> checkPermissionParam;
@@ -50,6 +52,7 @@ public class CheckPermissionContext {
       .permissionContext(permissionContext.clone())
       .originPermissionContext(originPermissionContext)
       .relationHasPermission(relationHasPermission)
+      .groovyScript(groovyScript)
       .expressionComputed(expressionComputed)
       .build();
   }

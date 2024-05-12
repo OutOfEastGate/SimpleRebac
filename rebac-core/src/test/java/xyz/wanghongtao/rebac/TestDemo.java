@@ -1,12 +1,17 @@
 package xyz.wanghongtao.rebac;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import xyz.wanghongtao.rebac.object.dataObject.UserDo;
 import xyz.wanghongtao.rebac.object.dataObject.graph.Edge;
 import xyz.wanghongtao.rebac.object.dataObject.graph.GraphBase;
 import xyz.wanghongtao.rebac.object.dataObject.graph.GraphDo;
 import xyz.wanghongtao.rebac.object.dataObject.graph.Node;
 import xyz.wanghongtao.rebac.util.JacksonUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wanghongtao
@@ -28,7 +33,16 @@ public class TestDemo extends AbstractTest {
 
   @Test
   public void test() {
-    String template = "";
-    System.out.printf("%s %n", "a");
+    Map<String, UserDo> userDoMap = new HashMap<>();
+    UserDo wht = UserDo.builder()
+      .username("wht")
+      .password("123")
+      .build();
+    userDoMap.put("wht", wht);
+    Map<String, UserDo> newMap = JacksonUtils.fromJsonStr(JacksonUtils.toJson(userDoMap), new TypeReference<>() {});
+    UserDo userDo = newMap.get("wht");
+    userDo.setUsername("wht2");
+    log.info(JacksonUtils.toJson(wht));
+    log.info(JacksonUtils.toJson(userDo));
   }
 }

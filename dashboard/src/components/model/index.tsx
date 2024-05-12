@@ -1,9 +1,7 @@
 
 import React, {useEffect, useState} from 'react';
-import {Card, Layout, message, Space} from "antd";
-import {Content, Footer, Header} from "antd/es/layout/layout";
+import {Card, message, Space} from "antd";
 import {getAllModel, getAllStore} from "../../request/api";
-import Selector from "../graph/Selector";
 import ModelTable from "./ModelTable";
 
 
@@ -88,7 +86,6 @@ function App() {
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
         <Card>
           <ModelTable data={models} updateModel={updateModel} currentSelectStore={currentSelectStore}></ModelTable>
-
         </Card>
       </Space>
     </div>

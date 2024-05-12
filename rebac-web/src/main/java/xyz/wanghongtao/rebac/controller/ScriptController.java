@@ -17,6 +17,6 @@ import xyz.wanghongtao.rebac.object.viewObject.Result;
 public class ScriptController {
   @PostMapping("/execute")
   public Result<Object> scriptExecute(@RequestBody ExecuteScriptForm executeScriptForm) {
-    return Result.success(GroovyScriptExecuteEngine.execute(executeScriptForm.getGroovyScript()));
+    return Result.success(GroovyScriptExecuteEngine.execute(executeScriptForm.getGroovyScript(), executeScriptForm.getParams()));
   }
 }

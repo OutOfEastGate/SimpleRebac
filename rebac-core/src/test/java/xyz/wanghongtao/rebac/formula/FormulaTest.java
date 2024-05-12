@@ -90,6 +90,14 @@ public class FormulaTest {
   }
 
   @Test
+  public void testSyntaxSymbolScript() {
+    String express = "$Script";
+    FormulaParser formulaParser = new FormulaParser(express);
+    Expression expression = formulaParser.parseExpression();
+    log.info("token size {}", formulaParser.getTokenLength());
+  }
+
+  @Test
   public void testClone() {
     PermissionContext context = new PermissionContext();
   }

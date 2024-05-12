@@ -2,6 +2,7 @@ package xyz.wanghongtao.rebac.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import xyz.wanghongtao.rebac.engine.formula.FormulaParser;
@@ -36,7 +37,7 @@ public class PermissionServiceImpl implements PermissionService {
     public CheckPermissionResult checkPermission(PermissionRuntime permissionRuntime, CheckPermissionContext checkPermissionContext) {
       StopWatch stopWatch = new StopWatch();
       stopWatch.start();
-        Set<String> relationsHasPermission = new HashSet<>();
+        Set<Pair<String, String>> relationsHasPermission = new HashSet<>();
         AtomicReference<List<Permission>> permissions = new AtomicReference<>(new ArrayList<>());
         //查询出具有该权限的关系
         PolicyDo policy = checkPermissionContext.getPolicy();
@@ -48,7 +49,7 @@ public class PermissionServiceImpl implements PermissionService {
 
         permissions.get().forEach(permission -> {
             if (checkPermissionContext.getPermissionContext().getPermission().equals(permission.getPermission())) {
-                relationsHasPermission.add(permission.getRelationCanAccess());
+                relationsHasPermission.add(Pair.of(permission.getRelationCanAccess(), permission.getScript()));
             }
         });
         AtomicReference<Boolean> result = new AtomicReference<>(false);
@@ -56,8 +57,9 @@ public class PermissionServiceImpl implements PermissionService {
         //根据关系查询出relation
         relationsHasPermission.forEach(relationHasPermission -> Thread.startVirtualThread(() -> {
           //解析表达式
-          checkPermissionContext.setRelationHasPermission(relationHasPermission);
-          FormulaParser formulaParser = new FormulaParser(relationHasPermission);
+          checkPermissionContext.setRelationHasPermission(relationHasPermission.getFirst());
+          checkPermissionContext.setGroovyScript(relationHasPermission.getSecond());
+          FormulaParser formulaParser = new FormulaParser(relationHasPermission.getFirst());
           //是否有关系推导
           if(formulaParser.getTokenLength() == 1) {
             //检查直接关系

@@ -34,3 +34,5 @@ export const checkRelation= (checkRelation:{modelId:string, triple:string}):Prom
 export const getFileList = () :Promise<getFileListRes> => request.get("/store/file/list");
 
 export const deleteFile= (deleteFileForm:{objectId:string}) :Promise<BaseRes> => request.post("/store/file/delete", deleteFileForm);
+
+export const executeScript = (scriptParam:{groovyScript:string,params:Object}) :Promise<executeScriptRes> => request.post("/script/execute", scriptParam)

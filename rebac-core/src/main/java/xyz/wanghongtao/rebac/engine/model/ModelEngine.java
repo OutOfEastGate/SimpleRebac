@@ -179,7 +179,7 @@ public class ModelEngine {
     } else if(expression instanceof SyntaxSymbolLiteral syntaxSymbolLiteral) {
       String symbolLiteralValue = syntaxSymbolLiteral.getValue();
       log.info("[syntaxSymbolLiteral] {}", symbolLiteralValue);
-      if (symbolLiteralValue.equals("$Object") || symbolLiteralValue.equals("$Subject")) {
+      if (symbolLiteralValue.equals("$Object") || symbolLiteralValue.equals("$Subject") || symbolLiteralValue.equals("$Script")) {
 
       } else {
         errorInfo.append("[").append(symbolLiteralValue).append("]").append("不存在");

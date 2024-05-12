@@ -75,6 +75,11 @@ export default () => {
             name: '权限演示',
             icon: <CrownOutlined />,
           },
+          {
+            path: '/show/script',
+            name: '脚本演示',
+            icon: <CrownOutlined />,
+          },
         ],
       },
     ],

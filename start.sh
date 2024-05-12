@@ -2,22 +2,22 @@
 #!/usr/bin/env bash
 main_name='simple_rebac'
 
-#cd ./dashboard
-#
-#npm run build
-#
-#cd ..
-#
-#rm -rf ./rebac-web/src/main/resources/static
-#
-#mv ./dashboard/build/ ./rebac-web/src/main/resources/static/
-#
-#pnpm run build
-#
-#rm -rf ./rebac-web/src/main/resources/static/document
-#
-#mv ./dist ./rebac-web/src/main/resources/static/document
+cd ./dashboard
 
+npm run build
+
+cd ..
+
+rm -rf ./rebac-web/src/main/resources/static
+
+mv ./dashboard/build/ ./rebac-web/src/main/resources/static/
+
+pnpm run build
+
+rm -rf ./rebac-web/src/main/resources/static/document
+
+mv ./dist ./rebac-web/src/main/resources/static/document
+#
 mvn package -DskipTests
 
 docker stop ${main_name}

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Form, Input, message, Modal, Space} from 'antd';
+import Script from "../../../../script";
 
 interface PropsType {
   isModalOpen:boolean
@@ -11,10 +12,11 @@ interface PropsType {
 
 interface FormType {
   permission:string,
-  relationCanAccess:string
+  relationCanAccess:string,
 }
 
 const App: React.FC<PropsType> = (props:PropsType) => {
+  const [script,setScript] = useState<string>();
 
   if(props.definition === undefined) {
     return <></>
@@ -34,9 +36,11 @@ const App: React.FC<PropsType> = (props:PropsType) => {
       if(definifion.permissions === null) {
         definifion.permissions = []
       }
+      console.log(script)
       definifion.permissions.push({
         permission:formValue.permission,
-        relationCanAccess:formValue.relationCanAccess
+        relationCanAccess:formValue.relationCanAccess,
+        script:script
       })
       props.updateDefinition(definifion)
     }
@@ -47,14 +51,18 @@ const App: React.FC<PropsType> = (props:PropsType) => {
 
   return (
     <>
-      <Modal title="增加权限定义" open={props.isModalOpen} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} >
+      <Modal title="增加权限定义" open={props.isModalOpen}
+             onOk={props.handleOk}
+             onCancel={props.handleCancel}
+             width={1000}
+             footer={null} >
         <Form
-          labelCol={{ flex: '110px' }}
+          labelCol={{ flex: '200px' }}
           labelAlign="left"
           labelWrap
           wrapperCol={{ flex: 1 }}
           colon={false}
-          style={{ maxWidth: 600 }}
+          style={{ width: '100%' }}
           onFinish={onFinish}
         >
           <Form.Item label="权限名称" name="permission">
@@ -62,6 +70,9 @@ const App: React.FC<PropsType> = (props:PropsType) => {
         </Form.Item>
           <Form.Item label="有权限的关系（表达式）" name="relationCanAccess">
             <Input />
+          </Form.Item>
+          <Form.Item label="表达式" name="script" style={{ width: '100%',alignItems: 'center'  }}>
+            <Script onChange={(script) => setScript(script)} type={"java"}></Script>
           </Form.Item>
           <Form.Item label=" " >
             <Space>

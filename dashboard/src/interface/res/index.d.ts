@@ -68,6 +68,7 @@ interface Definition {
 interface PermissionDefinition {
     permission:string
     relationCanAccess:string
+    script:string|undefined
 }
 
 interface RelationDefinition {
@@ -133,4 +134,8 @@ interface getFileListRes extends BaseRes{
 
 interface uploadFileRes extends BaseRes{
   data:string
+}
+
+interface executeScriptRes extends BaseRes{
+  data:any
 }

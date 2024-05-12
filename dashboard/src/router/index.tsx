@@ -11,6 +11,7 @@ import Relation from "../components/relation";
 import LoginPage from "../page/LoginPage";
 import AppSelect from "../page/AppSelect";
 import File from "../components/file";
+import ScriptExecute from "../page/ScriptExecute";
 
 
 const routes = [
@@ -46,6 +47,10 @@ const routes = [
       {
         path: "/show/relation",
         element: <GraphHome/>
+      },
+      {
+        path: "/show/script",
+        element: <ScriptExecute/>
       },
       {
         path: "/admin/file",

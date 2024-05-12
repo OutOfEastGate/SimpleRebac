@@ -1,6 +1,7 @@
 package xyz.wanghongtao.rebac.engine.relation.PermissionCheckHandler;
 
 import xyz.wanghongtao.rebac.engine.formula.expression.SyntaxSymbolLiteral;
+import xyz.wanghongtao.rebac.engine.script.GroovyScriptExecuteEngine;
 import xyz.wanghongtao.rebac.object.context.CheckPermissionContext;
 import xyz.wanghongtao.rebac.object.dataObject.RelationDo;
 import xyz.wanghongtao.rebac.object.runtime.PermissionRuntime;
@@ -27,6 +28,15 @@ public class SyntaxSymbolHandler implements PermissionCheckHandler {
         .objectType(checkPermissionContext.getPermissionContext().getSubjectType())
         .build();
       checkPermissionContext.pushRelationFromExpression(relationDo);
+    } else if (symbolLiteralValue.equals("$Script")) {
+      if (checkPermissionContext.getGroovyScript() == null) {
+        return false;
+      }
+
+      Object execute = GroovyScriptExecuteEngine.execute(checkPermissionContext.getGroovyScript(), checkPermissionContext.getCheckPermissionParam());
+      if(execute instanceof Boolean bool) {
+        return bool;
+      }
     }
     return false;
   }
