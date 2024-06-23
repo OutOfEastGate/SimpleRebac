@@ -1,1 +1,1 @@
-export const backPath = "172.30.203.218:8080"
+export const backPath = "39.106.41.46:8080"

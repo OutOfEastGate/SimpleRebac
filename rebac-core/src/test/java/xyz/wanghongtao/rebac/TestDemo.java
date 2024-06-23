@@ -10,6 +10,8 @@ import xyz.wanghongtao.rebac.object.dataObject.graph.GraphDo;
 import xyz.wanghongtao.rebac.object.dataObject.graph.Node;
 import xyz.wanghongtao.rebac.util.JacksonUtils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,4 +47,12 @@ public class TestDemo extends AbstractTest {
     log.info(JacksonUtils.toJson(wht));
     log.info(JacksonUtils.toJson(userDo));
   }
+
+  @Test
+  public void test2() {
+    Double a = 1.9;
+    System.out.println(Double.valueOf(String.valueOf(a)));
+  }
+
+
 }

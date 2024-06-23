@@ -40,6 +40,7 @@ public class PolicyDo {
 
   @Override
   public PolicyDo clone() {
+    long l = System.currentTimeMillis();
     return PolicyDo.builder()
       .id(id)
       .description(description)

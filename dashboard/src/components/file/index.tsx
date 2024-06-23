@@ -5,6 +5,7 @@ import {Button, Card, Col, Image, message, Popconfirm, Row, Space, Statistic, Ta
 import {CopyOutlined, UploadOutlined} from "@ant-design/icons";
 import {deleteFile, getFileList} from "../../request/api";
 import {uploadFile} from "../../request/uploadFile";
+import {backPath} from "../conf";
 
 
 
@@ -142,26 +143,26 @@ function App() {
   }, []);
 
 
-  function upload(file:File) {
-    uploadFile(file).then(r => {
-      console.log(r)
+  const upload = (file:File):Promise<string> => {
+    return uploadFile(file).then(r => {
       if(r.msg === "success") {
         message.success("文件上传成功")
       } else {
         message.error("文件上传失败")
       }
       fetchFileList();
+      return ""
     })
+
   }
 
   return (
     <div>
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Upload beforeUpload={upload}>
+        <Upload action={upload}>
           <Button icon={<UploadOutlined />}>点击上传文件</Button>
         </Upload>
         <Table columns={columns}  dataSource={fileList}/>
-
       </Space>
     </div>
   );
