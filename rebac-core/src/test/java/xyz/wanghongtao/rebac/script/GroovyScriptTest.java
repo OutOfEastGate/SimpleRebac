@@ -36,9 +36,12 @@ public class GroovyScriptTest {
   public void testExecute() {
     GroovyClassLoader classLoader = new GroovyClassLoader();
     try {
+      long start = System.currentTimeMillis();
       Class<?> groovyClass = classLoader.parseClass(groovyScript);
       Object taskScriptObject =  groovyClass.getDeclaredConstructor().newInstance();
       GroovyObject taskScript;
+      long end = System.currentTimeMillis();
+      System.out.println("编译耗时" + (end - start) + "ms");
       if (taskScriptObject instanceof GroovyObject groovyObject) {
         taskScript = groovyObject;
       } else {

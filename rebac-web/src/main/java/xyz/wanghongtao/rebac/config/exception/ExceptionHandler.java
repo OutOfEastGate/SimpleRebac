@@ -42,6 +42,11 @@ public class ExceptionHandler {
         return Result.fail(PARAM_ERROR.getCode(), stringBuilder.toString());
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler
+    public Result<?> handleException(InterruptedException e) {
+      return Result.fail("500", "内存超出限制");
+    }
+
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public Result<?> defaultHandler(Exception e) {
         e.printStackTrace();

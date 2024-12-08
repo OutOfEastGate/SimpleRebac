@@ -28,6 +28,6 @@ mvn package -DskipTests
 #echo '----rm images----'
 #docker build -f ./DockerFile -t ${main_name} .
 #echo '----build image----'
-#docker run -id -p 8080:8080 \
-#--name=${main_name} ${main_name}
+docker run -id -p 8080:8080 \
+--name=${main_name} ${main_name}
 #echo '----start container----'

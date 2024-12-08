@@ -1,5 +1,4 @@
 FROM openjdk:20
-
 MAINTAINER wanghongtao <1946066280@qq.com>
 
 ADD ./rebac-web/target/rebac-web-1.0-SNAPSHOT.jar main.jar

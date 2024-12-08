@@ -27,6 +27,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
       String requestURI = request.getRequestURI();
       log.info("#处理请求：{}", request.getRequestURI());
+      if (requestURI.startsWith("/system")) {
+        return true;
+      }
       if (requestURI.startsWith("/store/image")) {
         return true;
       }
